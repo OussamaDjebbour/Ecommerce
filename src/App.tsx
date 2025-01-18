@@ -12,6 +12,17 @@ import Sidebar from "./components/features/Sidebar";
 import Main from "./components/features/Main";
 import HeadphonesAd from "./components/ui/HeadphonesAd ";
 import DailyDeals from "./components/ui/DailyDeals";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+// Create a new QueryClient
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 300000,
+    },
+  },
+});
 
 // Define the API URL
 const API_URL = "https://fakestoreapi.com/products";
@@ -174,7 +185,7 @@ function App() {
       .then((data) => setProducts(data.products));
   }, []);
 
-  console.log("productss", products);
+  // console.log("productss", products);
 
   return (
     // <FetchDataWithUseQuery />
@@ -194,40 +205,41 @@ function App() {
     //     <MainContent />
     //   </div>
     // </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="mx-auto grid min-h-screen max-w-screen-2xl grid-cols-[auto_1fr_22.875rem] grid-rows-[auto_1fr] gap-y-6 overflow-hidden bg-[#FAFAFA] pr-6 font-bold">
+        {/* <div className="grid min-h-screen grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr] gap-x-12 gap-y-6 bg-[#FAFAFA] font-bold"> */}
+        <Header />
+        <Sidebar />
+        <Main />
+        <div className="col-span-1 row-span-1">
+          <HeadphonesAd />
 
-    // <div className="mx-auto grid min-h-screen max-w-screen-2xl grid-cols-[auto_1fr_22.875rem] grid-rows-[auto_1fr] gap-y-6 overflow-hidden bg-[#FAFAFA] pr-6 font-bold">
-    //   {/* <div className="grid min-h-screen grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr] gap-x-12 gap-y-6 bg-[#FAFAFA] font-bold"> */}
-    //   <Header />
-    //   <Sidebar />
-    //   <Main />
-    //   <div className="col-span-1 row-span-1">
-    //     <HeadphonesAd />
-
-    //     <DailyDeals />
-    //     {/* <PopularCategories /> */}
-    //     {/* <SummerPromo /> */}
-    //   </div>
+          <DailyDeals />
+          {/* <PopularCategories /> */}
+          {/* <SummerPromo /> */}
+        </div>
+      </div>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+    // <div>
+    //   <h1>Products</h1>
+    //   <ul>
+    //     {products.map((product) => (
+    //       <li key={product.id}>
+    //         <h2>{product.title}</h2>
+    //         <p>Price: ${product.price}</p>
+    //         <img src={product.images[0]} alt={product.title} width="150" />
+    //       </li>
+    //     ))}
+    //     {/* {products.map((product) => (
+    //       <li key={product.id}>
+    //         <h2>{product.title}</h2>
+    //         <p>Price: ${product.price}</p>
+    //         <img src={product.images[0]} alt={product.title} width="150" />
+    //       </li>
+    //     ))} */}
+    //   </ul>
     // </div>
-    <div>
-      {" "}
-      <h1>Products</h1>
-      <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            <h2>{product.title}</h2>
-            <p>Price: ${product.price}</p>
-            <img src={product.images[0]} alt={product.title} width="150" />
-          </li>
-        ))}
-        {/* {products.map((product) => (
-          <li key={product.id}>
-            <h2>{product.title}</h2>
-            <p>Price: ${product.price}</p>
-            <img src={product.images[0]} alt={product.title} width="150" />
-          </li>
-        ))} */}
-      </ul>
-    </div>
   );
 }
 

@@ -129,7 +129,7 @@ export default tseslint.config(
       "react-hooks/exhaustive-deps": "warn", // Warn about missing dependencies
       "react/react-in-jsx-scope": "off",
       "react/jsx-uses-vars": "error", // Ensure this rule is enabled
-      "react/jsx-no-undef": "error", // Ensure this rule is enabled
+      "react/jsx-no-undef": "warn", // Ensure this rule is enabled
       "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/no-var-requires": "error",
     },

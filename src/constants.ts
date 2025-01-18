@@ -1,3 +1,5 @@
+export const BASE_URL = "https://dummyjson.com";
+
 export const MENU_ITEMS = [
   { icon: "🏠", label: "Home", active: true },
   { icon: "🔍", label: "Explore" },
