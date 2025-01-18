@@ -180,9 +180,12 @@ function App() {
     // fetchData();
     // fetch("https://fakestoreapi.com/products?limit=100")
     // fetch("https://dummyjson.com/products/category/tablets")
-    fetch("https://dummyjson.com/products?limit=100&sortBy=rating&order=desc")
+    // fetch("https://dummyjson.com/products?limit=100&sortBy=rating&order=desc")
+    //   .then((res) => res.json())
+    //   .then((data) => setProducts(data.products));
+    fetch("https://dummyjson.com/users")
       .then((res) => res.json())
-      .then((data) => setProducts(data.products));
+      .then(console.log);
   }, []);
 
   // console.log("productss", products);

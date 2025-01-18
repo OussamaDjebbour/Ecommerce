@@ -8,6 +8,11 @@ export const getDailyDealsProducts = async () => {
   return data.products;
 };
 
+export const getUsers = async () => {
+  const { data } = await axios.get(`${BASE_URL}/users?limit=4`);
+  return data.users;
+};
+
 export const getProducts = async () => {
   const { data } = await axios.get(`${BASE_URL}/products`);
   return data.products;
