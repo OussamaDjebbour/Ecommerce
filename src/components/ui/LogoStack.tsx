@@ -5,12 +5,14 @@ interface LogoStackProps {
 }
 
 const LogoStack: FC<LogoStackProps> = ({ images }) => {
+  console.log("LogoStack", images);
   return (
     <>
       {images.map((image, index) => (
         <img
           key={index}
-          className={`ml-${index === 0 ? "0" : "[-0.5rem]"} z-${30 - index * 10}`}
+          className={index === 0 ? "ml-0" : "ml-[-0.5rem]"}
+          style={{ zIndex: 30 - index * 10 }}
           src={image.src}
           alt={image.alt}
         />

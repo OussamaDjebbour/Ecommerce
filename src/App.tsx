@@ -14,6 +14,9 @@ import HeadphonesAd from "./components/ui/HeadphonesAd ";
 import DailyDeals from "./components/ui/DailyDeals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import SwiperSlider from "./components/ui/SwiperSlider";
+import { SearchProvider, useSearchContext } from "./context/useSearchContext";
+import ProductPage from "./context/ProductPage";
 
 // Create a new QueryClient
 const queryClient = new QueryClient({
@@ -173,7 +176,14 @@ const fetchData = async () => {
 };
 
 function App() {
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
+
+  // const [searchQuery, setSearchQuery] = useState("");
+
+  const { searchQuery } = useSearchContext();
+
+  console.log("searchQuery", searchQuery);
+
   useEffect(() => {
     // console.log(`Count: ${count}`);
     // if (count) setCount(1);
@@ -208,12 +218,16 @@ function App() {
     //     <MainContent />
     //   </div>
     // </div>
-    <QueryClientProvider client={queryClient}>
+    // <QueryClientProvider client={queryClient}>
+    //   <SearchProvider>
+    <>
       <div className="mx-auto grid min-h-screen max-w-screen-2xl grid-cols-[auto_1fr_22.875rem] grid-rows-[auto_1fr] gap-y-6 overflow-hidden bg-[#FAFAFA] pr-6 font-bold">
         {/* <div className="grid min-h-screen grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr] gap-x-12 gap-y-6 bg-[#FAFAFA] font-bold"> */}
         <Header />
         <Sidebar />
-        <Main />
+        {/* <SwiperSlider /> */}
+        {/* <Main /> */}
+        <ProductPage />
         <div className="col-span-1 row-span-1">
           <HeadphonesAd />
 
@@ -223,7 +237,9 @@ function App() {
         </div>
       </div>
       <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    </>
+    //  </SearchProvider>
+    // </QueryClientProvider>
     // <div>
     //   <h1>Products</h1>
     //   <ul>
