@@ -1,4 +1,5 @@
 import axios from "axios";
+import { BASE_URL } from "../constants";
 
 interface Product {
   id: number;
@@ -21,7 +22,7 @@ export const productService = {
 
     try {
       const response = await axios.get<SearchResponse>(
-        `https://dummyjson.com/products/search?q=${query}&limit=100`,
+        `${BASE_URL}/products/search?q=${query}&limit=100`,
       );
       return response.data;
     } catch (error) {

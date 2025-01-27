@@ -17,6 +17,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import SwiperSlider from "./components/ui/SwiperSlider";
 import { SearchProvider, useSearchContext } from "./context/useSearchContext";
 import ProductPage from "./context/ProductPage";
+import { useSearchStore } from "./context/useSearchStore";
+import { useSearchProducts } from "./hooks/useSearchProducts";
 
 // Create a new QueryClient
 const queryClient = new QueryClient({
@@ -180,9 +182,11 @@ function App() {
 
   // const [searchQuery, setSearchQuery] = useState("");
 
-  const { searchQuery } = useSearchContext();
+  // const { searchQuery } = useSearchContext();
+  const { products, isLoading } = useSearchProducts();
 
-  console.log("searchQuery", searchQuery);
+  // console.log("searchQuery", searchQuery);
+  // console.log("suggestions", suggestions);
 
   useEffect(() => {
     // console.log(`Count: ${count}`);
@@ -227,7 +231,8 @@ function App() {
         <Sidebar />
         {/* <SwiperSlider /> */}
         {/* <Main /> */}
-        <ProductPage />
+        {products?.length > 0 ? <ProductPage /> : <Main />}
+        {/* {products?.length > 0 && <ProductPage />} */}
         <div className="col-span-1 row-span-1">
           <HeadphonesAd />
 
