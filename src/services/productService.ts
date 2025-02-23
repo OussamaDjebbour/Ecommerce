@@ -1,13 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "../constants";
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  thumbnail: string;
-  category: string;
-}
+import { Product } from "src/types";
 
 interface SearchResponse {
   products: Product[];
@@ -22,7 +15,7 @@ export const productService = {
 
     try {
       const response = await axios.get<SearchResponse>(
-        `${BASE_URL}/products/search?q=${query}&limit=100`,
+        `${BASE_URL}/products/search?q=${query}&limit=30`,
       );
       return response.data;
     } catch (error) {

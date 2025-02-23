@@ -183,7 +183,7 @@ function App() {
   // const [searchQuery, setSearchQuery] = useState("");
 
   // const { searchQuery } = useSearchContext();
-  const { products, isLoading } = useSearchProducts();
+  // const { products, isLoading } = useSearchProducts();
 
   // console.log("searchQuery", searchQuery);
   // console.log("suggestions", suggestions);
@@ -231,15 +231,17 @@ function App() {
         <Sidebar />
         {/* <SwiperSlider /> */}
         {/* <Main /> */}
-        {products?.length > 0 ? <ProductPage /> : <Main />}
+        {/* {products?.length > 0 ? <ProductPage /> : <Main />} */}
+        {/* {isLoading ? <Main /> : <ProductPage />} */}
         {/* {products?.length > 0 && <ProductPage />} */}
-        <div className="col-span-1 row-span-1">
+        <ProductPage />
+        {/* <div className="col-span-1 row-span-1">
           <HeadphonesAd />
 
           <DailyDeals />
-          {/* <PopularCategories /> */}
-          {/* <SummerPromo /> */}
-        </div>
+        </div> */}
+        {/* <PopularCategories /> */}
+        {/* <SummerPromo /> */}
       </div>
       <ReactQueryDevtools initialIsOpen={false} />
     </>

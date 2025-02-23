@@ -11,19 +11,20 @@ const ProductCard = ({
 }) => (
   // <div className="min-w-48 flex-1 rounded-xl bg-white/30 px-2.5 pb-2.5 pt-2.5 shadow-md backdrop-blur-3xl">
   // <div className="min-w-48 flex-1 rounded-xl bg-white px-2.5 pb-2.5 pt-2.5 shadow-md">
-  <div className="min-w-48 flex-1 rounded-xl bg-white px-2.5 pb-2.5 pt-2.5 shadow-md">
+  <div className="min-w-48 max-w-80 flex-1 rounded-xl bg-white px-2.5 pb-2.5 pt-2.5 shadow-md">
     {/* <div className="absolute inset-0 flex items-center justify-center bg-white/30 font-semibold text-white opacity-70 backdrop-blur-sm transition duration-300 hover:opacity-100"></div> */}
 
     {/* Right Blur Gradient */}
 
     {/* <div className="absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-black/20 to-transparent"></div> */}
 
-    <img className="mx-auto mb-4 h-32" src={imgSrc} alt={title} />
+    {/* h-32 */}
+    <img className="mx-auto mb-4 w-2/3" src={imgSrc} alt={title} />
 
     {/* White gradient overlay - only on the last card */}
     {/* <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/90"></div> */}
 
-    <h4 className="mb-1 max-w-48 truncate font-openSans text-sm font-semibold text-black">
+    <h4 className="mb-1 max-w-full truncate font-openSans text-sm font-semibold text-black">
       {title}
     </h4>
     <p className="mb-1 text-sm font-semibold text-[#5C5C5C]">Price {price}</p>

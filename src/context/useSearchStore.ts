@@ -358,39 +358,85 @@
 import { create } from "zustand";
 import debounce from "lodash.debounce";
 
+// interface SearchState {
+//   searchQuery: string;
+//   debouncedQuery: string;
+//   currentPage: number;
+//   itemsPerPage: number;
+//   selectedCategory: string;
+//   priceRange: { min: number; max: number };
+//   setSearchQuery: (query: string) => void;
+//   setCurrentPage: (page: number) => void;
+//   setSelectedCategory: (category: string) => void;
+//   setPriceRange: (range: { min: number; max: number }) => void;
+//   setItemsPerPage: (count: number) => void;
+// }
+
+// export const useSearchStore = create<SearchState>((set) => {
+//   // Debounce the query update
+//   const debouncedSetQuery = debounce((query: string) => {
+//     set({ debouncedQuery: query });
+//   }, 700);
+
+//   return {
+//     searchQuery: "",
+//     debouncedQuery: "",
+//     currentPage: 1,
+//     itemsPerPage: 10,
+//     selectedCategory: "",
+//     priceRange: { min: 0, max: 10000 },
+//     setSearchQuery: (query) => {
+//       set({ searchQuery: query, currentPage: 1, selectedCategory: "" });
+//       // set({ searchQuery: query, currentPage: 1 });
+//       debouncedSetQuery(query);
+//     },
+//     setCurrentPage: (page) => set({ currentPage: page }),
+//     setSelectedCategory: (category) =>
+//       set({ selectedCategory: category, currentPage: 1 }),
+//     setPriceRange: (range) => set({ priceRange: range, currentPage: 1 }),
+//     setItemsPerPage: (count) => set({ itemsPerPage: count }),
+//   };
+// });
+
 interface SearchState {
   searchQuery: string;
   debouncedQuery: string;
   currentPage: number;
   itemsPerPage: number;
   selectedCategory: string;
-  priceRange: { min: number; max: number };
+  minPrice: number; // Separate state for min price
+  maxPrice: number; // Separate state for max price
   setSearchQuery: (query: string) => void;
   setCurrentPage: (page: number) => void;
   setSelectedCategory: (category: string) => void;
-  setPriceRange: (range: { min: number; max: number }) => void;
+  setMinPrice: (min: number) => void; // New setter for min price
+  setMaxPrice: (max: number) => void; // New setter for max price
+  setItemsPerPage: (count: number) => void;
 }
 
 export const useSearchStore = create<SearchState>((set) => {
   // Debounce the query update
   const debouncedSetQuery = debounce((query: string) => {
     set({ debouncedQuery: query });
-  }, 3000);
+  }, 700);
 
   return {
     searchQuery: "",
     debouncedQuery: "",
     currentPage: 1,
-    itemsPerPage: 12,
+    itemsPerPage: 10,
     selectedCategory: "",
-    priceRange: { min: 0, max: 10000 },
+    minPrice: 0, // Default min price
+    maxPrice: 10000, // Default max price
     setSearchQuery: (query) => {
-      set({ searchQuery: query, currentPage: 1 });
+      set({ searchQuery: query, currentPage: 1, selectedCategory: "" });
       debouncedSetQuery(query);
     },
     setCurrentPage: (page) => set({ currentPage: page }),
     setSelectedCategory: (category) =>
       set({ selectedCategory: category, currentPage: 1 }),
-    setPriceRange: (range) => set({ priceRange: range, currentPage: 1 }),
+    setMinPrice: (min) => set({ minPrice: min, currentPage: 1 }), // Update min price
+    setMaxPrice: (max) => set({ maxPrice: max, currentPage: 1 }), // Update max price
+    setItemsPerPage: (count) => set({ itemsPerPage: count }),
   };
 });

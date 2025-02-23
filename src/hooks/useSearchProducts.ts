@@ -65,7 +65,9 @@ import { productService } from "../services/productService";
 import { useSearchStore } from "../context/useSearchStore";
 
 export const useSearchProducts = () => {
-  const { debouncedQuery, selectedCategory, priceRange } = useSearchStore();
+  // const { debouncedQuery, selectedCategory, priceRange } = useSearchStore();
+  const { debouncedQuery, selectedCategory, minPrice, maxPrice } =
+    useSearchStore();
 
   const {
     data: response = { products: [], total: 0 },
@@ -81,9 +83,15 @@ export const useSearchProducts = () => {
   const filteredProducts = response.products.filter(
     (product) =>
       (!selectedCategory || product.category === selectedCategory) &&
-      product.price >= priceRange.min &&
-      product.price <= priceRange.max,
+      product.price >= minPrice &&
+      product.price <= maxPrice,
   );
+  // const filteredProducts = response.products.filter(
+  //   (product) =>
+  //     (!selectedCategory || product.category === selectedCategory) &&
+  //     product.price >= priceRange.min &&
+  //     product.price <= priceRange.max,
+  // );
 
   return {
     products: response.products,
