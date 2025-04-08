@@ -11,6 +11,11 @@ function MainProduct() {
     { name: "green", bg: "bg-[#75E573] ", ring: "ring-[#75E573] " },
   ];
 
+  const PRICE = 349.95;
+
+  const [quantity, setQuantity] = useState(1);
+  const [price, setPrice] = useState(PRICE);
+
   const [selectedColor, setSelectedColor] = useState<string>(colors[0].name);
 
   return (
@@ -57,7 +62,8 @@ function MainProduct() {
         </p>
 
         <p className="mb-[1.125rem] text-lg font-medium text-[#009393]">
-          Price $349.95
+          {/* Price $349.95 */}
+          Price ${price.toFixed(2)}
         </p>
 
         <div className="mb-8 flex justify-between">
@@ -96,7 +102,12 @@ function MainProduct() {
               colors={colors}
             />
           </div>
-          <ProductQuantity />
+          {/* <ProductQuantity /> */}
+          <ProductQuantity
+            quantity={quantity}
+            setQuantity={setQuantity}
+            setPrice={setPrice}
+          />
         </div>
 
         <div className="flex gap-5">

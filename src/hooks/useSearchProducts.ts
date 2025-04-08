@@ -66,8 +66,13 @@ import { useSearchStore } from "../context/useSearchStore";
 
 export const useSearchProducts = () => {
   // const { debouncedQuery, selectedCategory, priceRange } = useSearchStore();
-  const { debouncedQuery, selectedCategory, minPrice, maxPrice } =
-    useSearchStore();
+  const {
+    debouncedQuery,
+    selectedCategory,
+    minPrice,
+    maxPrice,
+    setIsSearching,
+  } = useSearchStore();
 
   const {
     data: response = { products: [], total: 0 },
@@ -75,7 +80,8 @@ export const useSearchProducts = () => {
     error,
   } = useQuery({
     queryKey: ["products", debouncedQuery],
-    queryFn: () => productService.searchProducts(debouncedQuery),
+    queryFn: () =>
+      productService.searchProducts(debouncedQuery, setIsSearching),
     enabled: !!debouncedQuery?.trim(),
   });
 

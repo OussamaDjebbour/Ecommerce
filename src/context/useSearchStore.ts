@@ -399,6 +399,7 @@ import debounce from "lodash.debounce";
 // });
 
 interface SearchState {
+  isSearching: boolean;
   searchQuery: string;
   debouncedQuery: string;
   currentPage: number;
@@ -406,6 +407,8 @@ interface SearchState {
   selectedCategory: string;
   minPrice: number; // Separate state for min price
   maxPrice: number; // Separate state for max price
+
+  setIsSearching: (isSearching: boolean) => void;
   setSearchQuery: (query: string) => void;
   setCurrentPage: (page: number) => void;
   setSelectedCategory: (category: string) => void;
@@ -421,6 +424,7 @@ export const useSearchStore = create<SearchState>((set) => {
   }, 700);
 
   return {
+    isSearching: false,
     searchQuery: "",
     debouncedQuery: "",
     currentPage: 1,
@@ -428,6 +432,8 @@ export const useSearchStore = create<SearchState>((set) => {
     selectedCategory: "",
     minPrice: 0, // Default min price
     maxPrice: 10000, // Default max price
+
+    setIsSearching: (isSearching: boolean) => set({ isSearching }),
     setSearchQuery: (query) => {
       set({ searchQuery: query, currentPage: 1, selectedCategory: "" });
       debouncedSetQuery(query);

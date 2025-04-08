@@ -16,7 +16,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import SwiperSlider from "./components/ui/SwiperSlider";
 import { SearchProvider, useSearchContext } from "./context/useSearchContext";
-import ProductPage from "./context/ProductPage";
+import ProductPage from "./components/features/ProductPage";
 import { useSearchStore } from "./context/useSearchStore";
 import { useSearchProducts } from "./hooks/useSearchProducts";
 
@@ -188,6 +188,8 @@ function App() {
   // console.log("searchQuery", searchQuery);
   // console.log("suggestions", suggestions);
 
+  const { isSearching } = useSearchStore();
+
   useEffect(() => {
     // console.log(`Count: ${count}`);
     // if (count) setCount(1);
@@ -232,14 +234,16 @@ function App() {
         {/* <SwiperSlider /> */}
         {/* <Main /> */}
         {/* {products?.length > 0 ? <ProductPage /> : <Main />} */}
-        {/* {isLoading ? <Main /> : <ProductPage />} */}
+        {!isSearching ? <Main /> : <ProductPage />}
         {/* {products?.length > 0 && <ProductPage />} */}
-        <ProductPage />
-        {/* <div className="col-span-1 row-span-1">
-          <HeadphonesAd />
+        {/* <ProductPage /> */}
+        {!isSearching && (
+          <div className="col-span-1 row-span-1">
+            <HeadphonesAd />
 
-          <DailyDeals />
-        </div> */}
+            <DailyDeals />
+          </div>
+        )}
         {/* <PopularCategories /> */}
         {/* <SummerPromo /> */}
       </div>

@@ -8,7 +8,10 @@ interface SearchResponse {
 }
 
 export const productService = {
-  async searchProducts(query: string): Promise<SearchResponse> {
+  async searchProducts(
+    query: string,
+    setIsSearching: React.Dispatch<React.SetStateAction<boolean>>,
+  ): Promise<SearchResponse> {
     if (!query.trim()) {
       return { products: [], total: 0 };
     }
@@ -17,6 +20,8 @@ export const productService = {
       const response = await axios.get<SearchResponse>(
         `${BASE_URL}/products/search?q=${query}&limit=30`,
       );
+
+      setIsSearching(true);
       return response.data;
     } catch (error) {
       console.error("Error fetching search suggestions:", error);

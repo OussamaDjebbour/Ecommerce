@@ -9,9 +9,13 @@ const SearchBar = () => {
     setSearchQuery,
     selectedCategory,
     setSelectedCategory,
-    priceRange,
-    setPriceRange,
+    // priceRange,
+    // setPriceRange,
   } = useSearchStore();
+
+  const [searchQueryLocal, setSearchQueryLocal] = useState("");
+
+  console.log("searchQuerysearchQuerysearchQuerysearchQuery", searchQuery);
 
   const {
     products,
@@ -27,6 +31,7 @@ const SearchBar = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
+    // setSearchQueryLocal(query)
     setShowDropdown(query.length > 0);
   };
 

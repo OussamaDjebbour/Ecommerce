@@ -185,13 +185,29 @@ import {
 } from "../../services/getDailyDealsProducts";
 import { Product } from "src/types";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-
 import "swiper/css";
 import "swiper/css/navigation";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import { Navigation } from "swiper/modules";
+// import { Swiper, SwiperSlide } from "swiper/react";
+
+// // Use this
+// import "swiper/swiper.min.css";
+// import { Navigation } from "swiper/modules";
+// import "swiper/css/navigation"; // Note: path might vary based on version
+
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import { Navigation } from "swiper";
+// import { Navigation } from "swiper/modules";
 // import { Navigation } from "swiper/modules";
 
-import { Navigation } from "swiper/modules";
+// import { Navigation } from "swiper/modules";
 
 function Main() {
   const { data } = useQuery({
