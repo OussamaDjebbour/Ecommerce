@@ -337,6 +337,7 @@ function Main() {
         {data?.map((product: Product, index: number) => (
           <SwiperSlide key={index} style={{ width: "12rem" }}>
             <ProductCard
+              id={product.id}
               imgSrc={product.thumbnail}
               title={product.title}
               price={product.price}

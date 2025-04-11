@@ -1,17 +1,28 @@
 import { useState, useRef } from "react";
-import { useSearchStore } from "../../context/useSearchStore";
+// import { useSearchStore } from "../../context/useSearchStore";
 import { useClickAway } from "react-use";
 import { useSearchProducts } from "../../hooks/useSearchProducts";
+import { useSearchStore } from "../../store/searchStore";
 
 const SearchBar = () => {
-  const {
-    searchQuery,
-    setSearchQuery,
-    selectedCategory,
-    setSelectedCategory,
-    // priceRange,
-    // setPriceRange,
-  } = useSearchStore();
+  // const {
+  //   searchQuery,
+  //   setSearchQuery,
+  //   selectedCategory,
+  //   setSelectedCategory,
+  //   // priceRange,
+  //   // setPriceRange,
+  // } = useSearchStore();
+
+  // const searchQuery = useSearchStore((state) => state.searchQuery);
+  // const setSearchQuery = useSearchStore((state) => state.setSearchQuery);
+
+  const { searchQuery, setSearchQuery } = useSearchStore();
+
+  // const selectedCategory = useSearchStore((state) => state.selectedCategory);
+  // const setSelectedCategory = useSearchStore(
+  //   (state) => state.setSelectedCategory,
+  // );
 
   const [searchQueryLocal, setSearchQueryLocal] = useState("");
 

@@ -1,43 +1,58 @@
+import { useCartStore } from "../../store/cartStore";
+
 const ProductCard = ({
+  id,
   imgSrc,
   title,
   price,
   rating,
 }: {
+  id: number;
   imgSrc: string;
   title: string;
   price: number;
   rating: number;
-}) => (
+}) => {
+  const addToCart = useCartStore((state) => state.addToCart);
+  const cart = useCartStore((state) => state.cart);
+
+  console.log("Cartttttttttttt", cart);
+
+  console.log("Hi Thereeeeeee");
   // <div className="min-w-48 flex-1 rounded-xl bg-white/30 px-2.5 pb-2.5 pt-2.5 shadow-md backdrop-blur-3xl">
   // <div className="min-w-48 flex-1 rounded-xl bg-white px-2.5 pb-2.5 pt-2.5 shadow-md">
-  <div className="min-w-48 max-w-80 flex-1 rounded-xl bg-white px-2.5 pb-2.5 pt-2.5 shadow-md">
-    {/* <div className="absolute inset-0 flex items-center justify-center bg-white/30 font-semibold text-white opacity-70 backdrop-blur-sm transition duration-300 hover:opacity-100"></div> */}
+  return (
+    <div className="min-w-48 max-w-80 flex-1 rounded-xl bg-white px-2.5 pb-2.5 pt-2.5 shadow-md">
+      {/* <div className="absolute inset-0 flex items-center justify-center bg-white/30 font-semibold text-white opacity-70 backdrop-blur-sm transition duration-300 hover:opacity-100"></div> */}
 
-    {/* Right Blur Gradient */}
+      {/* Right Blur Gradient */}
 
-    {/* <div className="absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-black/20 to-transparent"></div> */}
+      {/* <div className="absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-black/20 to-transparent"></div> */}
 
-    {/* h-32 */}
-    <img className="mx-auto mb-4 w-2/3" src={imgSrc} alt={title} />
+      {/* h-32 */}
+      <img className="mx-auto mb-4 w-2/3" src={imgSrc} alt={title} />
 
-    {/* White gradient overlay - only on the last card */}
-    {/* <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/90"></div> */}
+      {/* White gradient overlay - only on the last card */}
+      {/* <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/90"></div> */}
 
-    <h4 className="mb-1 max-w-full truncate font-openSans text-sm font-semibold text-black">
-      {title}
-    </h4>
-    <p className="mb-1 text-sm font-semibold text-[#5C5C5C]">Price {price}</p>
-    <div className="flex items-center gap-2">
-      <img src="images/Rating_Icon_Green.png" alt="Rating" />
-      <span className="font-roboto text-sm font-medium text-[#00E0C6]">
-        {rating}
-      </span>
-      <button className="ml-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-[#009393] text-white">
-        +
-      </button>
+      <h4 className="mb-1 max-w-full truncate font-openSans text-sm font-semibold text-black">
+        {title}
+      </h4>
+      <p className="mb-1 text-sm font-semibold text-[#5C5C5C]">Price {price}</p>
+      <div className="flex items-center gap-2">
+        <img src="images/Rating_Icon_Green.png" alt="Rating" />
+        <span className="font-roboto text-sm font-medium text-[#00E0C6]">
+          {rating}
+        </span>
+        <button
+          onClick={() => addToCart({ title, price, id, image: imgSrc })}
+          className="ml-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-[#009393] text-white"
+        >
+          +
+        </button>
+      </div>
     </div>
-  </div>
+  );
 
   // <div className="relative w-64 rounded-xl bg-white/20 p-4 shadow-lg shadow-black/20 backdrop-blur-lg">
   //   <img
@@ -61,11 +76,9 @@ const ProductCard = ({
   //   {/* Left Blur Effect */}
   //   <div className="absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-black/30 to-transparent" />
   // </div>
-);
+};
 
 export default ProductCard;
-
-import React from "react";
 
 // interface ProductCardProps {
 //   imgSrc: string;

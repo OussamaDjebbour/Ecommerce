@@ -683,7 +683,7 @@
 import { useRef, useMemo, memo, useEffect } from "react";
 import ProductCard from "../ui/ProductCard";
 import FilterButtons from "../ui/FilterButtons";
-import { useSearchStore } from "../../context/useSearchStore";
+import { useSearchStore } from "../../store/searchStore";
 import { useSearchProducts } from "../../hooks/useSearchProducts";
 import { useGridItems } from "../../hooks/useGridItems";
 import Spinner from "../ui/Spinner";
@@ -696,13 +696,18 @@ const MemoizedProductCard = memo(ProductCard);
 const MemoizedFilterButtons = memo(FilterButtons);
 
 const ProductPage = () => {
+  // const searchQuery = useSearchStore((state) => state.searchQuery);
+  // const currentPage = useSearchStore((state) => state.currentPage);
+  // const itemsPerPage = useSearchStore((state) => state.itemsPerPage);
+  // const setCurrentPage = useSearchStore((state) => state.setCurrentPage);
+  // const selectedCategory = useSearchStore((state) => state.selectedCategory);
   const {
     searchQuery,
     currentPage,
     itemsPerPage,
-    setItemsPerPage,
     setCurrentPage,
     selectedCategory,
+    setItemsPerPage,
   } = useSearchStore();
 
   const { filteredProducts, isLoading, error } = useSearchProducts();
@@ -768,6 +773,7 @@ const ProductPage = () => {
         {paginatedProducts.map((product) => (
           <MemoizedProductCard
             key={product.id}
+            id={product.id}
             imgSrc={product.thumbnail}
             title={product.title}
             price={product.price}

@@ -17,8 +17,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import SwiperSlider from "./components/ui/SwiperSlider";
 import { SearchProvider, useSearchContext } from "./context/useSearchContext";
 import ProductPage from "./components/features/ProductPage";
-import { useSearchStore } from "./context/useSearchStore";
 import { useSearchProducts } from "./hooks/useSearchProducts";
+import { useSearchStore } from "./store/searchStore";
 
 // Create a new QueryClient
 const queryClient = new QueryClient({
@@ -188,7 +188,11 @@ function App() {
   // console.log("searchQuery", searchQuery);
   // console.log("suggestions", suggestions);
 
-  const { isSearching } = useSearchStore();
+  const isSearching = useSearchStore((state) => state.isSearching);
+
+  // const { isSearching } = useSearchStore();
+
+  console.log("isSearchingisSearchingisSearching", isSearching);
 
   useEffect(() => {
     // console.log(`Count: ${count}`);
