@@ -768,7 +768,7 @@ const ProductPage = () => {
 
       <div
         ref={gridRef}
-        className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-4"
+        className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-6"
       >
         {paginatedProducts.map((product) => (
           <MemoizedProductCard

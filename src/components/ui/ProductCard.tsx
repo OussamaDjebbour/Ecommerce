@@ -35,7 +35,10 @@ const ProductCard = ({
       {/* White gradient overlay - only on the last card */}
       {/* <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/90"></div> */}
 
-      <h4 className="mb-1 max-w-full truncate font-openSans text-sm font-semibold text-black">
+      <h4
+        title={title}
+        className="mb-1 max-w-full truncate font-openSans text-sm font-semibold text-black"
+      >
         {title}
       </h4>
       <p className="mb-1 text-sm font-semibold text-[#5C5C5C]">Price {price}</p>

@@ -137,6 +137,7 @@ import { getDailyDealsProducts } from "../../services/getDailyDealsProducts";
 import ProductWithDailyDeal from "./ProductWithDailyDeal";
 import { Product } from "src/types";
 import SkeletonProduct from "./SkeletonProduct";
+import Spinner from "./Spinner";
 
 function DailyDeals() {
   const {
@@ -171,7 +172,6 @@ function DailyDeals() {
           </span>
         </button>
       </div>
-
       {/* Skeleton Loader */}
       {isLoading && (
         <>
@@ -180,7 +180,6 @@ function DailyDeals() {
           ))}
         </>
       )}
-
       {/* Render Data when Available */}
       {!isLoading &&
         dailyDealsProducts?.map((product: Product) => (

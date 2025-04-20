@@ -75,6 +75,7 @@ const SearchBar = () => {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         placeholder="Search products..."
+        aria-label="Search products"
       />
 
       <img

@@ -19,6 +19,8 @@ import { SearchProvider, useSearchContext } from "./context/useSearchContext";
 import ProductPage from "./components/features/ProductPage";
 import { useSearchProducts } from "./hooks/useSearchProducts";
 import { useSearchStore } from "./store/searchStore";
+import CartPage from "./components/features/CartPage";
+import CheckoutPage from "./components/features/CheckoutPage";
 
 // Create a new QueryClient
 const queryClient = new QueryClient({
@@ -239,6 +241,8 @@ function App() {
         {/* <Main /> */}
         {/* {products?.length > 0 ? <ProductPage /> : <Main />} */}
         {!isSearching ? <Main /> : <ProductPage />}
+        {/* <CartPage /> */}
+        {/* <CheckoutPage /> */}
         {/* {products?.length > 0 && <ProductPage />} */}
         {/* <ProductPage /> */}
         {!isSearching && (

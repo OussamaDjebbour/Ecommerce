@@ -189,6 +189,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import Spinner from "../ui/Spinner";
 
 // import { Swiper, SwiperSlide } from "swiper/react";
 // import "swiper/css";
@@ -210,7 +211,7 @@ import { Navigation } from "swiper/modules";
 // import { Navigation } from "swiper/modules";
 
 function Main() {
-  const { data } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["products"],
     queryFn: getHighlyRatedProducts,
   });
@@ -227,11 +228,9 @@ function Main() {
   return (
     <main className="col-span-1 row-span-1 mb-4">
       <MainProduct />
-
       {/* Scrollable Product List */}
       {/* <div className="relative mb-4 flex w-[48.25rem] gap-7 overflow-x-hidden"> */}
       {/* Swiper Slider */}
-
       {/* <Swiper
 
           modules={[Navigation]}
@@ -267,7 +266,6 @@ function Main() {
           ))}
 
         </Swiper> */}
-
       {/* <Swiper
         modules={[Navigation]}
         slidesPerView={"auto"} // Show 3 full slides + 0.5 of the next
@@ -306,7 +304,11 @@ function Main() {
           </button>
         </div>
       </Swiper> */}
-
+      {isLoading && <Spinner />}
+      {isError && (
+        <p className="text-center text-red-500">Error fetching products.</p>
+      )}
+      {/* (isError) && <h1>Something went wrong</h1>; */}
       <Swiper
         modules={[Navigation]}
         slidesPerView={"auto"}
@@ -346,7 +348,6 @@ function Main() {
           </SwiperSlide>
         ))}
       </Swiper>
-
       {/* Render Products */}
       {/* {data?.map((product: Product, index: number) => (
         <ProductCard
@@ -358,7 +359,6 @@ function Main() {
         />
       ))} */}
       {/* </div> */}
-
       {/* Explore Categories */}
       <div className="mb-8 flex items-center gap-6">
         <h3 className="font-roboto text-2xl font-semibold text-[#016170]">
@@ -369,7 +369,6 @@ function Main() {
           <FontAwesomeIcon icon={faArrowRight} />
         </button>
       </div>
-
       {/* Split Content Cards */}
       <div className="flex gap-9">
         <SplitContentCard

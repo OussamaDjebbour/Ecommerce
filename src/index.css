@@ -1,3 +1,17 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+.cart-dropdown .custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.cart-dropdown .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #14b8a6;
+  border-radius: 9999px;
+}
+.cart-dropdown .custom-scrollbar::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+.cart-dropdown .custom-scrollbar {
+  scroll-behavior: smooth;
+}
