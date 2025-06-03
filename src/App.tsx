@@ -21,6 +21,7 @@ import { useSearchProducts } from "./hooks/useSearchProducts";
 import { useSearchStore } from "./store/searchStore";
 import CartPage from "./components/features/CartPage";
 import CheckoutPage from "./components/features/CheckoutPage";
+import { ToastContainer } from "react-toastify";
 
 // Create a new QueryClient
 const queryClient = new QueryClient({
@@ -189,6 +190,11 @@ function App() {
 
   // console.log("searchQuery", searchQuery);
   // console.log("suggestions", suggestions);
+  const [isMainProductLoaded, setIsMainProductLoaded] = useState(false);
+
+  function handleLoad() {
+    setIsMainProductLoaded(true);
+  }
 
   const isSearching = useSearchStore((state) => state.isSearching);
 
@@ -240,7 +246,12 @@ function App() {
         {/* <SwiperSlider /> */}
         {/* <Main /> */}
         {/* {products?.length > 0 ? <ProductPage /> : <Main />} */}
-        {!isSearching ? <Main /> : <ProductPage />}
+        {!isSearching ? (
+          <Main isMainProductLoaded={isMainProductLoaded} onLoad={handleLoad} />
+        ) : (
+          <ProductPage />
+        )}
+        {/* {<ProductPage />} */}
         {/* <CartPage /> */}
         {/* <CheckoutPage /> */}
         {/* {products?.length > 0 && <ProductPage />} */}
@@ -249,12 +260,13 @@ function App() {
           <div className="col-span-1 row-span-1">
             <HeadphonesAd />
 
-            <DailyDeals />
+            <DailyDeals isMainProductLoaded={isMainProductLoaded} />
           </div>
         )}
         {/* <PopularCategories /> */}
         {/* <SummerPromo /> */}
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
       <ReactQueryDevtools initialIsOpen={false} />
     </>
     //  </SearchProvider>

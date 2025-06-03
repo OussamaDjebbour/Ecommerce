@@ -1,4 +1,14 @@
+import { toast } from "react-toastify";
 import { useCartStore } from "../../store/cartStore";
+
+interface ProductCardProps {
+  id: number;
+  imgSrc: string;
+  title: string;
+  price: number;
+  rating: number;
+  stock: number;
+}
 
 const ProductCard = ({
   id,
@@ -6,19 +16,35 @@ const ProductCard = ({
   title,
   price,
   rating,
-}: {
-  id: number;
-  imgSrc: string;
-  title: string;
-  price: number;
-  rating: number;
-}) => {
+  stock,
+}: ProductCardProps) => {
   const addToCart = useCartStore((state) => state.addToCart);
   const cart = useCartStore((state) => state.cart);
 
-  console.log("Cartttttttttttt", cart);
+  const isFull = cart.some(
+    (item) => item.id === id && item.quantity === item.stock,
+  );
 
-  console.log("Hi Thereeeeeee");
+  console.log("isFull", isFull);
+
+  const handleAddToCart = () => {
+    const result = addToCart({
+      title,
+      price,
+      id,
+      image: imgSrc,
+      quantity: 1,
+      stock: stock,
+    });
+
+    const message = result.success ? result.message : result.message;
+    toast[result.success ? "success" : "error"](message);
+  };
+
+  // console.log("Cartttttttttttt", cart);
+
+  // console.log("Hi Thereeeeeee");
+
   // <div className="min-w-48 flex-1 rounded-xl bg-white/30 px-2.5 pb-2.5 pt-2.5 shadow-md backdrop-blur-3xl">
   // <div className="min-w-48 flex-1 rounded-xl bg-white px-2.5 pb-2.5 pt-2.5 shadow-md">
   return (
@@ -48,8 +74,21 @@ const ProductCard = ({
           {rating}
         </span>
         <button
-          onClick={() => addToCart({ title, price, id, image: imgSrc })}
-          className="ml-auto flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-[#009393] text-white"
+          className={`ml-auto flex h-7 w-7 items-center justify-center rounded-full bg-[#009393] text-white hover:bg-[#00E0C6] ${
+            isFull && "cursor-not-allowed opacity-50"
+          }`}
+          onClick={handleAddToCart}
+          // disabled={isFull}
+          // onClick={() =>
+          // addToCart({
+          //   title,
+          //   price,
+          //   id,
+          //   image: imgSrc,
+          //   quantity: 1,
+          //   stock: stock,
+          // })
+          // }
         >
           +
         </button>

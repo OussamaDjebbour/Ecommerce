@@ -18,7 +18,7 @@ function HeaderIconsGroup() {
       if (e.key === "Escape" && isCartOpen) {
         setIsCartOpen(false);
       }
-      cartButtonRef.current?.focus(); // Return focus to cart button
+      // cartButtonRef.current?.focus(); // Return focus to cart button
     };
 
     document.addEventListener("keydown", handleEscape);

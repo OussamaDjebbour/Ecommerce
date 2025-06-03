@@ -190,6 +190,8 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import Spinner from "../ui/Spinner";
+import ErrorMessage from "../ui/ErrorMessage";
+import LoadingSpinner from "../ui/LoadingSpinner";
 
 // import { Swiper, SwiperSlide } from "swiper/react";
 // import "swiper/css";
@@ -210,10 +212,16 @@ import Spinner from "../ui/Spinner";
 
 // import { Navigation } from "swiper/modules";
 
-function Main() {
-  const { data, isLoading, isError } = useQuery({
+interface MainProps {
+  isMainProductLoaded: boolean;
+  onLoad: () => void;
+}
+
+function Main({ isMainProductLoaded, onLoad }: MainProps) {
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["products"],
     queryFn: getHighlyRatedProducts,
+    enabled: isMainProductLoaded, // Only fetch after MainProduct loads
   });
 
   const filteredData = data?.filter(
@@ -227,7 +235,7 @@ function Main() {
 
   return (
     <main className="col-span-1 row-span-1 mb-4">
-      <MainProduct />
+      <MainProduct onLoad={onLoad} />
       {/* Scrollable Product List */}
       {/* <div className="relative mb-4 flex w-[48.25rem] gap-7 overflow-x-hidden"> */}
       {/* Swiper Slider */}
@@ -305,8 +313,10 @@ function Main() {
         </div>
       </Swiper> */}
       {isLoading && <Spinner />}
+      {/* {isLoading && <LoadingSpinner />} */}
       {isError && (
-        <p className="text-center text-red-500">Error fetching products.</p>
+        // <p className="text-center text-red-500">Error fetching products.</p>
+        <ErrorMessage message={error.message} />
       )}
       {/* (isError) && <h1>Something went wrong</h1>; */}
       <Swiper
@@ -344,6 +354,7 @@ function Main() {
               title={product.title}
               price={product.price}
               rating={product.rating}
+              stock={product.stock}
             />
           </SwiperSlide>
         ))}

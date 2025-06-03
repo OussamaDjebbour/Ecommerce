@@ -18,3 +18,20 @@ export interface ProductWithDailyDealProps {
   nbrOfReviews: number;
   nbrOfProductsInStock: number;
 }
+
+export interface SearchResponse {
+  products: Product[];
+  total: number;
+}
+
+export interface ProductState {
+  quantity: number;
+  basePrice: number;
+  currentImage: string;
+}
+
+export type ProductAction =
+  | { type: "SET_PRICE"; payload: number }
+  | { type: "SET_IMAGE"; payload: string }
+  | { type: "SET_QUANTITY"; payload: number }
+  | { type: "RESET"; payload: Partial<ProductState> };

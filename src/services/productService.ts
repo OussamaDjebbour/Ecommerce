@@ -1,11 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "../constants";
-import { Product } from "src/types";
-
-interface SearchResponse {
-  products: Product[];
-  total: number;
-}
+import { SearchResponse } from "src/types";
 
 export const productService = {
   async searchProducts(

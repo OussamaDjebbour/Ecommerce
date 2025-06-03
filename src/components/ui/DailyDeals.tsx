@@ -138,8 +138,13 @@ import ProductWithDailyDeal from "./ProductWithDailyDeal";
 import { Product } from "src/types";
 import SkeletonProduct from "./SkeletonProduct";
 import Spinner from "./Spinner";
+import ErrorMessage from "./ErrorMessage";
 
-function DailyDeals() {
+interface DailyDealsProps {
+  isMainProductLoaded: boolean;
+}
+
+function DailyDeals({ isMainProductLoaded }: DailyDealsProps) {
   const {
     data: dailyDealsProducts,
     isLoading,
@@ -147,31 +152,36 @@ function DailyDeals() {
   } = useQuery({
     queryKey: ["dailyDealsProducts"],
     queryFn: getDailyDealsProducts,
+    enabled: isMainProductLoaded, // Only fetch after MainProduct loads
   });
 
   console.log("dailyDealsProducts", dailyDealsProducts);
 
   if (error)
     return (
-      <p className="text-center text-red-500">Failed to load daily deals.</p>
+      // <p className="text-center text-red-500">Failed to load daily deals.</p>
+      <ErrorMessage message={error.message} />
     );
 
   return (
+    // !isLoading && (
     <div className="ml-8">
-      <div className="mb-7 flex items-center justify-between">
-        <h3 className="font-roboto text-2xl font-semibold text-[#016170]">
-          Daily Deals
-        </h3>
-        <button
-          className="text-sm font-medium text-[#5C5C5C]"
-          aria-label="View all daily deals"
-        >
-          View all
-          <span className="ml-2">
-            <FontAwesomeIcon icon={faArrowRight} />
-          </span>
-        </button>
-      </div>
+      {dailyDealsProducts && (
+        <div className="mb-7 flex items-center justify-between">
+          <h3 className="font-roboto text-2xl font-semibold text-[#016170]">
+            Daily Deals
+          </h3>
+          <button
+            className="text-sm font-medium text-[#5C5C5C]"
+            aria-label="View all daily deals"
+          >
+            View all
+            <span className="ml-2">
+              <FontAwesomeIcon icon={faArrowRight} />
+            </span>
+          </button>
+        </div>
+      )}
       {/* Skeleton Loader */}
       {isLoading && (
         <>
@@ -181,20 +191,21 @@ function DailyDeals() {
         </>
       )}
       {/* Render Data when Available */}
-      {!isLoading &&
-        dailyDealsProducts?.map((product: Product) => (
-          <ProductWithDailyDeal
-            key={product.id}
-            // image={product.images[0]}
-            image={product.thumbnail}
-            title={product.title}
-            price={product.price}
-            nbrOfReviews={product.reviews?.length || 0} // Avoids potential undefined error
-            nbrOfProductsInStock={product.stock}
-          />
-        ))}
+
+      {dailyDealsProducts?.map((product: Product) => (
+        <ProductWithDailyDeal
+          key={product.id}
+          // image={product.images[0]}
+          image={product.thumbnail}
+          title={product.title}
+          price={product.price}
+          nbrOfReviews={product.reviews?.length || 0} // Avoids potential undefined error
+          nbrOfProductsInStock={product.stock}
+        />
+      ))}
     </div>
   );
+  // );
 }
 
 export default DailyDeals;

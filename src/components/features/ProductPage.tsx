@@ -688,6 +688,7 @@ import { useSearchProducts } from "../../hooks/useSearchProducts";
 import { useGridItems } from "../../hooks/useGridItems";
 import Spinner from "../ui/Spinner";
 import NoResults from "../ui/NoResults";
+import ErrorMessage from "../ui/ErrorMessage";
 
 // Memoize ProductCard to prevent unnecessary re-renders
 const MemoizedProductCard = memo(ProductCard);
@@ -750,7 +751,8 @@ const ProductPage = () => {
       </div>
     );
 
-  if (error) return <p>Error fetching products.</p>;
+  // if (error) return <p>Error fetching products.</p>;
+  if (error) return <ErrorMessage message={error.message} />;
 
   console.log(
     "filteredProductsfilteredProductsfilteredProductsfilteredProducts",
