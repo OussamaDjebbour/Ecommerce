@@ -195,16 +195,17 @@
 
 // export default FilterButtons;
 
-import { Fragment, useMemo, useState } from "react";
-import { Listbox, Transition, Dialog } from "@headlessui/react";
-import { useSearchProducts } from "../../hooks/useSearchProducts";
-import { useSearchStore } from "../../context/useSearchStore";
-import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
-import { getUniqueCategories } from "../../helpers/getUniqueCategories";
-import PriceInputs from "./PriceInputs";
-import MinPriceInput from "./MinPriceInput";
-import MaxPriceInput from "./MaxPriceInput";
-import PriceFilter from "./PriceFilter";
+// import { Fragment, useMemo, useState } from "react";
+// import { Listbox, Transition, Dialog } from "@headlessui/react";
+// import { useSearchProducts } from "../../hooks/useSearchProducts";
+// import { useSearchStore } from "../../context/useSearchStore";
+// import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
+// import { getUniqueCategories } from "../../helpers/getUniqueCategories";
+// import PriceInputs from "./PriceInputs";
+// import MinPriceInput from "./MinPriceInput";
+// import MaxPriceInput from "./MaxPriceInput";
+// import PriceFilter from "./PriceFilter";
+// import useSearchParams from "src/hooks/useSearchParams";
 
 // function FilterButtons() {
 //   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
@@ -759,9 +760,23 @@ import PriceFilter from "./PriceFilter";
 
 // export default FilterButtons;
 
+import { Fragment, useMemo, useState } from "react";
+import { Listbox, Transition, Dialog } from "@headlessui/react";
+import { useSearchProducts } from "../../hooks/useSearchProducts";
+import { useSearchStore } from "../../context/useSearchStore";
+import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
+import { getUniqueCategories } from "../../helpers/getUniqueCategories";
+import PriceInputs from "./PriceInputs";
+import MinPriceInput from "./MinPriceInput";
+import MaxPriceInput from "./MaxPriceInput";
+import PriceFilter from "./PriceFilter";
+import useSearchParams from "../../hooks/useSearchParams";
+
 function FilterButtons() {
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
-  const { selectedCategory, setSelectedCategory } = useSearchStore();
+  // const { selectedCategory, setSelectedCategory } = useSearchStore();
+  const { selectedCategory, setSelectedCategory } = useSearchParams();
+
   const { products } = useSearchProducts();
 
   const categories = useMemo(() => getUniqueCategories(products), [products]);

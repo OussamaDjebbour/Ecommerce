@@ -183,7 +183,7 @@ import {
   getHighlyRatedProducts,
   getNewestProducts,
 } from "../../services/getDailyDealsProducts";
-import { LayoutContextType, Product } from "src/types";
+import { Product } from "src/types";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -192,7 +192,6 @@ import { Navigation } from "swiper/modules";
 import Spinner from "../ui/Spinner";
 import ErrorMessage from "../ui/ErrorMessage";
 import LoadingSpinner from "../ui/LoadingSpinner";
-import { useOutletContext } from "react-router-dom";
 
 // import { Swiper, SwiperSlide } from "swiper/react";
 // import "swiper/css";
@@ -213,15 +212,12 @@ import { useOutletContext } from "react-router-dom";
 
 // import { Navigation } from "swiper/modules";
 
-// interface MainProps {
-//   isMainProductLoaded: boolean;
-//   onLoad: () => void;
-// }
+interface MainProps {
+  isMainProductLoaded: boolean;
+  onLoad: () => void;
+}
 
-function Main() {
-  const { isMainProductLoaded, setIsMainProductLoaded } =
-    useOutletContext<LayoutContextType>();
-
+function Main({ isMainProductLoaded, onLoad }: MainProps) {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["products"],
     queryFn: getHighlyRatedProducts,
@@ -237,13 +233,9 @@ function Main() {
   );
   console.log("new", data, filteredData);
 
-  function handleLoad() {
-    setIsMainProductLoaded(true);
-  }
-
   return (
     <main className="col-span-1 row-span-1 mb-4">
-      <MainProduct onLoad={handleLoad} />
+      <MainProduct onLoad={onLoad} />
       {/* Scrollable Product List */}
       {/* <div className="relative mb-4 flex w-[48.25rem] gap-7 overflow-x-hidden"> */}
       {/* Swiper Slider */}
@@ -334,7 +326,7 @@ function Main() {
         navigation={{ nextEl: ".next", prevEl: ".prev" }}
         pagination={{ clickable: true }}
         loop={true}
-        autoplay={{ delay: 3000 }}
+        autoplay={{ delay: 1000 }}
         className="relative mb-4 w-[48.25rem]"
         style={{ padding: "1.5rem 0rem 2.5rem" }}
       >

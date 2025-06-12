@@ -35,3 +35,8 @@ export type ProductAction =
   | { type: "SET_IMAGE"; payload: string }
   | { type: "SET_QUANTITY"; payload: number }
   | { type: "RESET"; payload: Partial<ProductState> };
+
+export interface LayoutContextType {
+  isMainProductLoaded: boolean;
+  setIsMainProductLoaded: React.Dispatch<React.SetStateAction<boolean>>;
+}

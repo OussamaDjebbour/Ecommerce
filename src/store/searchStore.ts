@@ -1,7 +1,10 @@
+import { set } from "react-hook-form";
 import debounce from "lodash.debounce";
+import { Product } from "src/types";
 import { create } from "zustand";
 
 interface SearchState {
+  searchResults: Product[];
   isSearching: boolean;
   searchQuery: string;
   debouncedQuery: string;
@@ -11,6 +14,7 @@ interface SearchState {
   minPrice: number; // Separate state for min price
   maxPrice: number; // Separate state for max price
 
+  setSearchResults: (results: Product[]) => void;
   setIsSearching: (isSearching: boolean) => void;
   setSearchQuery: (query: string) => void;
   setCurrentPage: (page: number) => void;
@@ -27,6 +31,7 @@ export const useSearchStore = create<SearchState>((set) => {
   }, 700);
 
   return {
+    searchResults: [],
     isSearching: false,
     searchQuery: "",
     debouncedQuery: "",
@@ -36,8 +41,10 @@ export const useSearchStore = create<SearchState>((set) => {
     minPrice: 0, // Default min price
     maxPrice: 10000, // Default max price
 
+    setSearchResults: (results: Product[]) => set({ searchResults: results }),
     setIsSearching: (isSearching: boolean) => set({ isSearching }),
     setSearchQuery: (query) => {
+      // if (query)
       set({ searchQuery: query, currentPage: 1, selectedCategory: "" });
       debouncedSetQuery(query);
     },

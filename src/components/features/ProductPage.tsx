@@ -680,54 +680,178 @@
 
 // export default ProductPage;
 
-import { useRef, useMemo, memo, useEffect } from "react";
+// import { useRef, useMemo, memo, useEffect } from "react";
+// import ProductCard from "../ui/ProductCard";
+// import FilterButtons from "../ui/FilterButtons";
+// import { useSearchStore } from "../../store/searchStore";
+// import { useSearchProducts } from "../../hooks/useSearchProducts";
+// import { useGridItems } from "../../hooks/useGridItems";
+// import Spinner from "../ui/Spinner";
+// import NoResults from "../ui/NoResults";
+// import ErrorMessage from "../ui/ErrorMessage";
+
+// // Memoize ProductCard to prevent unnecessary re-renders
+// const MemoizedProductCard = memo(ProductCard);
+
+// // Memoize FilterButtons if it doesn't depend on frequently changing props
+// const MemoizedFilterButtons = memo(FilterButtons);
+
+// const ProductPage = () => {
+//   // const searchQuery = useSearchStore((state) => state.searchQuery);
+//   // const currentPage = useSearchStore((state) => state.currentPage);
+//   // const itemsPerPage = useSearchStore((state) => state.itemsPerPage);
+//   // const setCurrentPage = useSearchStore((state) => state.setCurrentPage);
+//   // const selectedCategory = useSearchStore((state) => state.selectedCategory);
+//   const {
+//     searchQuery,
+//     currentPage,
+//     itemsPerPage,
+//     setCurrentPage,
+//     selectedCategory,
+//     setItemsPerPage,
+//   } = useSearchStore();
+
+//   const { filteredProducts, isLoading, error } = useSearchProducts();
+//   const gridRef = useRef<HTMLDivElement>(null);
+
+//   // Apply the grid items hook
+//   useGridItems(gridRef);
+
+//   // Log when itemsPerPage changes to help with debugging
+//   useEffect(() => {
+//     console.log("Items per page updated:", itemsPerPage);
+//   }, [itemsPerPage]);
+
+//   // Memoize pagination calculations
+//   const { paginatedProducts, totalPages, paginationButtons } = useMemo<{
+//     paginatedProducts: typeof filteredProducts;
+//     totalPages: number;
+//     paginationButtons: number[];
+//   }>(() => {
+//     const total = Math.ceil(filteredProducts?.length / itemsPerPage);
+//     const startIndex = (currentPage - 1) * itemsPerPage;
+//     const paginated = filteredProducts.slice(
+//       startIndex,
+//       startIndex + itemsPerPage,
+//     );
+
+//     const paginationButtons = Array.from({ length: total }, (_, i) => i + 1);
+
+//     return {
+//       paginatedProducts: paginated,
+//       totalPages: total,
+//       paginationButtons: paginationButtons,
+//     };
+//   }, [filteredProducts, currentPage, itemsPerPage]);
+
+//   if (isLoading)
+//     return (
+//       <div className="col-span-2 row-span-1">
+//         <Spinner />
+//       </div>
+//     );
+
+//   // if (error) return <p>Error fetching products.</p>;
+//   if (error) return <ErrorMessage message={error.message} />;
+
+//   console.log(
+//     "filteredProductsfilteredProductsfilteredProductsfilteredProducts",
+//     filteredProducts,
+//   );
+
+//   return filteredProducts.length > 0 ? (
+//     <div className="col-span-2 row-span-1">
+//       <MemoizedFilterButtons />
+
+//       <h2 className="mb-4 text-lg font-semibold">
+//         Results for "{searchQuery}"
+//         {selectedCategory && ` in ${selectedCategory}`}
+//       </h2>
+
+//       <div
+//         ref={gridRef}
+//         className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-6"
+//       >
+//         {paginatedProducts.map((product) => (
+//           <MemoizedProductCard
+//             key={product.id}
+//             id={product.id}
+//             imgSrc={product.thumbnail}
+//             title={product.title}
+//             price={product.price}
+//             rating={product.rating}
+//             stock={product.stock}
+//           />
+//         ))}
+//       </div>
+
+//       {totalPages > 1 && (
+//         <div className="mt-8 flex justify-center gap-2">
+//           <button
+//             onClick={() => setCurrentPage(currentPage - 1)}
+//             disabled={currentPage === 1}
+//             className="rounded border px-3 py-1 disabled:opacity-50"
+//           >
+//             Previous
+//           </button>
+
+//           {paginationButtons.map((page) => (
+//             <button
+//               key={page}
+//               onClick={() => setCurrentPage(page)}
+//               className={`rounded border px-3 py-1 ${
+//                 currentPage === page ? "bg-blue-500 text-white" : ""
+//               }`}
+//             >
+//               {page}
+//             </button>
+//           ))}
+
+//           <button
+//             onClick={() => setCurrentPage(currentPage + 1)}
+//             disabled={currentPage === totalPages}
+//             className="rounded border px-3 py-1 disabled:opacity-50"
+//           >
+//             Next
+//           </button>
+//         </div>
+//       )}
+//     </div>
+//   ) : (
+//     <NoResults searchQuery={searchQuery} selectedCategory={selectedCategory} />
+//   );
+// };
+
+// export default ProductPage;
+
+import { useRef, useMemo, memo } from "react";
 import ProductCard from "../ui/ProductCard";
 import FilterButtons from "../ui/FilterButtons";
-import { useSearchStore } from "../../store/searchStore";
+import { useSearchParams } from "../../hooks/useSearchParams";
 import { useSearchProducts } from "../../hooks/useSearchProducts";
 import { useGridItems } from "../../hooks/useGridItems";
 import Spinner from "../ui/Spinner";
 import NoResults from "../ui/NoResults";
 import ErrorMessage from "../ui/ErrorMessage";
+import { useSearchStore } from "../../store/searchStore";
 
-// Memoize ProductCard to prevent unnecessary re-renders
 const MemoizedProductCard = memo(ProductCard);
-
-// Memoize FilterButtons if it doesn't depend on frequently changing props
 const MemoizedFilterButtons = memo(FilterButtons);
 
 const ProductPage = () => {
-  // const searchQuery = useSearchStore((state) => state.searchQuery);
-  // const currentPage = useSearchStore((state) => state.currentPage);
-  // const itemsPerPage = useSearchStore((state) => state.itemsPerPage);
-  // const setCurrentPage = useSearchStore((state) => state.setCurrentPage);
-  // const selectedCategory = useSearchStore((state) => state.selectedCategory);
-  const {
-    searchQuery,
-    currentPage,
-    itemsPerPage,
-    setCurrentPage,
-    selectedCategory,
-    setItemsPerPage,
-  } = useSearchStore();
+  const { searchQuery, currentPage, selectedCategory, setCurrentPage } =
+    useSearchParams();
 
   const { filteredProducts, isLoading, error } = useSearchProducts();
   const gridRef = useRef<HTMLDivElement>(null);
 
-  // Apply the grid items hook
+  const { itemsPerPage } = useSearchStore();
+
   useGridItems(gridRef);
 
-  // Log when itemsPerPage changes to help with debugging
-  useEffect(() => {
-    console.log("Items per page updated:", itemsPerPage);
-  }, [itemsPerPage]);
+  // const itemsPerPage = 12; // You can make this configurable via URL params too
 
-  // Memoize pagination calculations
-  const { paginatedProducts, totalPages, paginationButtons } = useMemo<{
-    paginatedProducts: typeof filteredProducts;
-    totalPages: number;
-    paginationButtons: number[];
-  }>(() => {
+  const { paginatedProducts, totalPages, paginationButtons } = useMemo(() => {
     const total = Math.ceil(filteredProducts?.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginated = filteredProducts.slice(
@@ -735,90 +859,276 @@ const ProductPage = () => {
       startIndex + itemsPerPage,
     );
 
-    const paginationButtons = Array.from({ length: total }, (_, i) => i + 1);
-
     return {
       paginatedProducts: paginated,
       totalPages: total,
-      paginationButtons: paginationButtons,
+      paginationButtons: Array.from({ length: total }, (_, i) => i + 1),
     };
   }, [filteredProducts, currentPage, itemsPerPage]);
 
-  if (isLoading)
-    return (
-      <div className="col-span-2 row-span-1">
-        <Spinner />;
-      </div>
-    );
+  // if (isLoading) {
+  //   return (
+  //     <div className="col-span-2 row-span-1">
+  //       <Spinner />
+  //     </div>
+  //   );
+  // }
 
-  // if (error) return <p>Error fetching products.</p>;
   if (error) return <ErrorMessage message={error.message} />;
 
-  console.log(
-    "filteredProductsfilteredProductsfilteredProductsfilteredProducts",
-    filteredProducts,
-  );
-
-  return filteredProducts.length > 0 ? (
+  return (
     <div className="col-span-2 row-span-1">
       <MemoizedFilterButtons />
+      {isLoading ? (
+        <Spinner />
+      ) : filteredProducts.length > 0 ? (
+        <>
+          <h2 className="mb-4 text-lg font-semibold">
+            Results for "{searchQuery}"
+            {selectedCategory && ` in ${selectedCategory}`}
+          </h2>
 
-      <h2 className="mb-4 text-lg font-semibold">
-        Results for "{searchQuery}"
-        {selectedCategory && ` in ${selectedCategory}`}
-      </h2>
-
-      <div
-        ref={gridRef}
-        className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-6"
-      >
-        {paginatedProducts.map((product) => (
-          <MemoizedProductCard
-            key={product.id}
-            id={product.id}
-            imgSrc={product.thumbnail}
-            title={product.title}
-            price={product.price}
-            rating={product.rating}
-          />
-        ))}
-      </div>
-
-      {totalPages > 1 && (
-        <div className="mt-8 flex justify-center gap-2">
-          <button
-            onClick={() => setCurrentPage(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="rounded border px-3 py-1 disabled:opacity-50"
+          <div
+            ref={gridRef}
+            className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-6"
           >
-            Previous
-          </button>
+            {paginatedProducts.map((product) => (
+              <MemoizedProductCard
+                key={product.id}
+                id={product.id}
+                imgSrc={product.thumbnail}
+                title={product.title}
+                price={product.price}
+                rating={product.rating}
+                stock={product.stock}
+              />
+            ))}
+          </div>
 
-          {paginationButtons.map((page) => (
-            <button
-              key={page}
-              onClick={() => setCurrentPage(page)}
-              className={`rounded border px-3 py-1 ${
-                currentPage === page ? "bg-blue-500 text-white" : ""
-              }`}
-            >
-              {page}
-            </button>
-          ))}
+          {totalPages > 1 && (
+            <div className="mt-8 flex justify-center gap-2">
+              <button
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="rounded border px-3 py-1 disabled:opacity-50"
+              >
+                Previous
+              </button>
 
-          <button
-            onClick={() => setCurrentPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="rounded border px-3 py-1 disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
+              {paginationButtons.map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`rounded border px-3 py-1 ${
+                    currentPage === page ? "bg-blue-500 text-white" : ""
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+
+              <button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="rounded border px-3 py-1 disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        <NoResults
+          searchQuery={searchQuery}
+          selectedCategory={selectedCategory}
+        />
       )}
     </div>
-  ) : (
-    <NoResults searchQuery={searchQuery} selectedCategory={selectedCategory} />
   );
+  //  : (
+  //   <NoResults searchQuery={searchQuery} selectedCategory={selectedCategory} />
+  // );
+  // return filteredProducts.length > 0 ? (
+  //   <div className="col-span-2 row-span-1">
+  //     <MemoizedFilterButtons />
+  //     {
+  //       // isLoading ? (
+  //       //   <Spinner />
+  //       // ) : (
+  //       <>
+  //         <h2 className="mb-4 text-lg font-semibold">
+  //           Results for "{searchQuery}"
+  //           {selectedCategory && ` in ${selectedCategory}`}
+  //         </h2>
+
+  //         <div
+  //           ref={gridRef}
+  //           className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-6"
+  //         >
+  //           {paginatedProducts.map((product) => (
+  //             <MemoizedProductCard
+  //               key={product.id}
+  //               id={product.id}
+  //               imgSrc={product.thumbnail}
+  //               title={product.title}
+  //               price={product.price}
+  //               rating={product.rating}
+  //               stock={product.stock}
+  //             />
+  //           ))}
+  //         </div>
+
+  //         {totalPages > 1 && (
+  //           <div className="mt-8 flex justify-center gap-2">
+  //             <button
+  //               onClick={() => setCurrentPage(currentPage - 1)}
+  //               disabled={currentPage === 1}
+  //               className="rounded border px-3 py-1 disabled:opacity-50"
+  //             >
+  //               Previous
+  //             </button>
+
+  //             {paginationButtons.map((page) => (
+  //               <button
+  //                 key={page}
+  //                 onClick={() => setCurrentPage(page)}
+  //                 className={`rounded border px-3 py-1 ${
+  //                   currentPage === page ? "bg-blue-500 text-white" : ""
+  //                 }`}
+  //               >
+  //                 {page}
+  //               </button>
+  //             ))}
+
+  //             <button
+  //               onClick={() => setCurrentPage(currentPage + 1)}
+  //               disabled={currentPage === totalPages}
+  //               className="rounded border px-3 py-1 disabled:opacity-50"
+  //             >
+  //               Next
+  //             </button>
+  //           </div>
+  //         )}
+  //       </>
+  //     }
+  //   </div>
+  // ) : (
+  //   <NoResults searchQuery={searchQuery} selectedCategory={selectedCategory} />
+  // );
 };
 
 export default ProductPage;
+
+// import { useRef, useMemo, memo } from "react";
+// import ProductCard from "../ui/ProductCard";
+// import FilterButtons from "../ui/FilterButtons";
+// import { useSearchParams } from "../../hooks/useSearchParams";
+// import { useSearchProducts } from "../../hooks/useSearchProducts";
+// import { useGridItems } from "../../hooks/useGridItems";
+// import Spinner from "../ui/Spinner";
+// import NoResults from "../ui/NoResults";
+// import ErrorMessage from "../ui/ErrorMessage";
+
+// const MemoizedProductCard = memo(ProductCard);
+// const MemoizedFilterButtons = memo(FilterButtons);
+
+// const ProductPage = () => {
+//   const { searchQuery, currentPage, selectedCategory, setCurrentPage } =
+//     useSearchParams();
+
+//   const { filteredProducts, isLoading, error } = useSearchProducts();
+//   const gridRef = useRef<HTMLDivElement>(null);
+
+//   useGridItems(gridRef);
+
+//   const itemsPerPage = 12; // You can make this configurable via URL params too
+
+//   const { paginatedProducts, totalPages, paginationButtons } = useMemo(() => {
+//     const total = Math.ceil(filteredProducts?.length / itemsPerPage);
+//     const startIndex = (currentPage - 1) * itemsPerPage;
+//     const paginated = filteredProducts.slice(
+//       startIndex,
+//       startIndex + itemsPerPage,
+//     );
+
+//     return {
+//       paginatedProducts: paginated,
+//       totalPages: total,
+//       paginationButtons: Array.from({ length: total }, (_, i) => i + 1),
+//     };
+//   }, [filteredProducts, currentPage]);
+
+//   if (isLoading) {
+//     return (
+//       <div className="col-span-2 row-span-1">
+//         <Spinner />
+//       </div>
+//     );
+//   }
+
+//   if (error) return <ErrorMessage message={error.message} />;
+
+//   return filteredProducts.length > 0 ? (
+//     <div className="col-span-2 row-span-1">
+//       <MemoizedFilterButtons />
+
+//       <h2 className="mb-4 text-lg font-semibold">
+//         Results for "{searchQuery}"
+//         {selectedCategory && ` in ${selectedCategory}`}
+//       </h2>
+
+//       <div
+//         ref={gridRef}
+//         className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-6"
+//       >
+//         {paginatedProducts.map((product) => (
+//           <MemoizedProductCard
+//             key={product.id}
+//             id={product.id}
+//             imgSrc={product.thumbnail}
+//             title={product.title}
+//             price={product.price}
+//             rating={product.rating}
+//             stock={product.stock}
+//           />
+//         ))}
+//       </div>
+
+//       {totalPages > 1 && (
+//         <div className="mt-8 flex justify-center gap-2">
+//           <button
+//             onClick={() => setCurrentPage(currentPage - 1)}
+//             disabled={currentPage === 1}
+//             className="rounded border px-3 py-1 disabled:opacity-50"
+//           >
+//             Previous
+//           </button>
+
+//           {paginationButtons.map((page) => (
+//             <button
+//               key={page}
+//               onClick={() => setCurrentPage(page)}
+//               className={`rounded border px-3 py-1 ${
+//                 currentPage === page ? "bg-blue-500 text-white" : ""
+//               }`}
+//             >
+//               {page}
+//             </button>
+//           ))}
+
+//           <button
+//             onClick={() => setCurrentPage(currentPage + 1)}
+//             disabled={currentPage === totalPages}
+//             className="rounded border px-3 py-1 disabled:opacity-50"
+//           >
+//             Next
+//           </button>
+//         </div>
+//       )}
+//     </div>
+//   ) : (
+//     <NoResults searchQuery={searchQuery} selectedCategory={selectedCategory} />
+//   );
+// };
+
+// export default ProductPage;
