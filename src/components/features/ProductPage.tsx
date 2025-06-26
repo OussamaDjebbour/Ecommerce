@@ -874,6 +874,8 @@ const ProductPage = () => {
   //   );
   // }
 
+  console.log("searchQuerysearchQuerysearchQuery", searchQuery);
+
   if (error) return <ErrorMessage message={error.message} />;
 
   return (

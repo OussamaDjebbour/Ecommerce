@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useCartStore } from "../../store/cartStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import CartDropdown from "./CartDropdown";
+import CartDropdown from "./CartDropdown copy";
+// import CartDropdown from "./CartDropdown";
 
 function HeaderIconsGroup() {
   const [isCartOpen, setIsCartOpen] = useState(false); // State to toggle the dropdown
@@ -13,18 +14,18 @@ function HeaderIconsGroup() {
 
   // Close dropdown when pressing Escape key
 
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isCartOpen) {
-        setIsCartOpen(false);
-      }
-      // cartButtonRef.current?.focus(); // Return focus to cart button
-    };
+  // useEffect(() => {
+  //   const handleEscape = (e: KeyboardEvent) => {
+  //     if (e.key === "Escape" && isCartOpen) {
+  //       setIsCartOpen(false);
+  //     }
+  //     // cartButtonRef.current?.focus(); // Return focus to cart button
+  //   };
 
-    document.addEventListener("keydown", handleEscape);
+  //   document.addEventListener("keydown", handleEscape);
 
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isCartOpen]);
+  //   return () => document.removeEventListener("keydown", handleEscape);
+  // }, [isCartOpen]);
 
   return (
     <div className="flex items-center gap-5">

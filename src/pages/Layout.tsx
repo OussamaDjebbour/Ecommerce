@@ -13,7 +13,13 @@ export default function Layout() {
   const location = useLocation();
 
   // Check if we're on the ProductPage route
-  const isOnProductPage = location.pathname.includes("productPage");
+  const isOnProductPage =
+    location.pathname.includes("productPage") ||
+    location.pathname.includes("cart") ||
+    location.pathname.includes("checkout");
+
+  // Check if we're on the base route
+  const isOnBaseRoute = location.pathname.includes("/");
 
   // const { debouncedQuery, isSearching } = useSearchStore();
 
@@ -27,7 +33,7 @@ export default function Layout() {
   // }, [debouncedQuery, navigate]);
 
   return (
-    <div className="mx-auto grid min-h-screen max-w-screen-2xl grid-cols-[auto_1fr_22.875rem] grid-rows-[auto_1fr] gap-y-6 overflow-hidden bg-[#FAFAFA] pr-6 font-bold">
+    <div className="relative mx-auto grid min-h-screen max-w-screen-2xl grid-cols-[auto_1fr_22.875rem] grid-rows-[auto_1fr] gap-y-6 overflow-hidden bg-[#FAFAFA] pr-6 font-bold">
       <Header />
       <Sidebar />
       <Outlet context={{ isMainProductLoaded, setIsMainProductLoaded }} />

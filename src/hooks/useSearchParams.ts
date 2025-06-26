@@ -291,12 +291,393 @@
 
 // export default useSearchParams;
 
+// import {
+//   useSearchParams as useRouterSearchParams,
+//   useNavigate,
+// } from "react-router-dom";
+// import { useMemo, useCallback } from "react";
+// import debounce from "lodash.debounce";
+
+// export const useSearchParams = () => {
+//   const [searchParams, setSearchParams] = useRouterSearchParams();
+//   const navigate = useNavigate();
+
+//   // Get current values from URL
+//   const searchQuery = searchParams.get("q") || "";
+//   const selectedCategory = searchParams.get("category") || "";
+//   const minPrice = Number(searchParams.get("minPrice")) || 0;
+//   const maxPrice = Number(searchParams.get("maxPrice")) || 10000;
+//   const currentPage = Number(searchParams.get("page")) || 1;
+
+//   // Helper function to create consistent URL with all search-related params
+//   const createSearchUrl = useCallback(
+//     (params: {
+//       query?: string;
+//       category?: string;
+//       minPrice?: number;
+//       maxPrice?: number;
+//       page?: number;
+//     }) => {
+//       const newParams = new URLSearchParams();
+
+//       // Always maintain consistent order: q, category, minPrice, maxPrice, page
+//       const query = params.query ?? searchQuery;
+//       const category = params.category ?? selectedCategory;
+//       const min = params.minPrice ?? minPrice;
+//       const max = params.maxPrice ?? maxPrice;
+//       const page = params.page ?? currentPage;
+
+//       // Only add query if it exists (required for search)
+//       if (query.trim()) {
+//         newParams.set("q", query);
+//       }
+
+//       // Always show all filter params when on ProductPage for consistency
+//       if (category) {
+//         newParams.set("category", category);
+//       }
+
+//       if (min > 0) {
+//         newParams.set("minPrice", String(min));
+//       }
+
+//       if (max < 10000) {
+//         newParams.set("maxPrice", String(max));
+//       }
+
+//       // Always show page parameter when on ProductPage
+//       newParams.set("page", String(page));
+
+//       return newParams;
+//     },
+//     [searchQuery, selectedCategory, minPrice, maxPrice, currentPage],
+//   );
+
+//   // Debounced function to update filter params
+//   const debouncedUpdateParams = useMemo(
+//     () =>
+//       debounce((params: Record<string, string | number>) => {
+//         const newParams = createSearchUrl(params);
+//         setSearchParams(newParams);
+//       }, 700),
+//     [createSearchUrl, setSearchParams],
+//   );
+
+//   // Update search query - navigate to ProductPage if not already there
+//   const setSearchQuery = useCallback(
+//     (query: string) => {
+//       if (query.trim()) {
+//         // Always reset to page 1 when searching
+//         const newParams = createSearchUrl({
+//           query,
+//           page: 1,
+//         });
+
+//         // Navigate to product page if not already there
+//         if (!window.location.pathname.includes("productPage")) {
+//           navigate(`/productPage?${newParams.toString()}`);
+//         } else {
+//           setSearchParams(newParams);
+//         }
+//       }
+//     },
+//     [createSearchUrl, navigate, setSearchParams],
+//   );
+
+//   // Clear search query only (keep user on ProductPage with filters intact)
+//   const clearSearchQuery = useCallback(() => {
+//     const newParams = createSearchUrl({
+//       query: "",
+//       page: 1,
+//     });
+
+//     // If no query and no active filters, go back to home
+//     if (!selectedCategory && minPrice === 0 && maxPrice === 10000) {
+//       // navigate("/");
+//       // if (window.location.pathname.includes("/")) return;
+//       // else navigate("/");
+//       // if (window.location.pathname.includes("/")) {
+//       //   navigate("/");
+//       // }
+//       if (window.location.pathname !== "/") navigate("/");
+//       else return;
+//     } else {
+//       setSearchParams(newParams);
+//     }
+//   }, [
+//     createSearchUrl,
+//     setSearchParams,
+//     navigate,
+//     selectedCategory,
+//     minPrice,
+//     maxPrice,
+//   ]);
+
+//   // Clear all search and filters - go back to home
+//   const clearAll = useCallback(() => {
+//     setSearchParams(new URLSearchParams());
+//     if (window.location.pathname.includes("productPage")) {
+//       navigate("/");
+//     }
+//   }, [setSearchParams, navigate]);
+
+//   // Update other filters
+//   const setSelectedCategory = useCallback(
+//     (category: string) => {
+//       const newParams = createSearchUrl({
+//         category,
+//         page: 1,
+//       });
+//       setSearchParams(newParams);
+//     },
+//     [createSearchUrl, setSearchParams],
+//   );
+
+//   const setMinPrice = useCallback(
+//     (min: number) => {
+//       const newParams = createSearchUrl({
+//         minPrice: min,
+//         page: 1,
+//       });
+//       setSearchParams(newParams);
+//     },
+//     [createSearchUrl, setSearchParams],
+//   );
+
+//   const setMaxPrice = useCallback(
+//     (max: number) => {
+//       const newParams = createSearchUrl({
+//         maxPrice: max,
+//         page: 1,
+//       });
+//       setSearchParams(newParams);
+//     },
+//     [createSearchUrl, setSearchParams],
+//   );
+
+//   const setCurrentPage = useCallback(
+//     (page: number) => {
+//       const newParams = createSearchUrl({ page });
+//       setSearchParams(newParams);
+//     },
+//     [createSearchUrl, setSearchParams],
+//   );
+
+//   return {
+//     // Current values
+//     searchQuery,
+//     selectedCategory,
+//     minPrice,
+//     maxPrice,
+//     currentPage,
+
+//     // Setters
+//     setSearchQuery,
+//     setSelectedCategory,
+//     setMinPrice,
+//     setMaxPrice,
+//     setCurrentPage,
+//     clearSearchQuery,
+//     clearAll,
+
+//     // Derived values
+//     hasActiveSearch: !!searchQuery,
+//     hasActiveFilters: !!(selectedCategory || minPrice > 0 || maxPrice < 10000),
+//   };
+// };
+
+// export default useSearchParams;
+
+// import {
+//   useSearchParams as useRouterSearchParams,
+//   useNavigate,
+// } from "react-router-dom";
+// import { useCallback } from "react";
+// import { MAX_PRICE, MIN_PRICE } from "../constants";
+
+// export const useSearchParams = () => {
+//   const [searchParams, setSearchParams] = useRouterSearchParams();
+//   const navigate = useNavigate();
+
+//   // Get current values from URL
+//   const searchQuery = searchParams.get("q") || "";
+//   const selectedCategory = searchParams.get("category") || "";
+//   const minPrice = Number(searchParams.get("minPrice")) || MIN_PRICE;
+//   const maxPrice = Number(searchParams.get("maxPrice")) || MAX_PRICE;
+//   const currentPage = Number(searchParams.get("page")) || 1;
+
+//   // Helper function to create consistent URL with all search-related params
+//   const createSearchUrl = useCallback(
+//     (params: {
+//       query?: string;
+//       category?: string;
+//       minPrice?: number;
+//       maxPrice?: number;
+//       page?: number;
+//     }) => {
+//       const newParams = new URLSearchParams();
+
+//       // Always maintain consistent order: q, category, minPrice, maxPrice, page
+//       const query = params.query ?? searchQuery;
+//       const category = params.category ?? selectedCategory;
+//       const min = params.minPrice ?? minPrice;
+//       const max = params.maxPrice ?? maxPrice;
+//       const page = params.page ?? currentPage;
+
+//       // Only add query if it exists (required for search)
+//       if (query.trim()) {
+//         newParams.set("q", query);
+//       }
+
+//       // Always show all filter params when on ProductPage for consistency
+//       if (category) {
+//         newParams.set("category", category);
+//       }
+
+//       if (min > MIN_PRICE) {
+//         newParams.set("minPrice", String(min));
+//       }
+
+//       if (max < MAX_PRICE) {
+//         newParams.set("maxPrice", String(max));
+//       }
+
+//       // Always show page parameter when on ProductPage
+//       newParams.set("page", String(page));
+
+//       return newParams;
+//     },
+//     [searchQuery, selectedCategory, minPrice, maxPrice, currentPage],
+//   );
+
+//   // Update search query - navigate to ProductPage if not already there
+//   const setSearchQuery = useCallback(
+//     (query: string) => {
+//       if (query.trim()) {
+//         // Always reset to page 1 when searching
+//         const newParams = createSearchUrl({
+//           query,
+//           page: 1,
+//         });
+
+//         // Navigate to product page if not already there
+//         if (!window.location.pathname.includes("productPage")) {
+//           navigate(`/productPage?${newParams.toString()}`);
+//         } else {
+//           setSearchParams(newParams);
+//         }
+//       }
+//     },
+//     [createSearchUrl, navigate, setSearchParams],
+//   );
+
+//   // Clear search query only (keep user on ProductPage with filters intact)
+//   const clearSearchQuery = useCallback(() => {
+//     const newParams = createSearchUrl({
+//       query: "",
+//       page: 1,
+//     });
+
+//     // If no query and no active filters, go back to home
+//     if (!selectedCategory && minPrice === MIN_PRICE && maxPrice === MAX_PRICE) {
+//       if (window.location.pathname !== "/") navigate("/");
+//       else return;
+//     } else {
+//       setSearchParams(newParams);
+//     }
+//   }, [
+//     createSearchUrl,
+//     setSearchParams,
+//     navigate,
+//     selectedCategory,
+//     minPrice,
+//     maxPrice,
+//   ]);
+
+//   // Clear all search and filters - go back to home
+//   const clearAll = useCallback(() => {
+//     setSearchParams(new URLSearchParams());
+//     if (window.location.pathname.includes("productPage")) {
+//       navigate("/");
+//     }
+//   }, [setSearchParams, navigate]);
+
+//   // Update other filters - immediate updates (no debouncing needed for dropdowns/buttons)
+//   const setSelectedCategory = useCallback(
+//     (category: string) => {
+//       const newParams = createSearchUrl({
+//         category,
+//         page: 1,
+//       });
+//       setSearchParams(newParams);
+//     },
+//     [createSearchUrl, setSearchParams],
+//   );
+
+//   const setMinPrice = useCallback(
+//     (min: number) => {
+//       const newParams = createSearchUrl({
+//         minPrice: min,
+//         page: 1,
+//       });
+//       setSearchParams(newParams);
+//     },
+//     [createSearchUrl, setSearchParams],
+//   );
+
+//   const setMaxPrice = useCallback(
+//     (max: number) => {
+//       const newParams = createSearchUrl({
+//         maxPrice: max,
+//         page: 1,
+//       });
+//       setSearchParams(newParams);
+//     },
+//     [createSearchUrl, setSearchParams],
+//   );
+
+//   const setCurrentPage = useCallback(
+//     (page: number) => {
+//       const newParams = createSearchUrl({ page });
+//       setSearchParams(newParams);
+//     },
+//     [createSearchUrl, setSearchParams],
+//   );
+
+//   return {
+//     // Current values
+//     searchQuery,
+//     selectedCategory,
+//     minPrice,
+//     maxPrice,
+//     currentPage,
+
+//     // Setters
+//     setSearchQuery,
+//     setSelectedCategory,
+//     setMinPrice,
+//     setMaxPrice,
+//     setCurrentPage,
+//     clearSearchQuery,
+//     clearAll,
+
+//     // Derived values
+//     hasActiveSearch: !!searchQuery,
+//     hasActiveFilters: !!(
+//       selectedCategory ||
+//       minPrice > MIN_PRICE ||
+//       maxPrice < MAX_PRICE
+//     ),
+//   };
+// };
+
+// export default useSearchParams;
+
 import {
   useSearchParams as useRouterSearchParams,
   useNavigate,
 } from "react-router-dom";
-import { useMemo, useCallback } from "react";
-import debounce from "lodash.debounce";
+import { useCallback } from "react";
 
 export const useSearchParams = () => {
   const [searchParams, setSearchParams] = useRouterSearchParams();
@@ -353,16 +734,6 @@ export const useSearchParams = () => {
     [searchQuery, selectedCategory, minPrice, maxPrice, currentPage],
   );
 
-  // Debounced function to update filter params
-  const debouncedUpdateParams = useMemo(
-    () =>
-      debounce((params: Record<string, string | number>) => {
-        const newParams = createSearchUrl(params);
-        setSearchParams(newParams);
-      }, 700),
-    [createSearchUrl, setSearchParams],
-  );
-
   // Update search query - navigate to ProductPage if not already there
   const setSearchQuery = useCallback(
     (query: string) => {
@@ -393,7 +764,8 @@ export const useSearchParams = () => {
 
     // If no query and no active filters, go back to home
     if (!selectedCategory && minPrice === 0 && maxPrice === 10000) {
-      navigate("/");
+      if (window.location.pathname !== "/") navigate("/");
+      else return;
     } else {
       setSearchParams(newParams);
     }
@@ -414,7 +786,24 @@ export const useSearchParams = () => {
     }
   }, [setSearchParams, navigate]);
 
-  // Update other filters
+  // NEW: Clear all filters but keep search query
+  const clearAllFilters = useCallback(() => {
+    const newParams = createSearchUrl({
+      category: "",
+      minPrice: 0,
+      maxPrice: 10000,
+      page: 1,
+    });
+
+    // If no search query after clearing filters, go home
+    if (!searchQuery.trim()) {
+      navigate("/");
+    } else {
+      setSearchParams(newParams);
+    }
+  }, [createSearchUrl, setSearchParams, navigate, searchQuery]);
+
+  // Update other filters - immediate updates (no debouncing needed for dropdowns/buttons)
   const setSelectedCategory = useCallback(
     (category: string) => {
       const newParams = createSearchUrl({
@@ -472,6 +861,7 @@ export const useSearchParams = () => {
     setCurrentPage,
     clearSearchQuery,
     clearAll,
+    clearAllFilters, // NEW: Clear only filters, keep search
 
     // Derived values
     hasActiveSearch: !!searchQuery,

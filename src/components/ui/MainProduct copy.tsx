@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ColorRadioButtons from "./ColorRadioButtons";
 import ColorPicker from "./ColorPicker";
-import ProductQuantity from "./ProductQuantity";
+import ProductQuantity from "./MainProductQuantity";
 
 function MainProduct() {
   const colors = [

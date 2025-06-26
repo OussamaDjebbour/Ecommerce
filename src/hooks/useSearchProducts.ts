@@ -130,6 +130,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../services/productService";
 import { useSearchParams } from "./useSearchParams";
+import { useEffect, useMemo } from "react";
 
 export const useSearchProducts = () => {
   const { searchQuery, selectedCategory, minPrice, maxPrice } =
@@ -140,18 +141,25 @@ export const useSearchProducts = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["products", searchQuery, selectedCategory, minPrice, maxPrice],
+    queryKey: ["products", searchQuery],
+    // queryKey: ["products", searchQuery, selectedCategory, minPrice, maxPrice],
     queryFn: () => productService.searchProducts(searchQuery),
     enabled: !!searchQuery && searchQuery.trim().length > 0,
   });
 
   // Filter products based on category and price range
-  const filteredProducts = response.products.filter(
-    (product) =>
-      (!selectedCategory || product.category === selectedCategory) &&
-      product.price >= minPrice &&
-      product.price <= maxPrice,
+  const filteredProducts = useMemo(
+    () =>
+      response.products.filter(
+        (product) =>
+          (!selectedCategory || product.category === selectedCategory) &&
+          product.price >= minPrice &&
+          product.price <= maxPrice,
+      ),
+    [response.products, selectedCategory, minPrice, maxPrice],
   );
+
+  console.log("filteredSuggestions reference:", filteredProducts);
 
   return {
     products: response.products,

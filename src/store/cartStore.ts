@@ -1,16 +1,6 @@
+import { AddToCartResult, CartItem } from "src/types";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-interface CartItem {
-  id: number;
-  // id: string;
-  title: string;
-  price: number;
-  quantity: number;
-  image?: string;
-  stock: number;
-}
-
-type AddToCartResult = { success: boolean; message: string };
 
 interface CartState {
   // quantity: number;
@@ -21,7 +11,8 @@ interface CartState {
   removeFromCart: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
   clearCart: () => void;
-  getCartTotal: () => number;
+  getCartTotalPrice: () => number;
+  getCartTotalItems: () => number;
 }
 
 export const useCartStore = create<CartState>()(
@@ -61,7 +52,8 @@ export const useCartStore = create<CartState>()(
 
         return {
           success: true,
-          message: `${item.quantity} ${item.quantity === 1 ? "item" : "items"}  Added to cart successfully!`,
+          message: `${item.quantity}x ${item.title}  Added to cart`,
+          // message: `${item.quantity} ${item.quantity === 1 ? "item" : "items"}  Added to cart successfully!`,
         };
       },
 
@@ -131,12 +123,16 @@ export const useCartStore = create<CartState>()(
       clearCart: () => {
         set({ cart: [] });
       },
-      getCartTotal: () => {
+      getCartTotalPrice: () => {
         const cart = get().cart;
         return cart.reduce(
           (total, item) => total + item.price * item.quantity,
           0,
         );
+      },
+      getCartTotalItems: () => {
+        const cart = get().cart;
+        return cart.reduce((total, item) => total + item.quantity, 0);
       },
     }),
     {

@@ -222,7 +222,7 @@ interface ProductQuantityProps {
   isMax: boolean;
 }
 
-function ProductQuantity({
+function MainProductQuantity({
   quantity,
   increment,
   decrement,
@@ -250,4 +250,4 @@ function ProductQuantity({
   );
 }
 
-export default ProductQuantity;
+export default MainProductQuantity;

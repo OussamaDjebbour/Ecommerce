@@ -777,7 +777,7 @@ function FilterButtons() {
   // const { selectedCategory, setSelectedCategory } = useSearchStore();
   const { selectedCategory, setSelectedCategory } = useSearchParams();
 
-  const { products } = useSearchProducts();
+  const { products } = useSearchProducts(); // I need to use the data directly without ro refetch it
 
   const categories = useMemo(() => getUniqueCategories(products), [products]);
 

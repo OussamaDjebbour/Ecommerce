@@ -3,13 +3,11 @@ import { BASE_URL } from "../constants";
 // import { SearchResponse } from "src/types";
 
 export const fetchMainProduct = async () => {
-  // try {
-  //   const response = await axios.get<SearchResponse>(
-  //     `${BASE_URL}/products/search?q=${query}&limit=30`,
-  //   );
-
   try {
-    const response = await axios.get(`${BASE_URL}/products/15`);
+    const response = await axios.get(
+      // `${BASE_URL}/products/${Math.floor(Math.random() * 100)}`,
+      `${BASE_URL}/products/79`,
+    );
 
     // setIsSearching(true);
     return response.data;

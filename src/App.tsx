@@ -39,7 +39,35 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppRouter />
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        className="mt-16"
+        // toastClassName="!bg-transparent !shadow-none !border-none !p-0 !m-1"
+        // bodyClassName="!p-0 !m-0"
+        closeButton={false}
+        icon={false}
+      />
+      {/* <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        // toastStyle={{
+        //   // backgroundColor: "black",
+        //   // color: "white",
+        //   fontSize: "14px",
+        //   // fontFamily: "Poppins",
+        //   fontWeight: "600",
+        //   // padding: "10px",
+        // }}
+      /> */}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
