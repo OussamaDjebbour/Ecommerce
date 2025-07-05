@@ -42,7 +42,7 @@ interface FormData {
   cardName: string;
 }
 
-const Checkout: React.FC<CheckoutProps> = ({ product, onBack }) => {
+const CheckoutPage: React.FC<CheckoutProps> = ({ product, onBack }) => {
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -670,4 +670,4 @@ const Checkout: React.FC<CheckoutProps> = ({ product, onBack }) => {
   );
 };
 
-export default Checkout;
+export default CheckoutPage;

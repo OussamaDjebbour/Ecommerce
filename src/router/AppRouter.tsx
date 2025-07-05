@@ -4,9 +4,10 @@ import ErrorPage from "../pages/ErrorPage";
 import Main from "../components/features/Main";
 import Layout from "../pages/Layout";
 import ProductPage from "../components/features/ProductPage";
-import CheckoutPage from "../components/features/CheckoutPage";
+// import CheckoutPage from "../components/features/CheckoutPage";
 // import CartPage from "../components/features/CartPage";
 import CartPage from "../pages/CartPage";
+import CheckoutPage from "../pages/CheckoutPage";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,11 @@ const router = createBrowserRouter([
       },
       {
         path: "checkout",
-        element: <CheckoutPage />,
+        element: (
+          <CheckoutPage
+            product={{ id: 1, title: "test", price: 1, image: "", quantity: 1 }}
+          />
+        ),
       },
       {
         path: "cart",

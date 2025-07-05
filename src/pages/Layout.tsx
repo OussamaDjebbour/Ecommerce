@@ -36,6 +36,7 @@ export default function Layout() {
     <div className="relative mx-auto grid min-h-screen max-w-screen-2xl grid-cols-[auto_1fr_22.875rem] grid-rows-[auto_1fr] gap-y-6 overflow-hidden bg-[#FAFAFA] pr-6 font-bold">
       <Header />
       <Sidebar />
+      {/* <div></div> */}
       <Outlet context={{ isMainProductLoaded, setIsMainProductLoaded }} />
       {/* <Main /> */}
 

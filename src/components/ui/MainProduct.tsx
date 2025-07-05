@@ -709,12 +709,298 @@
 
 // export default MainProduct;
 
+// import { useEffect, useMemo, useReducer } from "react";
+// import { useQuery } from "@tanstack/react-query";
+// import { fetchMainProduct } from "../../services/fetchMainProduct";
+// import Spinner from "./Spinner";
+// import { ProductAction, ProductState } from "../../types";
+// import { useQuantity } from "../../hooks/useQuantity";
+// import { useCartStore } from "../../store/cartStore";
+// import ErrorMessage from "./ErrorMessage";
+// import {
+//   showAddToCartToast,
+//   showMaxStockToast,
+//   showWarningToast,
+// } from "../../helpers/toastHelpers";
+// import MainProductQuantity from "./MainProductQuantity";
+// import { useNavigate } from "react-router-dom";
+
+// interface MainProductProps {
+//   onLoad: () => void;
+// }
+
+// const initialState: ProductState = {
+//   id: 0,
+//   quantity: 1,
+//   basePrice: 0,
+//   currentImage: "",
+// };
+
+// const productReducer = (
+//   state: ProductState,
+//   action: ProductAction,
+// ): ProductState => {
+//   switch (action.type) {
+//     case "SET_ID":
+//       return { ...state, id: action.payload };
+//     case "SET_PRICE":
+//       return { ...state, basePrice: action.payload };
+//     case "SET_IMAGE":
+//       return { ...state, currentImage: action.payload };
+//     case "SET_QUANTITY":
+//       return { ...state, quantity: action.payload };
+//     case "RESET":
+//       return { ...initialState, ...action.payload };
+//     default:
+//       return state;
+//   }
+// };
+
+// function MainProduct({ onLoad }: MainProductProps) {
+//   const [mainProductState, dispatch] = useReducer(productReducer, initialState);
+
+//   const addToCart = useCartStore((state) => state.addToCart);
+//   const cart = useCartStore((state) => state.cart);
+//   const quantityInCart =
+//     cart.find((item) => item.id === mainProductState.id)?.quantity || 0;
+
+//   const {
+//     data: mainProduct,
+//     isLoading,
+//     isSuccess,
+//     isError,
+//     error,
+//   } = useQuery({
+//     queryKey: ["mainProduct"],
+//     queryFn: fetchMainProduct,
+//     staleTime: 1000 * 1,
+//   });
+
+//   const navigate = useNavigate();
+
+//   const handleBuyNow = () => {
+//     navigate("/checkout", {
+//       state: {
+//         mode: "buy-now",
+//         mainProductState,
+//       },
+//     });
+//   };
+
+//   console.log("mainProductState", mainProductState);
+
+//   // Initialize price and image when mainProduct changes
+//   useEffect(() => {
+//     if (!mainProduct) return;
+
+//     dispatch({ type: "SET_ID", payload: mainProduct.id });
+
+//     if (mainProduct.price && mainProduct.price > 0) {
+//       dispatch({ type: "SET_PRICE", payload: mainProduct.price });
+//     }
+//     if (mainProduct.images?.[0] && !mainProductState.currentImage) {
+//       dispatch({ type: "SET_IMAGE", payload: mainProduct.images[0] });
+//     }
+//   }, [mainProduct, mainProductState.currentImage]);
+
+//   useEffect(() => {
+//     if (isSuccess) {
+//       onLoad();
+//     }
+//   }, [isSuccess, onLoad]);
+
+//   // Memoize total price
+//   const totalPrice = useMemo(
+//     () => mainProductState.basePrice * mainProductState.quantity,
+//     [mainProductState.basePrice, mainProductState.quantity],
+//   );
+
+//   // Use custom quantity hook with callback to update mainProductState
+//   const { quantity, increment, decrement, isMin, isMax } = useQuantity(
+//     mainProductState.quantity,
+//     mainProduct?.stock ?? 0,
+//     (newQuantity) => dispatch({ type: "SET_QUANTITY", payload: newQuantity }),
+//   );
+
+//   // const quantityInCart =
+//   //   cart?.find((item) => item?.id === mainProduct.id)?.quantity || 0;
+
+//   const isFull = cart.some(
+//     (item) =>
+//       item.id === mainProduct?.id && item.quantity + quantity > item.stock,
+//   );
+
+//   console.log(
+//     "isFullisFullisFullisFullisFullisFullisFullisFullisFullisFullisFull",
+//     isFull,
+//     quantity,
+//     mainProduct?.stock,
+//   );
+
+//   const handleAddToCart = () => {
+//     if (!mainProduct) return;
+
+//     const result = addToCart({
+//       ...mainProduct,
+//       image: mainProductState.currentImage,
+//       quantity,
+//     });
+
+//     if (quantityInCart + quantity <= mainProduct.stock) {
+//       showAddToCartToast(
+//         result.success,
+//         result.message,
+//         mainProduct.title,
+//         mainProductState.currentImage,
+//         quantity,
+//       );
+//     } else if (quantityInCart >= mainProduct.stock) {
+//       showMaxStockToast(mainProduct.title);
+//     } else if (quantityInCart + quantity > mainProduct.stock) {
+//       showWarningToast(result.message);
+//     }
+
+//     // Create custom toast content
+//     // const customToastContent = (
+//     //   <CustomToast
+//     //     success={result.success}
+//     //     message={result.message}
+//     //     productImage={
+//     //       result.success
+//     //         ? mainProductState.currentImage || mainProduct.thumbnail
+//     //         : undefined
+//     //     }
+//     //     productTitle={mainProduct.title}
+//     //     quantity={quantity}
+//     //     // quantity={result.success ? quantity : undefined}
+//     //   />
+//     // );
+
+//     // if (result.success) {
+//     //   toast.success(customToastContent, {
+//     //     className: "bg-white shadow-lg border border-green-200",
+//     //   });
+//     // } else {
+//     //   toast.error(customToastContent, {
+//     //     className: "bg-white shadow-lg border border-red-200",
+//     //   });
+//     // }
+//   };
+
+//   if (mainProduct?.stock <= 0) {
+//     return <ErrorMessage message="This product is currently out of stock." />;
+//   }
+
+//   if (isLoading) return <Spinner />;
+
+//   if (isError) return <ErrorMessage message={error.message} />;
+
+//   return (
+//     <div className="mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
+//       <div className="relative">
+//         <div className="carousel w-full">
+//           <img
+//             src={mainProductState.currentImage || mainProduct?.thumbnail}
+//             alt={mainProduct?.title}
+//             className="min-w-44 max-w-44"
+//           />
+//           <div className="thumbnails mt-2 flex justify-center">
+//             {mainProduct.images?.map((image: string) => (
+//               <button
+//                 key={image}
+//                 onClick={() => dispatch({ type: "SET_IMAGE", payload: image })}
+//                 className={`rounded-md transition-all duration-200 ${
+//                   mainProductState.currentImage === image
+//                     ? "ring-2 ring-[#009393] ring-offset-2"
+//                     : "hover:opacity-75"
+//                 }`}
+//               >
+//                 <img
+//                   src={image}
+//                   alt={mainProduct.title}
+//                   className="mr-2 w-12 cursor-pointer"
+//                 />
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+
+//       <div>
+//         <h3 className="mb-1 text-xl font-medium text-black">
+//           {mainProduct.title}
+//         </h3>
+
+//         <div className="mb-4 flex gap-2">
+//           {[...Array(5)].map((_, index) => (
+//             <svg
+//               key={index}
+//               className={`h-6 w-6 ${
+//                 index < mainProduct.rating ? "text-yellow-400" : "text-gray-300"
+//               }`}
+//               fill="currentColor"
+//               viewBox="0 0 20 20"
+//             >
+//               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+//             </svg>
+//           ))}
+//           <span className="text-sm font-normal text-[#5C5C5C]">
+//             ({Math.round(mainProduct.rating * 100)} Reviews)
+//           </span>
+//         </div>
+
+//         <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
+//           {mainProduct.description}
+//         </p>
+
+//         <p className="mb-[1.125rem] text-lg font-medium text-[#009393]">
+//           Price ${totalPrice.toFixed(2)}
+//         </p>
+
+//         <div className="mb-8 flex justify-between">
+//           <MainProductQuantity
+//             quantity={quantity}
+//             increment={increment}
+//             decrement={decrement}
+//             isMin={isMin}
+//             isMax={isMax}
+//           />
+//           <p className="text-base font-bold text-[#5C5C5C]">
+//             {mainProduct.stock} <span className="font-medium">items left</span>
+//           </p>
+//         </div>
+
+//         <div className="flex gap-5">
+//           <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
+//             <img src="images/fi-sr-heart.png" alt="Heart Icon" />
+//           </button>
+//           <button
+//             className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${
+//               isFull ? "cursor-not-allowed opacity-50" : ""
+//             }`}
+//             onClick={handleAddToCart}
+//           >
+//             Add to cart
+//           </button>
+//           <button
+//             onClick={handleBuyNow}
+//             className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white"
+//           >
+//             Buy now
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default MainProduct;
+
 import { useEffect, useMemo, useReducer } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMainProduct } from "../../services/fetchMainProduct";
 import Spinner from "./Spinner";
 import { ProductAction, ProductState } from "../../types";
-import { useQuantity } from "../../hooks/useQuantity";
 import { useCartStore } from "../../store/cartStore";
 import ErrorMessage from "./ErrorMessage";
 import {
@@ -722,7 +1008,8 @@ import {
   showMaxStockToast,
   showWarningToast,
 } from "../../helpers/toastHelpers";
-import MainProductQuantity from "./MainProductQuantity";
+import QuantityControl from "./QuantityControl";
+import { useNavigate } from "react-router-dom";
 
 interface MainProductProps {
   onLoad: () => void;
@@ -757,11 +1044,9 @@ const productReducer = (
 
 function MainProduct({ onLoad }: MainProductProps) {
   const [mainProductState, dispatch] = useReducer(productReducer, initialState);
-
-  const addToCart = useCartStore((state) => state.addToCart);
   const cart = useCartStore((state) => state.cart);
-  const quantityInCart =
-    cart.find((item) => item.id === mainProductState.id)?.quantity || 0;
+  const { addToCart } = useCartStore();
+  const navigate = useNavigate();
 
   const {
     data: mainProduct,
@@ -775,21 +1060,23 @@ function MainProduct({ onLoad }: MainProductProps) {
     staleTime: 1000 * 1,
   });
 
-  console.log("mainProductState", mainProductState);
+  const isFull = cart.some(
+    (item) =>
+      item.id === mainProduct?.id &&
+      item.quantity + mainProductState.quantity > item.stock,
+  );
 
-  // Initialize price and image when mainProduct changes
   useEffect(() => {
     if (!mainProduct) return;
 
     dispatch({ type: "SET_ID", payload: mainProduct.id });
-
     if (mainProduct.price && mainProduct.price > 0) {
       dispatch({ type: "SET_PRICE", payload: mainProduct.price });
     }
     if (mainProduct.images?.[0] && !mainProductState.currentImage) {
       dispatch({ type: "SET_IMAGE", payload: mainProduct.images[0] });
     }
-  }, [mainProduct, mainProductState.currentImage]);
+  }, [mainProduct]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -797,82 +1084,56 @@ function MainProduct({ onLoad }: MainProductProps) {
     }
   }, [isSuccess, onLoad]);
 
-  // Memoize total price
   const totalPrice = useMemo(
     () => mainProductState.basePrice * mainProductState.quantity,
     [mainProductState.basePrice, mainProductState.quantity],
   );
 
-  // Use custom quantity hook with callback to update mainProductState
-  const { quantity, increment, decrement, isMin, isMax } = useQuantity(
-    mainProductState.quantity,
-    mainProduct?.stock ?? 0,
-    (newQuantity) => dispatch({ type: "SET_QUANTITY", payload: newQuantity }),
-  );
-
-  // const quantityInCart =
-  //   cart?.find((item) => item?.id === mainProduct.id)?.quantity || 0;
-
-  const isFull = cart.some(
-    (item) =>
-      item.id === mainProduct?.id && item.quantity + quantity > item.stock,
-  );
-
-  console.log(
-    "isFullisFullisFullisFullisFullisFullisFullisFullisFullisFullisFull",
-    isFull,
-    quantity,
-    mainProduct?.stock,
-  );
-
   const handleAddToCart = () => {
     if (!mainProduct) return;
 
-    const result = addToCart({
-      ...mainProduct,
-      image: mainProductState.currentImage,
-      quantity,
-    });
+    const quantityInCart =
+      useCartStore.getState().cart.find((item) => item.id === mainProduct.id)
+        ?.quantity || 0;
 
-    if (quantityInCart + quantity <= mainProduct.stock) {
+    if (quantityInCart + mainProductState.quantity <= mainProduct.stock) {
+      const result = addToCart({
+        ...mainProduct,
+        image: mainProductState.currentImage || mainProduct.thumbnail,
+        quantity: mainProductState.quantity,
+      });
       showAddToCartToast(
         result.success,
         result.message,
         mainProduct.title,
-        mainProductState.currentImage,
-        quantity,
+        mainProductState.currentImage || mainProduct.thumbnail,
+        mainProductState.quantity,
       );
     } else if (quantityInCart >= mainProduct.stock) {
       showMaxStockToast(mainProduct.title);
-    } else if (quantityInCart + quantity > mainProduct.stock) {
-      showWarningToast(result.message);
+    } else {
+      showWarningToast(
+        `Only ${mainProduct.stock - quantityInCart} more items available`,
+      );
     }
+  };
 
-    // Create custom toast content
-    // const customToastContent = (
-    //   <CustomToast
-    //     success={result.success}
-    //     message={result.message}
-    //     productImage={
-    //       result.success
-    //         ? mainProductState.currentImage || mainProduct.thumbnail
-    //         : undefined
-    //     }
-    //     productTitle={mainProduct.title}
-    //     quantity={quantity}
-    //     // quantity={result.success ? quantity : undefined}
-    //   />
-    // );
+  const handleBuyNow = () => {
+    if (!mainProduct) return;
 
-    // if (result.success) {
-    //   toast.success(customToastContent, {
-    //     className: "bg-white shadow-lg border border-green-200",
-    //   });
-    // } else {
-    //   toast.error(customToastContent, {
-    //     className: "bg-white shadow-lg border border-red-200",
-    //   });
-    // }
+    navigate("/checkout", {
+      state: {
+        mode: "buy-now",
+        product: {
+          id: mainProduct.id,
+          title: mainProduct.title,
+          price: mainProduct.price,
+          quantity: mainProductState.quantity,
+          image: mainProductState.currentImage || mainProduct.thumbnail,
+          stock: mainProduct.stock,
+        },
+      },
+    });
   };
 
   if (mainProduct?.stock <= 0) {
@@ -918,7 +1179,6 @@ function MainProduct({ onLoad }: MainProductProps) {
         <h3 className="mb-1 text-xl font-medium text-black">
           {mainProduct.title}
         </h3>
-
         <div className="mb-4 flex gap-2">
           {[...Array(5)].map((_, index) => (
             <svg
@@ -930,47 +1190,52 @@ function MainProduct({ onLoad }: MainProductProps) {
               viewBox="0 0 20 20"
             >
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              {/* <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 0 00-1.175 0l-2.8 2.0c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> */}
             </svg>
           ))}
           <span className="text-sm font-normal text-[#5C5C5C]">
             ({Math.round(mainProduct.rating * 100)} Reviews)
           </span>
         </div>
-
         <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
           {mainProduct.description}
         </p>
-
         <p className="mb-[1.125rem] text-lg font-medium text-[#009393]">
           Price ${totalPrice.toFixed(2)}
         </p>
-
         <div className="mb-8 flex justify-between">
-          <MainProductQuantity
-            quantity={quantity}
-            increment={increment}
-            decrement={decrement}
-            isMin={isMin}
-            isMax={isMax}
+          <QuantityControl
+            product={{
+              ...mainProduct,
+              quantity: mainProductState.quantity,
+              image: mainProductState.currentImage || mainProduct.thumbnail,
+            }}
+            mode="buy-now"
+            onUpdateBuyNow={(qty) =>
+              dispatch({ type: "SET_QUANTITY", payload: qty })
+            }
+            // onRemoveBuyNow={() =>
+            //   dispatch({ type: "SET_QUANTITY", payload: 1 })
+            // }
           />
           <p className="text-base font-bold text-[#5C5C5C]">
             {mainProduct.stock} <span className="font-medium">items left</span>
           </p>
         </div>
-
         <div className="flex gap-5">
           <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
             <img src="images/fi-sr-heart.png" alt="Heart Icon" />
           </button>
           <button
-            className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${
-              isFull ? "cursor-not-allowed opacity-50" : ""
-            }`}
+            className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${isFull && "cursor-not-allowed opacity-50"} `}
             onClick={handleAddToCart}
           >
             Add to cart
           </button>
-          <button className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white">
+          <button
+            onClick={handleBuyNow}
+            className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white"
+          >
             Buy now
           </button>
         </div>
@@ -1074,17 +1339,10 @@ export default MainProduct;
 //     (newQuantity) => dispatch({ type: "SET_QUANTITY", payload: newQuantity }),
 //   );
 
-//   const isFull = cart.some(
-//     (item) =>
-//       item.id === mainProduct?.id && item.quantity + quantity > item.stock,
-//   );
-
-//   console.log(
-//     "isFullisFullisFullisFullisFullisFullisFullisFullisFullisFullisFull",
-//     isFull,
-//     quantity,
-//     mainProduct?.stock,
-//   );
+// const isFull = cart.some(
+//   (item) =>
+//     item.id === mainProduct?.id && item.quantity + quantity > item.stock,
+// );
 
 //   const handleAddToCart = () => {
 //     if (!mainProduct) return;
@@ -1171,7 +1429,7 @@ export default MainProduct;
 //               fill="currentColor"
 //               viewBox="0 0 20 20"
 //             >
-//               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+// <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
 //             </svg>
 //           ))}
 //           <span className="text-sm font-normal text-[#5C5C5C]">

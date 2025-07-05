@@ -11,7 +11,7 @@ export interface Product {
   thumbnail: string;
 }
 
-export interface CartItem {
+export interface CartItemType {
   id: number;
   // id: string;
   title: string;
@@ -19,6 +19,7 @@ export interface CartItem {
   quantity: number;
   image: string;
   stock: number;
+  // thumbnail?: string;
 }
 
 export type AddToCartResult = { success: boolean; message: string };
@@ -54,3 +55,29 @@ export interface LayoutContextType {
   isMainProductLoaded: boolean;
   setIsMainProductLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+// export interface CheckoutItem {
+//   id: number;
+//   title: string;
+//   price: number;
+//   quantity: number;
+//   image: string;
+//   stock?: number;
+//   currentImage?: string;
+// }
+
+export interface CheckoutItem {
+  id: number;
+  title: string;
+  price: number;
+  quantity: number;
+  image: string;
+  stock: number;
+}
+
+export interface UseCheckoutProductsResult {
+  items: CheckoutItem[];
+  mode: "buy-now" | "cart";
+}
+
+export type Mode = "cart" | "buy-now";

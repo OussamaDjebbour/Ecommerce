@@ -1,22 +1,13 @@
 import React from "react";
-import {
-  ArrowLeft,
-  ShoppingCart,
-  Trash2,
-  Plus,
-  Minus,
-  Package,
-} from "lucide-react";
+
 import { useCartStore } from "../store/cartStore";
-import {
-  showRemovalCartToast,
-  showRemovalToast,
-} from "../helpers/toastHelpers";
-import { CartItem } from "src/types";
+import { showRemovalToast } from "../helpers/toastHelpers";
+import { CartItemType } from "src/types";
 import CartHeader from "./CartHeader";
 import { useLocation, useNavigate } from "react-router-dom";
 import EmptyCart from "./EmptyCart";
 import Cart from "../components/ui/Cart";
+import { useContinueShopping } from "../hooks/useContinueShopping";
 
 interface CartProps {
   onBack: () => void;
@@ -38,19 +29,21 @@ const CartPage: React.FC<CartProps> = ({ onBack, onCheckout }) => {
     getCartTotalPrice,
   } = useCartStore();
 
-  const location = useLocation();
-  const navigate = useNavigate();
-  const from = location.state?.from;
+  const handleContinueShopping = useContinueShopping();
 
-  const handleContinueShopping = () => {
-    if (from && from !== "/checkout") {
-      navigate(-1);
-    } else {
-      navigate("/"); // fallback route
-    }
-  };
+  // const location = useLocation();
+  // const navigate = useNavigate();
+  // const from = location.state?.from;
 
-  const handleRemoveItem = (item: CartItem) => {
+  // const handleContinueShopping = () => {
+  //   if (from && from !== "/checkout") {
+  //     navigate(-1);
+  //   } else {
+  //     navigate("/"); // fallback route
+  //   }
+  // };
+
+  const handleRemoveItem = (item: CartItemType) => {
     removeFromCart(item.id);
     showRemovalToast(item.title, item.image);
   };
@@ -70,7 +63,7 @@ const CartPage: React.FC<CartProps> = ({ onBack, onCheckout }) => {
     }
   };
 
-  const handleCheckoutItem = (item: CartItem) => {
+  const handleCheckoutItem = (item: CartItemType) => {
     onCheckout({
       id: item.id,
       title: item.title,

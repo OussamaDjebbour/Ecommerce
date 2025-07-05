@@ -631,7 +631,7 @@ import React from "react";
 import { Check, X, AlertTriangle, Trash2 } from "lucide-react";
 
 interface CustomToastProps {
-  type: "success" | "error" | "removal" | "warning";
+  type: "success" | "error" | "removal" | "warning" | "alert";
   message: string;
   productImage?: string;
   productTitle: string;
@@ -669,6 +669,14 @@ export const CustomToast: React.FC<CustomToastProps> = ({
           title: "Stock Warning!",
           borderColor: "border-amber-200",
         };
+      case "alert":
+        return {
+          icon: <AlertTriangle className="h-5 w-5" />,
+          iconBg: "bg-yellow-500",
+          title: "Delete Alert!",
+          borderColor: "border-amber-200",
+        };
+
       case "error":
       default:
         return {

@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useCartStore } from "../../store/cartStore";
-import { CartItem, Product } from "src/types";
+import { CartItemType, Product } from "src/types";
 import { useNavigate } from "react-router-dom";
 import { useClickAway } from "react-use";
 import { toast } from "react-toastify";
 import { X } from "lucide-react";
 import { showRemovalToast } from "../../helpers/toastHelpers";
 import QuantityControl from "./QuantityControl";
+import Item from "./Item";
 
 interface CartDropdownProps {
   onClose: () => void;
@@ -171,6 +172,7 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
               <div className="max-h-80 overflow-y-auto px-6 py-4">
                 <ul ref={dropdownRef} className="space-y-4">
                   {cart.map((product, index) => (
+                    // <Item product={product} index={index} />
                     <li
                       key={product.id}
                       className={`group relative cursor-pointer rounded-lg border border-gray-100 p-3 transition-all duration-200 hover:border-teal-200 hover:bg-teal-50 ${
@@ -272,6 +274,7 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
 
                             <QuantityControl
                               product={product}
+
                               // handleIncrement={handleIncrement}
                               // handleDecrement={handleDecrement}
                             />
@@ -316,7 +319,9 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
                   </button>
                   <button
                     onClick={() => {
-                      navigate("/checkout");
+                      navigate("/checkout", {
+                        state: { from: location.pathname },
+                      });
                       onClose();
                     }}
                     className="flex-1 rounded-lg bg-teal-600 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"

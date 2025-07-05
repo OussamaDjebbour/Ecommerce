@@ -657,7 +657,7 @@ import { toast } from "react-toastify";
 import CustomToast from "../components/ui/CustomToast";
 
 interface ShowToastOptions {
-  type: "success" | "error" | "removal" | "warning";
+  type: "success" | "error" | "removal" | "warning" | "alert";
   message: string;
   productTitle: string;
   productImage?: string;
@@ -744,6 +744,14 @@ export const showMaxStockToast = (productTitle: string) => {
 export const showWarningToast = (message: string) => {
   showCustomToast({
     type: "warning",
+    message,
+    productTitle: "",
+  });
+};
+
+export const showAlertToast = (message: string) => {
+  showCustomToast({
+    type: "alert",
     message,
     productTitle: "",
   });
