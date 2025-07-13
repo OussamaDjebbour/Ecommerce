@@ -8,6 +8,7 @@ import ProductPage from "../components/features/ProductPage";
 // import CartPage from "../components/features/CartPage";
 import CartPage from "../pages/CartPage";
 import CheckoutPage from "../pages/CheckoutPage";
+import ProductInfoPage from "../pages/ProductInfoPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,12 @@ const router = createBrowserRouter([
         element: <Main />,
       },
       {
+        // path: "/product/:slug-:id",
+        // path: "product/:productId",
+        path: "product/:slugId",
+        element: <ProductInfoPage />,
+      },
+      {
         path: "productPage",
         element: <ProductPage />,
       },
@@ -28,7 +35,7 @@ const router = createBrowserRouter([
         path: "checkout",
         element: (
           <CheckoutPage
-            product={{ id: 1, title: "test", price: 1, image: "", quantity: 1 }}
+          // product={{ id: 1, title: "test", price: 1, image: "", quantity: 1 }}
           />
         ),
       },

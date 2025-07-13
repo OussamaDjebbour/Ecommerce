@@ -1,18 +1,29 @@
-import { AddToCartResult, CartItem } from "src/types";
+import { AddToCartResult, CartItemType } from "src/types";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 interface CartState {
   // quantity: number;
-  cart: CartItem[];
-  // addToCart: (item: CartItem) => void;
-  addToCart: (item: CartItem) => AddToCartResult;
+  cart: CartItemType[];
+  // addToCart: (item: CartItemType) => void;
+  addToCart: (item: CartItemType) => AddToCartResult;
   // addToCart: (item: <CartItem>) => void;
   removeFromCart: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
   clearCart: () => void;
   getCartTotalPrice: () => number;
   getCartTotalItems: () => number;
+
+  // getTotalSavings: (
+  //   mode: "cart" | "buy-now",
+  //   id: number,
+  //   buyNowQuantities?: { [id: number]: number },
+  // ) => number;
+  getTotalSavings: (
+    mode?: "cart" | "buy-now",
+    items?: CartItemType[],
+    buyNowQuantities?: Record<number, number>,
+  ) => number;
 }
 
 export const useCartStore = create<CartState>()(
@@ -128,13 +139,23 @@ export const useCartStore = create<CartState>()(
       getCartTotalPrice: () => {
         const cart = get().cart;
         return cart.reduce(
-          (total, item) => total + item.price * item.quantity,
+          (total, item) => total + item.discountedPrice * item.quantity,
           0,
         );
       },
       getCartTotalItems: () => {
         const cart = get().cart;
         return cart.reduce((total, item) => total + item.quantity, 0);
+      },
+      getTotalSavings: (mode = "cart", items = [], buyNowQuantities = {}) => {
+        const products = mode === "buy-now" ? items : get().cart;
+        return products.reduce((total, product) => {
+          const quantity =
+            mode === "buy-now"
+              ? buyNowQuantities[product.id]
+              : product.quantity;
+          return total + (product.price - product.discountedPrice) * quantity;
+        }, 0);
       },
     }),
     {

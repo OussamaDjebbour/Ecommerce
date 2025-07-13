@@ -459,6 +459,7 @@ import { useSearchProducts } from "../../hooks/useSearchProducts";
 import { useSearchParams } from "../../hooks/useSearchParams";
 import debounce from "lodash.debounce";
 import { Product } from "src/types";
+import SearchDropdownSuggest from "./SearchDropdownSuggest";
 
 const SearchBar = () => {
   console.log("SearchBar rendered");
@@ -660,34 +661,13 @@ const SearchBar = () => {
           aria-label="Search suggestions"
         >
           {filteredSuggestions.map((product, index) => (
-            <li
+            <SearchDropdownSuggest
               key={product.id}
-              className={`cursor-pointer p-2 transition-colors duration-150 hover:border-l-2 hover:border-blue-500 hover:bg-blue-100 ${
-                index === selectedIndex
-                  ? "border-l-2 border-blue-500 bg-blue-50"
-                  : ""
-              }`}
-              onMouseDown={() => handleDropdownClick(product)}
-              // onMouseEnter={() => setSelectedIndex(index)}
-              // onMouseLeave={() => setSelectedIndex(index)}
-              role="option"
-              aria-selected={index === selectedIndex}
-            >
-              <div className="flex items-center gap-3">
-                <img
-                  src={product.thumbnail}
-                  alt={product.title}
-                  className="h-12 w-12 flex-shrink-0 rounded object-cover"
-                  loading="lazy"
-                />
-                <div className="min-w-0 flex-1">
-                  <p title={product.title} className="truncate font-medium">
-                    {product.title}
-                  </p>
-                  <p className="text-sm text-blue-600">${product.price}</p>
-                </div>
-              </div>
-            </li>
+              product={product}
+              index={index}
+              selectedIndex={selectedIndex}
+              handleDropdownClick={handleDropdownClick}
+            />
           ))}
         </ul>
       )}

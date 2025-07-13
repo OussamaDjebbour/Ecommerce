@@ -149,7 +149,7 @@ function DailyDeals({ isMainProductLoaded }: DailyDealsProps) {
     data: dailyDealsProducts,
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<Product[]>({
     queryKey: ["dailyDealsProducts"],
     queryFn: getDailyDealsProducts,
     enabled: isMainProductLoaded, // Only fetch after MainProduct loads
@@ -167,20 +167,9 @@ function DailyDeals({ isMainProductLoaded }: DailyDealsProps) {
     // !isLoading && (
     <div className="ml-8">
       {dailyDealsProducts && (
-        <div className="mb-7 flex items-center justify-between">
-          <h3 className="font-roboto text-2xl font-semibold text-[#016170]">
-            Daily Deals
-          </h3>
-          <button
-            className="text-sm font-medium text-[#5C5C5C]"
-            aria-label="View all daily deals"
-          >
-            View all
-            <span className="ml-2">
-              <FontAwesomeIcon icon={faArrowRight} />
-            </span>
-          </button>
-        </div>
+        <h3 className="mb-7 font-roboto text-2xl font-semibold text-[#016170]">
+          Daily Deals
+        </h3>
       )}
       {/* Skeleton Loader */}
       {isLoading && (
@@ -195,6 +184,7 @@ function DailyDeals({ isMainProductLoaded }: DailyDealsProps) {
       {dailyDealsProducts?.map((product: Product) => (
         <ProductWithDailyDeal
           key={product.id}
+          product={product}
           // image={product.images[0]}
           image={product.thumbnail}
           title={product.title}

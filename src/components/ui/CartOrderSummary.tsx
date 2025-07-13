@@ -8,6 +8,7 @@ function CartOrderSummary({ onHandleBack }: CartOrderSummaryProps) {
   const cart = useCartStore((state) => state.cart);
   const getCartTotalItems = useCartStore((state) => state.getCartTotalItems);
   const getCartTotalPrice = useCartStore((state) => state.getCartTotalPrice);
+  const getTotalSavings = useCartStore((state) => state.getTotalSavings);
 
   const handleCheckoutAll = () => {
     // For simplicity, we'll checkout the first item or create a combined checkout
@@ -38,11 +39,13 @@ function CartOrderSummary({ onHandleBack }: CartOrderSummaryProps) {
         <div className="mb-6 space-y-4">
           <div className="flex justify-between text-gray-600">
             <span>Items ({getCartTotalItems()})</span>
-            <span>${getCartTotalPrice().toFixed(2)}</span>
+            <span className="font-bold text-[#009393]">
+              ${getCartTotalPrice().toFixed(2)}
+            </span>
           </div>
           <div className="flex justify-between text-gray-600">
             <span>Shipping</span>
-            <span className="font-medium text-green-600">Free</span>
+            <span className="font-bold text-teal-500">Free</span>
           </div>
           <div className="flex justify-between text-gray-600">
             <span>Tax</span>
@@ -50,6 +53,12 @@ function CartOrderSummary({ onHandleBack }: CartOrderSummaryProps) {
           </div>
           <hr className="my-4" />
           <div className="flex justify-between text-xl font-bold text-gray-900">
+            <span>You Saved</span>
+            <span className="text-[#009393]">
+              ${getTotalSavings().toFixed(2)}
+            </span>
+          </div>
+          <div className="mt-0 flex justify-between text-xl font-bold text-gray-900">
             <span>Total</span>
             <span className="text-[#009393]">
               ${getCartTotalPrice().toFixed(2)}

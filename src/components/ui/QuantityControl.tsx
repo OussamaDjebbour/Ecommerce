@@ -104,7 +104,7 @@
 
 // export default QuantityControl;
 
-import { CartItemType, Mode } from "../../types";
+import { CartItemType, Mode, QuantityControlProduct } from "../../types";
 import { useCallback } from "react";
 import {
   showAlertToast,
@@ -114,7 +114,7 @@ import {
 import { useCartStore } from "../../store/cartStore";
 
 interface QuantityControlProps {
-  product: CartItemType;
+  product: QuantityControlProduct;
   mode: Mode;
   onUpdateBuyNow?: (qty: number) => void;
   onRemoveBuyNow?: () => void;
@@ -165,7 +165,8 @@ function QuantityControl({
       image: string,
     ) => {
       if (productQuantity <= 1) {
-        if (mode === "buy-now" && onRemoveBuyNow) {
+        // if (mode === "buy-now" && onRemoveBuyNow) {
+        if (mode === "buy-now") {
           //   onRemoveBuyNow();
           //   showRemovalToast(title, image);
           showAlertToast("You Cannot delete Main Product");
@@ -181,7 +182,7 @@ function QuantityControl({
         updateQuantity(productId, productQuantity - 1);
       }
     },
-    [updateQuantity, removeFromCart, onUpdateBuyNow, onRemoveBuyNow, mode],
+    [updateQuantity, removeFromCart, onUpdateBuyNow, mode],
   );
 
   //   const handleDecrement = useCallback(
@@ -213,15 +214,16 @@ function QuantityControl({
   return (
     <div className="mr-6 flex h-8 w-[5.5rem] items-center justify-around rounded-3xl bg-[#F2F2F2] text-base font-normal text-black">
       <button
-        className={`h-6 w-6 rounded-full bg-white ${isMin ? "cursor-not-allowed opacity-50" : ""}`}
-        onClick={() =>
+        className={`h-6 w-6 rounded-full bg-white hover:bg-gray-200 ${isMin ? "cursor-not-allowed opacity-50" : ""}`}
+        onClick={(e) => {
+          e.stopPropagation();
           handleDecrement(
             product.id,
             product.quantity,
             product.title,
             product.image,
-          )
-        }
+          );
+        }}
         // disabled={isMin}
       >
         -

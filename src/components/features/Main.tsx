@@ -222,7 +222,7 @@ function Main() {
   const { isMainProductLoaded, setIsMainProductLoaded } =
     useOutletContext<LayoutContextType>();
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error } = useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: getHighlyRatedProducts,
     enabled: isMainProductLoaded, // Only fetch after MainProduct loads
@@ -357,6 +357,8 @@ function Main() {
         {data?.map((product: Product, index: number) => (
           <SwiperSlide key={index} style={{ width: "12rem" }}>
             <ProductCard
+              product={product}
+              key={product.id}
               id={product.id}
               imgSrc={product.thumbnail}
               title={product.title}
@@ -379,7 +381,7 @@ function Main() {
       ))} */}
       {/* </div> */}
       {/* Explore Categories */}
-      <div className="mb-8 flex items-center gap-6">
+      {/* <div className="mb-8 flex items-center gap-6">
         <h3 className="font-roboto text-2xl font-semibold text-[#016170]">
           Explore Popular Categories
         </h3>
@@ -387,9 +389,9 @@ function Main() {
           See all
           <FontAwesomeIcon icon={faArrowRight} />
         </button>
-      </div>
+      </div> */}
       {/* Split Content Cards */}
-      <div className="flex gap-9">
+      {/* <div className="flex gap-9">
         <SplitContentCard
           title="Popular top 10 brands"
           description="5,400+ Orders & reviews"
@@ -416,7 +418,7 @@ function Main() {
             ]}
           />
         </SplitContentCard>
-      </div>
+      </div> */}
     </main>
   );
 }

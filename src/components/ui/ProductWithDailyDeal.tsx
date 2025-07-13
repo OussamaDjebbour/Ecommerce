@@ -80,9 +80,20 @@ import { FC } from "react";
 // export default ProductWithDailyDeal;
 
 import { useState } from "react";
-import { ProductWithDailyDealProps } from "src/types";
+import { getPriceDetails } from "../../helpers/getPriceDetails";
+import { Product } from "../../types";
+
+interface ProductWithDailyDealProps {
+  product: Product;
+  image: string;
+  title: string;
+  price: number;
+  nbrOfReviews: number;
+  nbrOfProductsInStock: number;
+}
 
 const ProductWithDailyDeal: FC<ProductWithDailyDealProps> = ({
+  product,
   image,
   title,
   price,
@@ -90,6 +101,8 @@ const ProductWithDailyDeal: FC<ProductWithDailyDealProps> = ({
   nbrOfProductsInStock,
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const { originalPrice, discountedPrice, hasDiscount } =
+    getPriceDetails(product);
 
   return (
     <div className="mb-7 flex gap-3.5">
@@ -120,9 +133,21 @@ const ProductWithDailyDeal: FC<ProductWithDailyDealProps> = ({
         </p>
       </div>
 
-      <p className="my-auto ml-auto text-xs font-medium text-[#5C5C5C]">
+      {/* <p className="my-auto ml-auto text-xs font-medium text-[#5C5C5C]">
         Price ${price}
-      </p>
+      </p> */}
+      <div className="my-auto ml-auto flex flex-col items-center text-xs font-medium text-[#5C5C5C]">
+        <span
+          className={`font-semibold text-gray-500 ${hasDiscount && "line-through"}`}
+        >
+          ${originalPrice.toFixed(2)}
+        </span>
+        {hasDiscount && (
+          <span className="text-sm font-bold text-[#009393]">
+            ${discountedPrice.toFixed(2)}
+          </span>
+        )}
+      </div>
     </div>
   );
 };

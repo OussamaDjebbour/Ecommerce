@@ -834,6 +834,8 @@ import Spinner from "../ui/Spinner";
 import NoResults from "../ui/NoResults";
 import ErrorMessage from "../ui/ErrorMessage";
 import { useSearchStore } from "../../store/searchStore";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const MemoizedProductCard = memo(ProductCard);
 const MemoizedFilterButtons = memo(FilterButtons);
@@ -848,6 +850,8 @@ const ProductPage = () => {
   const { itemsPerPage } = useSearchStore();
 
   useGridItems(gridRef);
+
+  const navigate = useNavigate();
 
   // const itemsPerPage = 12; // You can make this configurable via URL params too
 
@@ -880,13 +884,28 @@ const ProductPage = () => {
 
   return (
     <div className="col-span-2 row-span-1">
+      <button
+        onClick={() => navigate(-1)}
+        className="mb-4 flex items-center gap-2 text-gray-600 transition-colors hover:text-gray-900"
+      >
+        <ArrowLeft className="h-5 w-5" />
+        Go Back
+      </button>
       <MemoizedFilterButtons />
       {isLoading ? (
         <Spinner />
       ) : filteredProducts.length > 0 ? (
         <>
+          {/* <button
+            onClick={() => navigate(-1)}
+            className="text-blue-500 underline"
+          >
+            <ArrowLeft /> Go Back
+          </button> */}
+
           <h2 className="mb-4 text-lg font-semibold">
-            Results for "{searchQuery}"
+            Results for "
+            <span className="font-bold text-gray-900">{searchQuery}</span>"
             {selectedCategory && ` in ${selectedCategory}`}
           </h2>
 
@@ -896,6 +915,7 @@ const ProductPage = () => {
           >
             {paginatedProducts.map((product) => (
               <MemoizedProductCard
+                product={product}
                 key={product.id}
                 id={product.id}
                 imgSrc={product.thumbnail}

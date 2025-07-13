@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useCartStore } from "../../store/cartStore";
-import { CartItemType, Product } from "src/types";
+// import { CartItemProduct, CartItemType, Product } from "src/types";
 import { useNavigate } from "react-router-dom";
-import { useClickAway } from "react-use";
 import { toast } from "react-toastify";
 import { X } from "lucide-react";
 import { showRemovalToast } from "../../helpers/toastHelpers";
 import QuantityControl from "./QuantityControl";
 import Item from "./Item";
+import { getPriceDetails } from "src/helpers/getPriceDetails";
+import CartDropdownItem from "./CartDropdownItem";
 
 interface CartDropdownProps {
   onClose: () => void;
@@ -17,11 +18,9 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   const cart = useCartStore((state) => state.cart);
-  console.log("cartttstock", cart);
   const getCartTotalPrice = useCartStore((state) => state.getCartTotalPrice);
   const getCartTotalItems = useCartStore((state) => state.getCartTotalItems);
-  const updateQuantity = useCartStore((state) => state.updateQuantity);
-  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const getTotalSavings = useCartStore((state) => state.getTotalSavings);
 
   // const isFull = cart.some(
   //   (item) => item.id === id && item.quantity === item.stock,
@@ -35,16 +34,7 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
     containerRef.current?.focus();
   }, []);
 
-  useClickAway(containerRef, () => onClose());
-
-  const handleRemoveItem = useCallback(
-    (productId: number, title: string, image: string) => {
-      removeFromCart(productId);
-      // toast.error(`Item removed from cart successfully`);
-      showRemovalToast(title, image);
-    },
-    [removeFromCart],
-  );
+  // useClickAway(containerRef, () => onClose());
 
   // Auto-scroll to selected item in Cart Dropdown
   const scrollToSelectedItem = useCallback(() => {
@@ -78,9 +68,32 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
     }
   };
 
+  const handleStartShopping = () => {
+    if (location.pathname !== "/productPage" && location.pathname !== "/")
+      navigate("/");
+    onClose();
+  };
+
+  const handleViewCart = () => {
+    if (location.pathname !== "/cart")
+      navigate("/cart", { state: { from: location.pathname } });
+    onClose();
+  };
+
+  const handleCheckout = () => {
+    if (location.pathname !== "/checkout")
+      navigate("/checkout", {
+        state: { from: location.pathname },
+      });
+    onClose();
+  };
+
   return (
     <div
-      className="fixed inset-0 z-50 bg-black bg-opacity-20"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 cursor-pointer bg-black bg-opacity-20"
       aria-hidden="true"
     >
       <div
@@ -90,7 +103,7 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
         role="dialog"
         aria-label="Cart contents"
         tabIndex={-1}
-        className="absolute right-4 top-20 z-50 w-[26rem] rounded-xl border border-gray-100 bg-white shadow-2xl focus:outline-none"
+        className="absolute right-4 top-20 z-50 w-[26rem] cursor-default rounded-xl border border-gray-100 bg-white shadow-2xl focus:outline-none"
         aria-modal="true"
       >
         {/* Header */}
@@ -153,14 +166,7 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
                 Discover amazing products and add them to your cart
               </p>
               <button
-                onClick={() => {
-                  if (
-                    location.pathname !== "/productPage" &&
-                    location.pathname !== "/"
-                  )
-                    navigate("/");
-                  onClose();
-                }}
+                onClick={handleStartShopping}
                 className="rounded-lg bg-teal-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
               >
                 Start Shopping
@@ -169,161 +175,65 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
           ) : (
             <>
               {/* Cart Items */}
-              <div className="max-h-80 overflow-y-auto px-6 py-4">
+              <div className="max-h-[17.2rem] overflow-y-auto px-6 py-4">
                 <ul ref={dropdownRef} className="space-y-4">
                   {cart.map((product, index) => (
                     // <Item product={product} index={index} />
-                    <li
+                    <CartDropdownItem
                       key={product.id}
-                      className={`group relative cursor-pointer rounded-lg border border-gray-100 p-3 transition-all duration-200 hover:border-teal-200 hover:bg-teal-50 ${
-                        index === selectedIndex
-                          ? "border-teal-200 bg-teal-50"
-                          : ""
-                      }`}
-                    >
-                      {/* Remove button */}
-                      <button
-                        onClick={() => {
-                          handleRemoveItem(
-                            product.id,
-                            product.title,
-                            product.image,
-                          );
-                        }}
-                        className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-white text-gray-400 opacity-0 shadow-sm transition-all duration-200 hover:bg-red-50 hover:text-red-500 group-hover:opacity-100"
-                        aria-label={`Remove ${product.title} from cart`}
-                      >
-                        <X className="h-4 w-4" />
-                        {/* <svg
-                          className="h-3 w-3"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg> */}
-                      </button>
-
-                      <div className="flex items-start gap-4">
-                        {/* Product Image */}
-                        <div className="flex-shrink-0">
-                          <img
-                            src={product.image}
-                            alt={product.title}
-                            loading="lazy"
-                            className="h-16 w-16 rounded-lg border border-gray-200 object-cover group-hover:border-teal-200"
-                          />
-                        </div>
-
-                        {/* Product Details */}
-                        <div className="min-w-0 flex-1">
-                          <h4
-                            title={product.title}
-                            className="mb-1 line-clamp-2 max-w-[93%] truncate text-sm font-semibold text-gray-900"
-                          >
-                            {product.title}
-                          </h4>
-                          <p className="mb-3 text-sm font-bold text-teal-600">
-                            ${product.price.toFixed(2)}
-                          </p>
-
-                          <div className="flex items-center justify-between">
-                            {/* <div className="flex items-center rounded-full border border-gray-200 bg-white">
-                              <button
-                                onClick={() =>
-                                  handleDecrement(
-                                    product.id,
-                                    product.quantity,
-                                    product.title,
-                                    product.image,
-                                  )
-                                }
-                                className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 transition-colors hover:bg-gray-100"
-                                aria-label="Decrease quantity"
-                              >
-                                <Minus className="h-3 w-3" />
-                              </button>
-
-                              <span className="w-8 text-center text-sm font-medium">
-                                {product.quantity}
-                              </span>
-                              <button
-                                onClick={() =>
-                                  handleIncrement(
-                                    product.id,
-                                    product.quantity,
-                                    product.stock,
-                                    product.title,
-                                  )
-                                }
-                                className={`flex h-6 w-6 items-center justify-center rounded-full border transition-colors ${
-                                  product.quantity >= product.stock
-                                    ? "cursor-not-allowed border-gray-200 text-gray-400"
-                                    : "border-gray-300 hover:bg-gray-100"
-                                }`}
-                                aria-label="Increase quantity"
-                              >
-                                <Plus className="h-3 w-3" />
-                              </button>
-                            </div> */}
-
-                            <QuantityControl
-                              product={product}
-
-                              // handleIncrement={handleIncrement}
-                              // handleDecrement={handleDecrement}
-                            />
-
-                            {/* Item Total */}
-                            <div className="text-right">
-                              <p className="text-sm font-bold text-gray-900">
-                                ${(product.price * product.quantity).toFixed(2)}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
+                      product={product}
+                      index={index}
+                      selectedIndex={selectedIndex}
+                    />
                   ))}
                 </ul>
               </div>
 
               {/* Footer */}
-              <div className="border-t border-gray-100 px-6 py-4">
+              <div className="px-6 pb-4 text-lg text-gray-700">
+                <hr className="border-gray-200 px-6 pb-2.5" />
                 {/* Subtotal */}
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="text-lg font-semibold text-gray-900">
-                    Subtotal:
+                {/* <p className="font-semibold">
+                  You saved <span>${getTotalSavings().toFixed(2)}</span>
+                </p> */}
+
+                <div className="mb-1 flex justify-between text-xl font-bold text-gray-900">
+                  <span>You Saved</span>
+                  <span className="text-[#009393]">
+                    ${getTotalSavings().toFixed(2)}
                   </span>
-                  <span className="text-xl font-bold text-gray-900">
+                </div>
+                <div className="mb-4 flex justify-between text-xl font-bold text-gray-900">
+                  <span>Total</span>
+                  <span className="text-[#009393]">
                     ${getCartTotalPrice().toFixed(2)}
                   </span>
                 </div>
 
+                {/* <div className="mb-1 flex items-center justify-between text-lg">
+                  <span className="font-semibold">You saved</span>
+                  <span className="text-xl font-bold text-teal-400">
+                    ${getTotalSavings().toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="mb-4 flex items-center justify-between text-lg">
+                  <span className="font-semibold">Subtotal</span>
+                  <span className="text-xl font-bold text-teal-400">
+                    ${getCartTotalPrice().toFixed(2)}
+                  </span>
+                </div> */}
+
                 {/* Action Buttons */}
                 <div className="flex gap-3">
                   <button
-                    onClick={() => {
-                      // navigate("/cart");
-                      navigate("/cart", { state: { from: location.pathname } });
-                      onClose();
-                    }}
+                    onClick={handleViewCart}
                     className="flex-1 rounded-lg border border-gray-300 bg-white py-3 text-center text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
                   >
                     View Cart
                   </button>
                   <button
-                    onClick={() => {
-                      navigate("/checkout", {
-                        state: { from: location.pathname },
-                      });
-                      onClose();
-                    }}
+                    onClick={handleCheckout}
                     className="flex-1 rounded-lg bg-teal-600 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
                   >
                     Checkout

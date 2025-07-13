@@ -508,6 +508,8 @@ import { useCheckoutProducts } from "../hooks/useCheckoutProducts";
 import { useNavigate } from "react-router-dom";
 import { CartItemType } from "src/types";
 import { useContinueShopping } from "../hooks/useContinueShopping";
+import { useCartStore } from "../store/cartStore";
+import { getPriceDetails } from "../helpers/getPriceDetails";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -534,6 +536,8 @@ const CheckoutPage = () => {
   const [buyNowQuantities, setBuyNowQuantities] = useState<{
     [id: number]: number;
   }>(Object.fromEntries(items.map((item) => [item.id, item.quantity])));
+
+  const getTotalSavings = useCartStore((state) => state.getTotalSavings);
 
   const {
     register,
@@ -581,13 +585,23 @@ const CheckoutPage = () => {
     );
   }
 
+  console.log("buyNowQuantities", buyNowQuantities);
+
   const totalAmount = items.reduce(
     (total, item) =>
       total +
-      item.price *
+      item.discountedPrice *
         (mode === "buy-now" ? buyNowQuantities[item.id] : item.quantity),
     0,
   );
+
+  // const totalAmount = items.reduce(
+  //   (total, item) =>
+  //     total +
+  //     item.price *
+  //       (mode === "buy-now" ? buyNowQuantities[item.id] : item.quantity),
+  //   0,
+  // );
 
   return (
     <div className="col-span-full min-h-screen bg-gray-50 lg:col-span-2">
@@ -934,6 +948,7 @@ const CheckoutPage = () => {
                     onCheckout={handleCheckoutItem}
                     className="bg-gray-50" // Optional: Custom styling for CheckoutPage
                     mode={mode} // Pass mode to CartItem
+                    buyNowQuantities={buyNowQuantities}
                     onUpdateBuyNow={(qty) =>
                       setBuyNowQuantities((prev) => ({
                         ...prev,
@@ -947,10 +962,10 @@ const CheckoutPage = () => {
                 ))}
               </ul>
               <div className="mt-6 space-y-3">
-                <div className="flex justify-between text-gray-600">
+                {/* <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
                   <span>${totalAmount.toFixed(2)}</span>
-                </div>
+                </div> */}
                 <div className="flex justify-between text-gray-600">
                   <span>Shipping</span>
                   <span>Free</span>
@@ -960,10 +975,25 @@ const CheckoutPage = () => {
                   <span>Calculated at checkout</span>
                 </div>
                 <hr className="my-4" />
-                <div className="flex justify-between text-lg font-semibold text-gray-900">
+
+                <div className="flex justify-between text-xl font-bold text-gray-900">
+                  <span>You Saved</span>
+                  <span className="font-bold text-[#009393]">
+                    ${getTotalSavings(mode, items, buyNowQuantities).toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="flex justify-between text-xl font-bold text-gray-900">
+                  <span>Total</span>
+                  <span className="font-bold text-[#009393]">
+                    ${totalAmount.toFixed(2)}
+                  </span>
+                </div>
+
+                {/* <div className="flex justify-between text-lg font-semibold text-gray-900">
                   <span>Total</span>
                   <span>${totalAmount.toFixed(2)}</span>
-                </div>
+                </div> */}
               </div>
               <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-4">
                 <div className="flex items-center gap-2 text-green-700">

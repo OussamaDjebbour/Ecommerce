@@ -111,13 +111,16 @@ import { showRemovalToast } from "../../helpers/toastHelpers";
 import { useCartStore } from "../../store/cartStore";
 import { CartItemType } from "../../types";
 import QuantityControl from "./QuantityControl";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useNavigateToProduct from "../../hooks/useNavigateToProduct";
+import { getPriceDetails } from "../../helpers/getPriceDetails";
 
 interface CartItemProps {
   item: CartItemType;
   onCheckout?: (item: CartItemType) => void;
   className?: string;
-  mode?: "cart" | "buy-now"; // Add mode prop
+  mode?: "cart" | "buy-now";
+  buyNowQuantities?: Record<number, number>;
   onUpdateBuyNow?: (qty: number) => void; // For buy-now quantity updates
   onRemoveBuyNow?: () => void; // For buy-now removal
 }
@@ -127,6 +130,7 @@ function CartItem({
   onCheckout,
   className = "",
   mode = "cart",
+  buyNowQuantities,
   onUpdateBuyNow,
   onRemoveBuyNow,
 }: CartItemProps) {
@@ -134,6 +138,11 @@ function CartItem({
   const isOnCheckoutPage = location.pathname.includes("checkout");
 
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+
+  const navigateToProduct = useNavigateToProduct();
+
+  const { originalPrice, discountedPrice, hasDiscount, savings } =
+    getPriceDetails(item);
 
   // const handleRemoveItem = (item: CartItemType) => {
   //   if (mode === "buy-now" && onRemoveBuyNow) {
@@ -152,21 +161,49 @@ function CartItem({
     }
   };
 
+  const navigate = useNavigate();
+
   const handleCheckoutItem = (item: CartItemType) => {
-    if (onCheckout) {
-      onCheckout(item);
-    } else {
-      console.log("Checkout item:", item);
-    }
+    navigate("/checkout", {
+      state: {
+        mode: "buy-now",
+        product: {
+          ...item,
+          quantity:
+            mode === "buy-now" ? buyNowQuantities[item.id] : item.quantity,
+        },
+      },
+    });
+  };
+
+  // const handleCheckoutItem = (item: CartItemType) => {
+  //   if (onCheckout) {
+  //     onCheckout(item);
+  //   } else {
+  //     onCheckout(item);
+  //     console.log("Checkout item:", item);
+  //   }
+  // };
+
+  const handleNavigateToProduct = (item: CartItemType) => {
+    if (mode === "cart") navigateToProduct(item);
   };
 
   return (
     <li
-      className={`group cursor-pointer rounded-lg border border-gray-200 bg-white hover:border-teal-200 hover:bg-teal-50 ${isOnCheckoutPage ? "px-4 py-4 sm:py-6" : "p-4 shadow-sm sm:p-6"} ${className}`}
+      // onClick={() => navigateToProduct(item)}
+      className={`group rounded-lg border border-gray-200 bg-white hover:border-teal-200 hover:bg-teal-50 ${isOnCheckoutPage ? "px-4 py-4 sm:py-6" : "p-4 shadow-sm sm:p-6"} ${className}`}
+      aria-label={` View details for ${item.title}`}
     >
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:gap-6">
         {/* Product Image */}
-        <div className="flex-shrink-0">
+        <div
+          onClick={() => handleNavigateToProduct(item)}
+          onKeyDown={(e) => e.key === "Enter" && handleNavigateToProduct(item)}
+          role="link"
+          tabIndex={0}
+          className={`flex-shrink-0 ${mode === "cart" ? "cursor-pointer rounded-lg hover:scale-105 hover:border hover:border-teal-500 hover:opacity-80" : ""}`}
+        >
           <img
             src={item.image}
             alt={item.title || "Product"}
@@ -177,7 +214,16 @@ function CartItem({
 
         {/* Product Details */}
         <div className="min-w-0 flex-1">
-          <h3 className="mb-2 truncate text-base font-semibold text-gray-900 sm:text-lg">
+          <h3
+            onClick={() => handleNavigateToProduct(item)}
+            onKeyDown={(e) =>
+              e.key === "Enter" && handleNavigateToProduct(item)
+            }
+            role="link"
+            tabIndex={0}
+            className={`mb-2 ${mode === "cart" ? "cursor-pointer decoration-slice underline-offset-2 hover:underline" : ""} truncate text-base font-semibold text-gray-900 sm:text-lg`}
+            aria-label={`View details for ${item.title || "product"}`}
+          >
             {item.title || "Unnamed Product"}
           </h3>
           <p className="mb-3 text-sm text-gray-600 sm:mb-4">
@@ -187,10 +233,48 @@ function CartItem({
           </p>
 
           <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-3">
-              <span className="text-base font-semibold text-[#009393] sm:text-lg">
-                ${item.price?.toFixed(2) || "0.00"}
+            {/* <div className="flex items-center gap-3">
+              {hasDiscount && (
+                <span className="text-base font-bold text-[#009393] sm:text-lg">
+                  ${discountedPrice}
+                </span>
+              )}
+              <span>
+                {!isOnCheckoutPage && hasDiscount && (
+                  <span className="text-sm text-gray-500 line-through">
+                    ${originalPrice}
+                  </span>
+                )}
+                {!hasDiscount && (
+                  <span className={`text-base text-gray-500 sm:text-lg`}>
+                    ${originalPrice}
+                  </span>
+                )}
               </span>
+              <span className="text-sm text-gray-500">each</span>
+            </div> */}
+            <div className="flex items-center gap-3">
+              {/* Show discounted price if applicable */}
+              {hasDiscount ? (
+                <>
+                  <span className="text-base font-bold text-[#009393] sm:text-lg">
+                    ${discountedPrice}
+                  </span>
+
+                  {/* Show original price with line-through only if NOT on checkout page */}
+                  {!isOnCheckoutPage && (
+                    <span className="text-sm text-gray-500 line-through">
+                      ${originalPrice}
+                    </span>
+                  )}
+                </>
+              ) : (
+                // No discount — just show original price normally
+                <span className="text-base text-gray-500 sm:text-lg">
+                  ${originalPrice}
+                </span>
+              )}
+
               <span className="text-sm text-gray-500">each</span>
             </div>
 
@@ -231,12 +315,16 @@ function CartItem({
 
             <div className="mt-4 flex items-center justify-between border-t border-gray-200 pt-4">
               <div className="text-lg font-semibold text-gray-900">
-                Subtotal: ${(item.price * item.quantity).toFixed(2)}
+                Subtotal:{" "}
+                <span className="text-xl font-bold text-[#009393]">
+                  ${(item.discountedPrice * item.quantity).toFixed(2)}
+                </span>
               </div>
 
               <button
                 onClick={() => handleCheckoutItem(item)}
                 className="rounded-lg bg-[#009393] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#007a7a]"
+                aria-label={`Buy ${item.title || "product"}`}
               >
                 Buy This Item
               </button>

@@ -1,3 +1,10 @@
+export type Review = {
+  rating: number;
+  comment: string;
+  date: string;
+  reviewerName: string;
+  reviewerEmail: string;
+};
 export interface Product {
   id: number;
   title: string;
@@ -6,31 +13,42 @@ export interface Product {
   category: string;
   rating: number;
   stock: number;
-  reviews: string[];
+  // reviews: string[];
+  reviews: Review[];
   images: string[];
   thumbnail: string;
+  discountPercentage: number;
 }
 
-export interface CartItemType {
-  id: number;
-  // id: string;
-  title: string;
-  price: number;
+export interface CartItemType extends Product {
   quantity: number;
-  image: string;
-  stock: number;
-  // thumbnail?: string;
+  image: string; // Optional: the image chosen for display (e.g., from images array)
+  discountedPrice: number;
 }
+
+export interface QuantityControlProduct extends Product, CartItemType {}
+
+// export interface CartItemType {
+//   id: number;
+//   // id: string;
+//   title: string;
+//   price: number;
+//   quantity: number;
+//   image: string;
+//   stock: number;
+//   thumbnail?: string;
+//   // thumbnail?: string;
+// }
+
+// export interface CartItemProduct extends CartItemType {
+//   description: string;
+//   category: string;
+//   rating: number;
+//   reviews: number;
+//   images: string[];
+// }
 
 export type AddToCartResult = { success: boolean; message: string };
-
-export interface ProductWithDailyDealProps {
-  image: string;
-  title: string;
-  price: number;
-  nbrOfReviews: number;
-  nbrOfProductsInStock: number;
-}
 
 export interface SearchResponse {
   products: Product[];
