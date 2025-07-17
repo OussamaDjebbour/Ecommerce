@@ -170,7 +170,9 @@ function CartItem({
         product: {
           ...item,
           quantity:
-            mode === "buy-now" ? buyNowQuantities[item.id] : item.quantity,
+            mode === "buy-now" && buyNowQuantities
+              ? buyNowQuantities[item.id]
+              : item.quantity,
         },
       },
     });

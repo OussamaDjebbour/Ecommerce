@@ -139,8 +139,8 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({
   if (isLoading) return <Spinner />;
   //   if (isLoading) return <LoadingSpinner />;
 
-  if (product) {
-    // if (isError || !product) {
+  // if (product) {
+  if (isError || !product) {
     return (
       <div className="flex justify-center pt-20">
         <div>
