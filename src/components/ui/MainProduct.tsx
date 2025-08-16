@@ -1,1085 +1,72 @@
-// import { useState } from "react";
-// import ColorRadioButtons from "./ColorRadioButtons";
-// import ColorPicker from "./ColorPicker";
-// import ProductQuantity from "./ProductQuantity";
+// import { useEffect, useMemo, useState } from "react";
 // import { useQuery } from "@tanstack/react-query";
-// import { fetchMainProduct } from "../../services/fetchMainProduct";
-
-// const colors = [
-//   { name: "teal", bg: "bg-[#00AD97]", ring: "ring-[#00AD97]" },
-//   { name: "blue", bg: "bg-[#4BA3E5]", ring: "ring-[#4BA3E5]" },
-//   { name: "orange", bg: "bg-[#E27373] ", ring: "ring-[#E27373] " },
-//   { name: "green", bg: "bg-[#75E573] ", ring: "ring-[#75E573] " },
-// ];
-
-// function MainProduct() {
-//   const PRICE = 349.95;
-
-//   const [quantity, setQuantity] = useState(1);
-//   const [price, setPrice] = useState(PRICE);
-
-//   const [selectedColor, setSelectedColor] = useState<string>(colors[0].name);
-
-//   const { data: mainProduct } = useQuery({
-//     queryKey: ["search"],
-//     queryFn: fetchMainProduct,
-//   });
-
-//   console.log("mainProduct", mainProduct);
-
-//   return (
-//     // pr-8
-//     <div className="mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
-//       <div className="relative">
-//         <img
-//           // className="bg-white"
-//           // className={`filter ${
-//           //   selectedColor === "red" ? "hue-rotate-20 saturate-200 sepia" : ""
-//           // }`}
-//           // className={`filter ${selectedColor && "hue-rotate-180 saturate-200"}`}
-//           // src={mainProduct?.thumbnail}
-//           src={`/images/Main_Product_${selectedColor}.png`}
-//           alt="Main Product"
-//         />
-//         {/* Color Overlay */}
-//         {/* <div
-//           className={`absolute left-0 top-0 h-full w-full ${
-//             colors.find((color) => color.name === selectedColor)?.bg
-//           } opacity-50`}
-//         ></div> */}
-//       </div>
-
-//       <div>
-//         <h3 className="mb-1 text-xl font-medium text-black">
-//           Beats Studio3 Wireless Headphone
-//         </h3>
-
-//         {/* mb-[1.125rem] */}
-//         <div className="mb-4 flex gap-2">
-//           <img src="images/Rating_Icon.png" />
-//           <img src="images/Rating_Icon.png" />
-//           <img src="images/Rating_Icon.png" />
-//           <img src="images/Rating_Icon.png" />
-//           <img src="images/Rating_Icon.png" />
-//           <span className="text-sm font-normal text-[#5C5C5C]">
-//             (2000+ Reviews)
-//           </span>
-//         </div>
-
-//         <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
-//           Ergonomic ear cups with on-ear controls. Up to 22 hours of listening
-//           time. Apple W1 chip & Class 1 Wireless Bluetooth.
-//         </p>
-
-//         <p className="mb-[1.125rem] text-lg font-medium text-[#009393]">
-//           {/* Price $349.95 */}
-//           Price ${price.toFixed(2)}
-//         </p>
-
-//         <div className="mb-8 flex justify-between">
-//           <div className="flex items-center">
-//             <p className="text-base font-medium text-black">Color</p>
-
-//             {/* <div className="ml-4 flex gap-2">
-//   <div className="h-6 w-6 rounded-full bg-sky-500" />
-//   <div className="h-6 w-6 rounded-full bg-red-500" />
-//   <div className="h-6 w-6 rounded-full bg-pink-500" />
-//   <div className="h-6 w-6 rounded-full bg-teal-500" />
-// </div> */}
-//             {/* <div className="ml-4 flex gap-2">
-//   {["sky-500", "red-500", "pink-500", "teal-500"].map((color) => (
-//     <label key={color}>
-//       <input
-//         type="radio"
-//         name="color"
-//         value={color}
-//         checked={selectedColor === color}
-//         className="hnameden"
-//         onChange={() => setSelectedColor(color)}
-//       />
-//       <div
-//         className={`h-6 w-6 rounded-full bg-${color} cursor-pointer`}
-//       />
-//     </label>
-//   ))}
-// </div> */}
-
-//             {/* <ColorRadioButtons /> */}
-//             {/* <ColorPicker  /> */}
-//             <ColorPicker
-//               selectedColor={selectedColor}
-//               setSelectedColor={setSelectedColor}
-//               colors={colors}
-//             />
-//           </div>
-//           {/* <ProductQuantity /> */}
-//           <ProductQuantity
-//             quantity={quantity}
-//             setQuantity={setQuantity}
-//             setPrice={setPrice}
-//           />
-//         </div>
-
-//         <div className="flex gap-5">
-//           <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
-//             <img src="images/fi-sr-heart.png " alt="Heart Icon" />
-//           </button>
-
-//           <button className="w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393]">
-//             Add to cart
-//           </button>
-
-//           <button className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white">
-//             Buy now
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default MainProduct;
-
-// import { useEffect, useRef, useState } from "react";
-// import ProductQuantity from "./ProductQuantity";
-// import { useQuery } from "@tanstack/react-query";
-// import { fetchMainProduct } from "../../services/fetchMainProduct";
-// import { set } from "react-hook-form";
-// import Spinner from "./Spinner";
-// import { on } from "events";
-
-// function MainProduct() {
-//   // const PRICE = 349.95;
-
-//   const [quantity, setQuantity] = useState(1);
-//   // const [price, setPrice] = useState(PRICE);
-
-//   const { data: mainProduct, isLoading } = useQuery({
-//     queryKey: ["search"],
-//     queryFn: fetchMainProduct,
-//   });
-
-//   const [price, setPrice] = useState(0);
-
-//   const [currentImage, setCurrentImage] = useState(
-//     () => mainProduct?.images[0],
-//   );
-
-//   // let oneProductPrice;
-//   // const oneProductPriceRef = useRef<number>(0);
-
-//   useEffect(() => {
-//     if (mainProduct?.price) {
-//       // oneProductPriceRef.current = mainProduct?.price;
-//       setPrice(mainProduct.price);
-//     }
-//   }, [mainProduct?.price]);
-
-//   // Set currentImage only when mainProduct.images[0] exists
-//   useEffect(() => {
-//     if (mainProduct?.images?.[0] && !currentImage) {
-//       setCurrentImage(mainProduct.images[0]);
-//     }
-//   }, [mainProduct?.images, currentImage]);
-
-//   console.log(
-//     "mainProduct",
-//     mainProduct,
-//     currentImage,
-//     Math.floor(mainProduct?.rating),
-//     price,
-//   );
-
-//   if (isLoading) return <Spinner />;
-
-//   return (
-//     mainProduct &&
-//     oneProductPriceRef.current && (
-//       <div className="mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
-//         <div className="relative">
-//           <div className="carousel w-full">
-//             <img
-//               src={
-//                 currentImage || mainProduct?.images[0] || mainProduct?.thumbnail
-//               }
-//               // src="/images/Main_Product_green.png"
-//               alt="Main Product"
-//               className="min-w-44 max-w-44"
-//               // className="w-full"
-//             />
-//             {/* <div className="thumbnails mt-2 flex justify-center">
-//           <img
-//             src="/images/Main_Product_teal.png"
-//             alt="Thumbnail 1"
-//             className="mr-2 w-12 cursor-pointer"
-//             onClick={() => setCurrentImage("/images/Main_Product_teal.png")}
-//           />
-//           <img
-//             src="/images/Main_Product_blue.png"
-//             alt="Thumbnail 2"
-//             className="mr-2 w-12 cursor-pointer"
-//             onClick={() => setCurrentImage("/images/Main_Product_blue.png")}
-//           />
-//           <img
-//             src="/images/Main_Product_orange.png"
-//             alt="Thumbnail 3"
-//             className="w-12 cursor-pointer"
-//             onClick={() => setCurrentImage("/images/Main_Product_orange.png")}
-//           />
-//         </div> */}
-//             <div className="thumbnails mt-2 flex justify-center">
-//               {mainProduct?.images.map((image) => (
-//                 <button
-//                   key={image}
-//                   onClick={() => setCurrentImage(image)}
-//                   className={`rounded-md transition-all duration-200 ${currentImage === image ? "ring-2 ring-[#009393] ring-offset-2" : "hover:opacity-75"} `}
-//                 >
-//                   <img
-//                     src={image}
-//                     alt={mainProduct.title}
-//                     className="mr-2 w-12 cursor-pointer"
-//                     onClick={() => setCurrentImage(image)}
-//                   />
-//                 </button>
-//               ))}
-//             </div>
-//           </div>
-//         </div>
-
-//         <div>
-//           <h3 className="mb-1 text-xl font-medium text-black">
-//             {/* Beats Studio3 Wireless Headphone */}
-//             {mainProduct?.title}
-//           </h3>
-
-//           <div className="mb-4 flex gap-2">
-//             {/* <img src="images/Rating_Icon.png" />
-//             <img src="images/Rating_Icon.png" />
-//             <img src="images/Rating_Icon.png" />
-//             <img src="images/Rating_Icon.png" />
-//             <img src="images/Rating_Icon.png" /> */}
-//             {[...Array(5)].map((_, index) => (
-//               <svg
-//                 key={index}
-//                 className={`h-6 w-6 ${index < mainProduct.rating ? "text-yellow-400" : "text-gray-300"}`}
-//                 fill="currentColor"
-//                 viewBox="0 0 20 20"
-//               >
-//                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-//               </svg>
-//             ))}
-//             <span className="text-sm font-normal text-[#5C5C5C]">
-//               {/* (2000+ Reviews) */}({Math.round(mainProduct.rating * 100)}{" "}
-//               Reviews)
-//             </span>
-//           </div>
-
-//           <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
-//             {/* Ergonomic ear cups with on-ear controls. Up to 22 hours of listening
-//         time. Apple W1 chip & Class 1 Wireless Bluetooth. */}
-//             {mainProduct?.description}
-//           </p>
-
-//           <p className="mb-[1.125rem] text-lg font-medium text-[#009393]">
-//             Price ${price?.toFixed(2)}
-//           </p>
-
-//           <div className="mb-8 flex justify-between">
-//             <ProductQuantity
-//               quantity={quantity}
-//               oneProductPriceRef={oneProductPriceRef}
-//               productsInStock={mainProduct?.stock}
-//               setQuantity={setQuantity}
-//               setPrice={setPrice}
-//             />
-
-//             <p className="text-base font-bold text-[#5C5C5C]">
-//               {mainProduct?.stock}{" "}
-//               <span className="font-medium">items left</span>
-//             </p>
-//           </div>
-
-//           <div className="flex gap-5">
-//             <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
-//               <img src="images/fi-sr-heart.png" alt="Heart Icon" />
-//             </button>
-
-//             <button className="w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393]">
-//               Add to cart
-//             </button>
-
-//             <button className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white">
-//               Buy now
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     )
-//   );
-// }
-
-// export default MainProduct;
-
-// import { useEffect, useState } from "react";
-// import ProductQuantity from "./ProductQuantity";
-// import { useQuery } from "@tanstack/react-query";
-// import { fetchMainProduct } from "../../services/fetchMainProduct";
-// import Spinner from "./Spinner";
-
-// function MainProduct() {
-//   const [quantity, setQuantity] = useState(1);
-//   const [basePrice, setBasePrice] = useState(0);
-//   const [currentImage, setCurrentImage] = useState("");
-
-//   const { data: mainProduct, isLoading } = useQuery({
-//     queryKey: ["search"],
-//     queryFn: fetchMainProduct,
-//   });
-
-//   // useEffect(() => {
-//   //   if (mainProduct?.price) {
-//   //     setBasePrice(mainProduct.price);
-//   //   }
-//   //   if (mainProduct?.images?.[0] && !currentImage) {
-//   //     setCurrentImage(mainProduct.images[0]);
-//   //   }
-//   // }, [mainProduct, currentImage]);
-
-//   // Effect for setting base price
-//   useEffect(() => {
-//     if (mainProduct?.price) {
-//       setBasePrice(mainProduct.price);
-//     }
-//   }, [mainProduct]);
-
-//   // Effect for setting initial image
-//   useEffect(() => {
-//     if (mainProduct?.images?.[0] && !currentImage) {
-//       setCurrentImage(mainProduct.images[0]);
-//     }
-//   }, [mainProduct, currentImage]);
-
-//   const totalPrice = basePrice * quantity;
-
-//   if (isLoading) return <Spinner />;
-
-//   return (
-//     mainProduct && (
-//       <div className="mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
-//         <div className="relative">
-//           <div className="carousel w-full">
-//             <img
-//               src={
-//                 currentImage || mainProduct?.images[0] || mainProduct?.thumbnail
-//               }
-//               alt="Main Product"
-//               className="min-w-44 max-w-44"
-//             />
-//             <div className="thumbnails mt-2 flex justify-center">
-//               {mainProduct?.images.map((image) => (
-//                 <button
-//                   key={image}
-//                   onClick={() => setCurrentImage(image)}
-//                   className={`rounded-md transition-all duration-200 ${currentImage === image ? "ring-2 ring-[#009393] ring-offset-2" : "hover:opacity-75"} `}
-//                 >
-//                   <img
-//                     src={image}
-//                     alt={mainProduct.title}
-//                     className="mr-2 w-12 cursor-pointer"
-//                   />
-//                 </button>
-//               ))}
-//             </div>
-//           </div>
-//         </div>
-
-//         <div>
-//           <h3 className="mb-1 text-xl font-medium text-black">
-//             {mainProduct?.title}
-//           </h3>
-
-//           <div className="mb-4 flex gap-2">
-//             {[...Array(5)].map((_, index) => (
-//               <svg
-//                 key={index}
-//                 className={`h-6 w-6 ${index < mainProduct.rating ? "text-yellow-400" : "text-gray-300"}`}
-//                 fill="currentColor"
-//                 viewBox="0 0 20 20"
-//               >
-//                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-//               </svg>
-//             ))}
-//             <span className="text-sm font-normal text-[#5C5C5C]">
-//               ({Math.round(mainProduct.rating * 100)} Reviews)
-//             </span>
-//           </div>
-
-//           <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
-//             {mainProduct?.description}
-//           </p>
-
-//           <p className="mb-[1.125rem] text-lg font-medium text-[#009393]">
-//             {/* Price ${price?.toFixed(2)} */}
-//             Price ${totalPrice.toFixed(2)}
-//           </p>
-
-//           <div className="mb-8 flex justify-between">
-//             {/* <ProductQuantity
-//               quantity={quantity}
-//               oneProductPriceRef={oneProductPriceRef}
-//               productsInStock={mainProduct?.stock}
-//               setQuantity={setQuantity}
-//               setPrice={setPrice}
-//             /> */}
-
-//             <ProductQuantity
-//               quantity={quantity}
-//               basePrice={basePrice}
-//               productsInStock={mainProduct?.stock}
-//               setQuantity={setQuantity}
-//             />
-
-//             <p className="text-base font-bold text-[#5C5C5C]">
-//               {mainProduct?.stock}{" "}
-//               <span className="font-medium">items left</span>
-//             </p>
-//           </div>
-
-//           <div className="flex gap-5">
-//             <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
-//               <img src="images/fi-sr-heart.png" alt="Heart Icon" />
-//             </button>
-
-//             <button className="w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393]">
-//               Add to cart
-//             </button>
-
-//             <button className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white">
-//               Buy now
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     )
-//   );
-// }
-
-// export default MainProduct;
-
-// import { useEffect, useMemo, useReducer } from "react";
-// import { useQuery } from "@tanstack/react-query";
-// import { fetchMainProduct } from "../../services/fetchMainProduct";
-// import Spinner from "./Spinner";
-// import { ProductAction, ProductState } from "src/types";
-// import { useQuantity } from "../../hooks/useQuantity";
-// import ProductQuantity from "./ProductQuantity";
-// import { useCartStore } from "../../store/cartStore";
-// import ErrorMessage from "./ErrorMessage";
-// import { toast } from "react-toastify";
-
-// interface MainProductProps {
-//   onLoad: () => void;
-// }
-
-// // // Define product state and actions
-
-// const initialState: ProductState = {
-//   quantity: 1,
-//   basePrice: 0,
-//   currentImage: "",
-// };
-
-// const productReducer = (
-//   state: ProductState,
-//   action: ProductAction,
-// ): ProductState => {
-//   switch (action.type) {
-//     case "SET_PRICE":
-//       return { ...state, basePrice: action.payload };
-//     case "SET_IMAGE":
-//       return { ...state, currentImage: action.payload };
-//     case "SET_QUANTITY":
-//       return { ...state, quantity: action.payload };
-//     case "RESET":
-//       return { ...initialState, ...action.payload };
-//     default:
-//       return state;
-//   }
-// };
-
-// function MainProduct({ onLoad }: MainProductProps) {
-//   const [mainProductState, dispatch] = useReducer(productReducer, initialState);
-
-//   const addToCart = useCartStore((state) => state.addToCart);
-//   const cart = useCartStore((state) => state.cart);
-
-//   console.log("cart", cart);
-
-//   const {
-//     data: mainProduct,
-//     isLoading,
-//     isSuccess,
-//     isError,
-//     error,
-//   } = useQuery({
-//     queryKey: ["mainProduct"],
-//     queryFn: fetchMainProduct,
-//     staleTime: 1000 * 1,
-//   });
-
-//   console.log("mainProductState", mainProductState);
-
-//   // Initialize price and image when mainProduct changes
-//   useEffect(() => {
-//     if (!mainProduct) return;
-
-//     if (mainProduct.price && mainProduct.price > 0) {
-//       dispatch({ type: "SET_PRICE", payload: mainProduct.price });
-//     }
-//     if (mainProduct.images?.[0] && !mainProductState.currentImage) {
-//       dispatch({ type: "SET_IMAGE", payload: mainProduct.images[0] });
-//     }
-//   }, [mainProduct, mainProductState.currentImage]);
-
-//   useEffect(() => {
-//     if (isSuccess) {
-//       onLoad();
-//     }
-//   }, [isSuccess, onLoad]);
-
-//   // Memoize total price
-//   const totalPrice = useMemo(
-//     () => mainProductState.basePrice * mainProductState.quantity,
-//     [mainProductState.basePrice, mainProductState.quantity],
-//   );
-
-//   // Use custom quantity hook with callback to update mainProductState
-//   const { quantity, increment, decrement, isMin, isMax } = useQuantity(
-//     mainProductState.quantity,
-//     mainProduct?.stock ?? 0,
-//     (newQuantity) => dispatch({ type: "SET_QUANTITY", payload: newQuantity }),
-//   );
-
-//   const isFull = cart.some(
-//     (item) =>
-//       item.id === mainProduct?.id && item.quantity + quantity > item.stock,
-//   );
-
-//   console.log(
-//     "isFullisFullisFullisFullisFullisFullisFullisFullisFullisFullisFull",
-//     isFull,
-//     quantity,
-//     mainProduct?.stock,
-//   );
-
-//   const handleAddToCart = () => {
-//     const result = addToCart({
-//       ...mainProduct,
-//       image: mainProductState.currentImage,
-//       quantity,
-//     });
-
-//     const message = result.success ? result.message : result.message;
-//     toast[result.success ? "success" : "error"](message);
-//   };
-
-//   if (mainProduct?.stock <= 0) {
-//     return <ErrorMessage message="This product is currently out of stock." />;
-//   }
-
-//   if (isLoading) return <Spinner />;
-
-//   // if (isError || !mainProduct || mainProduct.stock <= 0) {
-//   //   return (
-//   //     <div className="text-red-500">Error loading product or out of stock</div>
-//   //   );
-//   // }
-
-//   if (isError) return <ErrorMessage message={error.message} />;
-
-//   return (
-//     <div className="mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
-//       <div className="relative">
-//         <div className="carousel w-full">
-//           <img
-//             src={mainProductState.currentImage || mainProduct?.thumbnail}
-//             alt={mainProduct?.title}
-//             className="min-w-44 max-w-44"
-//           />
-//           <div className="thumbnails mt-2 flex justify-center">
-//             {mainProduct.images?.map((image: string) => (
-//               <button
-//                 key={image}
-//                 onClick={() => dispatch({ type: "SET_IMAGE", payload: image })}
-//                 className={`rounded-md transition-all duration-200 ${
-//                   mainProductState.currentImage === image
-//                     ? "ring-2 ring-[#009393] ring-offset-2"
-//                     : "hover:opacity-75"
-//                 }`}
-//               >
-//                 <img
-//                   src={image}
-//                   alt={mainProduct.title}
-//                   className="mr-2 w-12 cursor-pointer"
-//                 />
-//               </button>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-
-//       <div>
-//         <h3 className="mb-1 text-xl font-medium text-black">
-//           {mainProduct.title}
-//         </h3>
-
-//         <div className="mb-4 flex gap-2">
-//           {[...Array(5)].map((_, index) => (
-//             <svg
-//               key={index}
-//               className={`h-6 w-6 ${
-//                 index < mainProduct.rating ? "text-yellow-400" : "text-gray-300"
-//               }`}
-//               fill="currentColor"
-//               viewBox="0 0 20 20"
-//             >
-//               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-//             </svg>
-//             // <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 0 00.951-.69l1.07-3.292z" />
-//             // </svg>
-//           ))}
-//           <span className="text-sm font-normal text-[#5C5C5C]">
-//             ({Math.round(mainProduct.rating * 100)} Reviews)
-//           </span>
-//         </div>
-
-//         <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
-//           {mainProduct.description}
-//         </p>
-
-//         <p className="mb-[1.125rem] text-lg font-medium text-[#009393]">
-//           Price ${totalPrice.toFixed(2)}
-//         </p>
-
-//         <div className="mb-8 flex justify-between">
-//           <ProductQuantity
-//             quantity={quantity}
-//             increment={increment}
-//             decrement={decrement}
-//             isMin={isMin}
-//             isMax={isMax}
-//           />
-//           <p className="text-base font-bold text-[#5C5C5C]">
-//             {mainProduct.stock} <span className="font-medium">items left</span>
-//           </p>
-//         </div>
-
-//         <div className="flex gap-5">
-//           <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
-//             <img src="images/fi-sr-heart.png" alt="Heart Icon" />
-//           </button>
-//           <button
-//             className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${
-//               isFull ? "cursor-not-allowed opacity-50" : ""
-//             }`}
-//             // onClick={() => addToCart(mainProduct)}
-//             // onClick={() => {
-//             //   addToCart({
-//             //     ...mainProduct,
-//             //     image: mainProductState.currentImage,
-//             //     quantity: quantity,
-//             //   });
-//             //   // toast.error(
-//             //   //   `You can't add more than ${mainProduct.stock} items of this product`,
-//             //   // );
-//             // }}
-//             onClick={handleAddToCart}
-//             // disabled={isFull}
-//           >
-//             Add to cart
-//           </button>
-//           <button className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white">
-//             Buy now
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default MainProduct;
-
-// import { useEffect, useMemo, useReducer } from "react";
-// import { useQuery } from "@tanstack/react-query";
-// import { fetchMainProduct } from "../../services/fetchMainProduct";
-// import Spinner from "./Spinner";
-// import { ProductAction, ProductState } from "../../types";
-// import { useQuantity } from "../../hooks/useQuantity";
-// import { useCartStore } from "../../store/cartStore";
-// import ErrorMessage from "./ErrorMessage";
-// import {
-//   showAddToCartToast,
-//   showMaxStockToast,
-//   showWarningToast,
-// } from "../../helpers/toastHelpers";
-// import MainProductQuantity from "./MainProductQuantity";
 // import { useNavigate } from "react-router-dom";
-
-// interface MainProductProps {
-//   onLoad: () => void;
-// }
-
-// const initialState: ProductState = {
-//   id: 0,
-//   quantity: 1,
-//   basePrice: 0,
-//   currentImage: "",
-// };
-
-// const productReducer = (
-//   state: ProductState,
-//   action: ProductAction,
-// ): ProductState => {
-//   switch (action.type) {
-//     case "SET_ID":
-//       return { ...state, id: action.payload };
-//     case "SET_PRICE":
-//       return { ...state, basePrice: action.payload };
-//     case "SET_IMAGE":
-//       return { ...state, currentImage: action.payload };
-//     case "SET_QUANTITY":
-//       return { ...state, quantity: action.payload };
-//     case "RESET":
-//       return { ...initialState, ...action.payload };
-//     default:
-//       return state;
-//   }
-// };
-
-// function MainProduct({ onLoad }: MainProductProps) {
-//   const [mainProductState, dispatch] = useReducer(productReducer, initialState);
-
-//   const addToCart = useCartStore((state) => state.addToCart);
-//   const cart = useCartStore((state) => state.cart);
-//   const quantityInCart =
-//     cart.find((item) => item.id === mainProductState.id)?.quantity || 0;
-
-//   const {
-//     data: mainProduct,
-//     isLoading,
-//     isSuccess,
-//     isError,
-//     error,
-//   } = useQuery({
-//     queryKey: ["mainProduct"],
-//     queryFn: fetchMainProduct,
-//     staleTime: 1000 * 1,
-//   });
-
-//   const navigate = useNavigate();
-
-//   const handleBuyNow = () => {
-//     navigate("/checkout", {
-//       state: {
-//         mode: "buy-now",
-//         mainProductState,
-//       },
-//     });
-//   };
-
-//   console.log("mainProductState", mainProductState);
-
-//   // Initialize price and image when mainProduct changes
-//   useEffect(() => {
-//     if (!mainProduct) return;
-
-//     dispatch({ type: "SET_ID", payload: mainProduct.id });
-
-//     if (mainProduct.price && mainProduct.price > 0) {
-//       dispatch({ type: "SET_PRICE", payload: mainProduct.price });
-//     }
-//     if (mainProduct.images?.[0] && !mainProductState.currentImage) {
-//       dispatch({ type: "SET_IMAGE", payload: mainProduct.images[0] });
-//     }
-//   }, [mainProduct, mainProductState.currentImage]);
-
-//   useEffect(() => {
-//     if (isSuccess) {
-//       onLoad();
-//     }
-//   }, [isSuccess, onLoad]);
-
-//   // Memoize total price
-//   const totalPrice = useMemo(
-//     () => mainProductState.basePrice * mainProductState.quantity,
-//     [mainProductState.basePrice, mainProductState.quantity],
-//   );
-
-//   // Use custom quantity hook with callback to update mainProductState
-//   const { quantity, increment, decrement, isMin, isMax } = useQuantity(
-//     mainProductState.quantity,
-//     mainProduct?.stock ?? 0,
-//     (newQuantity) => dispatch({ type: "SET_QUANTITY", payload: newQuantity }),
-//   );
-
-//   // const quantityInCart =
-//   //   cart?.find((item) => item?.id === mainProduct.id)?.quantity || 0;
-
-//   const isFull = cart.some(
-//     (item) =>
-//       item.id === mainProduct?.id && item.quantity + quantity > item.stock,
-//   );
-
-//   console.log(
-//     "isFullisFullisFullisFullisFullisFullisFullisFullisFullisFullisFull",
-//     isFull,
-//     quantity,
-//     mainProduct?.stock,
-//   );
-
-//   const handleAddToCart = () => {
-//     if (!mainProduct) return;
-
-//     const result = addToCart({
-//       ...mainProduct,
-//       image: mainProductState.currentImage,
-//       quantity,
-//     });
-
-//     if (quantityInCart + quantity <= mainProduct.stock) {
-//       showAddToCartToast(
-//         result.success,
-//         result.message,
-//         mainProduct.title,
-//         mainProductState.currentImage,
-//         quantity,
-//       );
-//     } else if (quantityInCart >= mainProduct.stock) {
-//       showMaxStockToast(mainProduct.title);
-//     } else if (quantityInCart + quantity > mainProduct.stock) {
-//       showWarningToast(result.message);
-//     }
-
-//     // Create custom toast content
-//     // const customToastContent = (
-//     //   <CustomToast
-//     //     success={result.success}
-//     //     message={result.message}
-//     //     productImage={
-//     //       result.success
-//     //         ? mainProductState.currentImage || mainProduct.thumbnail
-//     //         : undefined
-//     //     }
-//     //     productTitle={mainProduct.title}
-//     //     quantity={quantity}
-//     //     // quantity={result.success ? quantity : undefined}
-//     //   />
-//     // );
-
-//     // if (result.success) {
-//     //   toast.success(customToastContent, {
-//     //     className: "bg-white shadow-lg border border-green-200",
-//     //   });
-//     // } else {
-//     //   toast.error(customToastContent, {
-//     //     className: "bg-white shadow-lg border border-red-200",
-//     //   });
-//     // }
-//   };
-
-//   if (mainProduct?.stock <= 0) {
-//     return <ErrorMessage message="This product is currently out of stock." />;
-//   }
-
-//   if (isLoading) return <Spinner />;
-
-//   if (isError) return <ErrorMessage message={error.message} />;
-
-//   return (
-//     <div className="mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
-//       <div className="relative">
-//         <div className="carousel w-full">
-//           <img
-//             src={mainProductState.currentImage || mainProduct?.thumbnail}
-//             alt={mainProduct?.title}
-//             className="min-w-44 max-w-44"
-//           />
-//           <div className="thumbnails mt-2 flex justify-center">
-//             {mainProduct.images?.map((image: string) => (
-//               <button
-//                 key={image}
-//                 onClick={() => dispatch({ type: "SET_IMAGE", payload: image })}
-//                 className={`rounded-md transition-all duration-200 ${
-//                   mainProductState.currentImage === image
-//                     ? "ring-2 ring-[#009393] ring-offset-2"
-//                     : "hover:opacity-75"
-//                 }`}
-//               >
-//                 <img
-//                   src={image}
-//                   alt={mainProduct.title}
-//                   className="mr-2 w-12 cursor-pointer"
-//                 />
-//               </button>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-
-//       <div>
-//         <h3 className="mb-1 text-xl font-medium text-black">
-//           {mainProduct.title}
-//         </h3>
-
-//         <div className="mb-4 flex gap-2">
-//           {[...Array(5)].map((_, index) => (
-//             <svg
-//               key={index}
-//               className={`h-6 w-6 ${
-//                 index < mainProduct.rating ? "text-yellow-400" : "text-gray-300"
-//               }`}
-//               fill="currentColor"
-//               viewBox="0 0 20 20"
-//             >
-//               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-//             </svg>
-//           ))}
-//           <span className="text-sm font-normal text-[#5C5C5C]">
-//             ({Math.round(mainProduct.rating * 100)} Reviews)
-//           </span>
-//         </div>
-
-//         <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
-//           {mainProduct.description}
-//         </p>
-
-//         <p className="mb-[1.125rem] text-lg font-medium text-[#009393]">
-//           Price ${totalPrice.toFixed(2)}
-//         </p>
-
-//         <div className="mb-8 flex justify-between">
-//           <MainProductQuantity
-//             quantity={quantity}
-//             increment={increment}
-//             decrement={decrement}
-//             isMin={isMin}
-//             isMax={isMax}
-//           />
-//           <p className="text-base font-bold text-[#5C5C5C]">
-//             {mainProduct.stock} <span className="font-medium">items left</span>
-//           </p>
-//         </div>
-
-//         <div className="flex gap-5">
-//           <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
-//             <img src="images/fi-sr-heart.png" alt="Heart Icon" />
-//           </button>
-//           <button
-//             className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${
-//               isFull ? "cursor-not-allowed opacity-50" : ""
-//             }`}
-//             onClick={handleAddToCart}
-//           >
-//             Add to cart
-//           </button>
-//           <button
-//             onClick={handleBuyNow}
-//             className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white"
-//           >
-//             Buy now
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default MainProduct;
-
-// import { useEffect, useMemo, useReducer } from "react";
-// import { useQuery } from "@tanstack/react-query";
 // import { fetchMainProduct } from "../../services/fetchMainProduct";
-// import Spinner from "./Spinner";
-// import { ProductAction, ProductState } from "../../types";
 // import { useCartStore } from "../../store/cartStore";
+// import { Product, CartItemType } from "../../types";
+// import Spinner from "./Spinner";
 // import ErrorMessage from "./ErrorMessage";
-// import {
-//   showAddToCartToast,
-//   showMaxStockToast,
-//   showWarningToast,
-// } from "../../helpers/toastHelpers";
 // import QuantityControl from "./QuantityControl";
-// import { useNavigate } from "react-router-dom";
-// import useNavigateToProduct from "../../hooks/useNavigateToProduct";
+// import {
+//   showAddToCartToast,
+//   showMaxStockToast,
+//   showWarningToast,
+// } from "../../helpers/toastHelpers";
+// import { getPriceDetails } from "../../helpers/getPriceDetails";
 
 // interface MainProductProps {
 //   onLoad: () => void;
 // }
 
-// const initialState: ProductState = {
-//   id: 0,
-//   quantity: 1,
-//   basePrice: 0,
-//   currentImage: "",
-// };
-
-// const productReducer = (
-//   state: ProductState,
-//   action: ProductAction,
-// ): ProductState => {
-//   switch (action.type) {
-//     case "SET_ID":
-//       return { ...state, id: action.payload };
-//     case "SET_PRICE":
-//       return { ...state, basePrice: action.payload };
-//     case "SET_IMAGE":
-//       return { ...state, currentImage: action.payload };
-//     case "SET_QUANTITY":
-//       return { ...state, quantity: action.payload };
-//     case "RESET":
-//       return { ...initialState, ...action.payload };
-//     default:
-//       return state;
-//   }
-// };
-
 // function MainProduct({ onLoad }: MainProductProps) {
-//   const [mainProductState, dispatch] = useReducer(productReducer, initialState);
+//   const navigate = useNavigate();
 //   const cart = useCartStore((state) => state.cart);
 //   const { addToCart } = useCartStore();
-//   const navigate = useNavigate();
-
-//   const navigateToProduct = useNavigateToProduct();
+//   const [quantity, setQuantity] = useState(1);
+//   const [currentImage, setCurrentImage] = useState<string>("");
 
 //   const {
-//     data: mainProduct,
+//     data: product,
 //     isLoading,
 //     isSuccess,
 //     isError,
 //     error,
-//   } = useQuery({
-//     queryKey: ["mainProduct", mainProductState?.id],
+//   } = useQuery<Product>({
+//     queryKey: ["mainProduct"],
 //     queryFn: fetchMainProduct,
-//     // staleTime: 1000 * 1,
+//     // staleTime: 1000 * 60,
 //   });
 
 //   const isFull = cart.some(
-//     (item) =>
-//       item.id === mainProduct?.id &&
-//       item.quantity + mainProductState.quantity > item.stock,
+//     (item) => item.id === product?.id && item.quantity + quantity > item.stock,
 //   );
 
-//   useEffect(() => {
-//     if (!mainProduct) return;
+//   const {
+//     hasDiscount = false,
+//     originalPrice = 0,
+//     discountedPrice = 0,
+//     savings = 0,
+//   } = product
+//     ? getPriceDetails(product)
+//     : {
+//         hasDiscount: false,
+//         originalPrice: 0,
+//         discountedPrice: 0,
+//         savings: 0,
+//       };
 
-//     dispatch({ type: "SET_ID", payload: mainProduct.id });
-//     if (mainProduct.price && mainProduct.price > 0) {
-//       dispatch({ type: "SET_PRICE", payload: mainProduct.price });
+//   // const {
+//   //   hasDiscount = false,
+//   //   originalPrice = 0,
+//   //   discountedPrice = 0,
+//   //   savings = 0,
+//   // } = getPriceDetails(product);
+
+//   useEffect(() => {
+//     if (product && !currentImage) {
+//       setCurrentImage(product.images?.[0] || product.thumbnail);
 //     }
-//     if (mainProduct.images?.[0] && !mainProductState.currentImage) {
-//       dispatch({ type: "SET_IMAGE", payload: mainProduct.images[0] });
-//     }
-//   }, [mainProduct, mainProductState.currentImage]);
+//   }, [product, currentImage]);
 
 //   useEffect(() => {
 //     if (isSuccess) {
@@ -1088,97 +75,96 @@
 //   }, [isSuccess, onLoad]);
 
 //   const totalPrice = useMemo(
-//     () => mainProductState.basePrice * mainProductState.quantity,
-//     [mainProductState.basePrice, mainProductState.quantity],
+//     () => (product?.price || 0) * quantity,
+//     [product, quantity],
 //   );
 
 //   const handleAddToCart = () => {
-//     if (!mainProduct) return;
+//     if (!product) return;
 
 //     const quantityInCart =
-//       useCartStore.getState().cart.find((item) => item.id === mainProduct.id)
+//       useCartStore.getState().cart.find((item) => item.id === product.id)
 //         ?.quantity || 0;
 
-//     if (quantityInCart + mainProductState.quantity <= mainProduct.stock) {
-//       const result = addToCart({
-//         ...mainProduct,
-//         image: mainProductState.currentImage || mainProduct.thumbnail,
-//         quantity: mainProductState.quantity,
-//       });
+//     if (quantityInCart + quantity <= product.stock) {
+//       const cartItem: CartItemType = {
+//         ...product,
+//         quantity,
+//         image: currentImage || product.thumbnail,
+//         discountedPrice: discountedPrice || originalPrice,
+//       };
+//       const result = addToCart(cartItem);
 //       showAddToCartToast(
 //         result.success,
 //         result.message,
-//         mainProduct.title,
-//         mainProductState.currentImage || mainProduct.thumbnail,
-//         mainProductState.quantity,
+//         product.title,
+//         currentImage || product.thumbnail,
+//         quantity,
 //       );
-//     } else if (quantityInCart >= mainProduct.stock) {
-//       showMaxStockToast(mainProduct.title);
+//     } else if (quantityInCart >= product.stock) {
+//       showMaxStockToast(product.title);
 //     } else {
 //       showWarningToast(
-//         `Only ${mainProduct.stock - quantityInCart} more items available`,
+//         `Only ${product.stock - quantityInCart} more items available`,
 //       );
 //     }
 //   };
 
 //   const handleBuyNow = () => {
-//     if (!mainProduct) return;
+//     if (!product) return;
 
+//     const cartItem: CartItemType = {
+//       ...product,
+//       quantity,
+//       image: currentImage || product.thumbnail,
+//       discountedPrice: discountedPrice || originalPrice,
+//     };
 //     navigate("/checkout", {
-//       state: {
-//         mode: "buy-now",
-//         product: {
-//           id: mainProduct.id,
-//           title: mainProduct.title,
-//           price: mainProduct.price,
-//           quantity: mainProductState.quantity,
-//           image: mainProductState.currentImage || mainProduct.thumbnail,
-//           stock: mainProduct.stock,
-//         },
-//       },
+//       state: { mode: "buy-now", product: cartItem },
 //     });
 //   };
 
-//   if (mainProduct?.stock <= 0) {
-//     return <ErrorMessage message="This product is currently out of stock." />;
+//   if (isLoading) return <Spinner />;
+
+//   if (!product) {
+//     return <ErrorMessage message="Product not found." />;
 //   }
 
-//   if (isLoading) return <Spinner />;
+//   if (product.stock <= 0) {
+//     return <ErrorMessage message="This product is currently out of stock." />;
+//   }
 
 //   if (isError) return <ErrorMessage message={error.message} />;
 
 //   return (
-//     <div
-//       onClick={(e) => {
-//         e.stopPropagation();
-//         navigateToProduct(mainProduct);
-//       }}
-//       className="mb-8 flex max-w-[45.5rem] cursor-pointer items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3"
-//     >
+//     <div className="relative mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
+//       {hasDiscount && (
+//         <span className="absolute right-4 top-8 rounded-full bg-red-500 px-2 py-1 text-base font-medium text-white">
+//           Save ${savings.toFixed(2)}
+//         </span>
+//       )}
+
 //       <div className="relative">
 //         <div className="carousel w-full">
 //           <img
-//             src={mainProductState.currentImage || mainProduct?.thumbnail}
-//             alt={mainProduct?.title}
+//             src={currentImage || product?.thumbnail}
+//             alt={product?.title}
 //             className="min-w-44 max-w-44"
 //           />
 //           <div className="thumbnails mt-2 flex justify-center">
-//             {mainProduct.images?.map((image: string) => (
+//             {product?.images?.map((image: string) => (
 //               <button
 //                 key={image}
-//                 onMouseEnter={() =>
-//                   dispatch({ type: "SET_IMAGE", payload: image })
-//                 }
-//                 // onClick={() => dispatch({ type: "SET_IMAGE", payload: image })}
+//                 onClick={() => setCurrentImage(image)}
 //                 className={`rounded-md transition-all duration-200 ${
-//                   mainProductState.currentImage === image
+//                   currentImage === image
 //                     ? "ring-2 ring-[#009393] ring-offset-2"
 //                     : "hover:opacity-75"
 //                 }`}
 //               >
 //                 <img
 //                   src={image}
-//                   alt={mainProduct.title}
+//                   alt={product.title}
 //                   className="mr-2 w-12 cursor-pointer"
 //                 />
 //               </button>
@@ -1189,14 +175,16 @@
 
 //       <div>
 //         <h3 className="mb-1 text-xl font-medium text-black">
-//           {mainProduct.title}
+//           {product?.title}
 //         </h3>
 //         <div className="mb-4 flex gap-2">
 //           {[...Array(5)].map((_, index) => (
 //             <svg
 //               key={index}
 //               className={`h-6 w-6 ${
-//                 index < mainProduct.rating ? "text-yellow-400" : "text-gray-300"
+//                 index < (product?.rating || 0)
+//                   ? "text-yellow-400"
+//                   : "text-gray-300"
 //               }`}
 //               fill="currentColor"
 //               viewBox="0 0 20 20"
@@ -1206,47 +194,673 @@
 //             </svg>
 //           ))}
 //           <span className="text-sm font-normal text-[#5C5C5C]">
-//             ({Math.round(mainProduct.rating * 100)} Reviews)
+//             ({Math.round((product?.rating || 0) * 100)} Reviews)
 //           </span>
 //         </div>
 //         <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
-//           {mainProduct.description}
+//           {product?.description}
 //         </p>
-//         <p className="mb-[1.125rem] text-lg font-medium text-[#009393]">
-//           Price ${totalPrice.toFixed(2)}
-//         </p>
+//         <div className="mb-[1.125rem] flex items-center gap-2 text-lg font-medium">
+//           <p className="text-xl">
+//             Price{" "}
+//             {hasDiscount && (
+//               <span className="ml-0.5 font-bold text-[#009393]">
+//                 ${discountedPrice}
+//               </span>
+//             )}
+//           </p>
+
+//           <span
+//             className={`ml-1 text-lg font-normal text-[#5C5C5C] ${hasDiscount && "line-through"}`}
+//           >
+//             ${originalPrice.toFixed(2)}
+//           </span>
+//         </div>
+
 //         <div className="mb-8 flex justify-between">
 //           <QuantityControl
 //             product={{
-//               ...mainProduct,
-//               quantity: mainProductState.quantity,
-//               image: mainProductState.currentImage || mainProduct.thumbnail,
+//               ...product,
+//               quantity,
+//               image: currentImage,
+//               discountedPrice: discountedPrice || originalPrice,
 //             }}
 //             mode="buy-now"
-//             onUpdateBuyNow={(qty) =>
-//               dispatch({ type: "SET_QUANTITY", payload: qty })
-//             }
-//             // onRemoveBuyNow={() =>
-//             //   dispatch({ type: "SET_QUANTITY", payload: 1 })
-//             // }
+//             onUpdateBuyNow={setQuantity}
+//             onRemoveBuyNow={() => setQuantity(1)}
 //           />
 //           <p className="text-base font-bold text-[#5C5C5C]">
-//             {mainProduct.stock} <span className="font-medium">items left</span>
+//             {product.stock} <span className="font-medium">items left</span>
 //           </p>
 //         </div>
+
+//         {/* <div className="mb-8 flex justify-between">
+//           <QuantityControl
+//             product={product && product}
+//             mode="buy-now"
+//             onUpdateBuyNow={setQuantity}
+//             onRemoveBuyNow={() => setQuantity(1)}
+//           />
+//           <p className="text-base font-bold text-[#5C5C5C]">
+//             {product?.stock} <span className="font-medium">items left</span>
+//           </p>
+//         </div> */}
 //         <div className="flex gap-5">
 //           <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
 //             <img src="images/fi-sr-heart.png" alt="Heart Icon" />
 //           </button>
 //           <button
-//             className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${isFull && "cursor-not-allowed opacity-50"} `}
+//             className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${isFull && "cursor-not-allowed opacity-50"}`}
 //             onClick={handleAddToCart}
 //           >
 //             Add to cart
 //           </button>
 //           <button
 //             onClick={handleBuyNow}
-//             className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white"
+//             className={`w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white`}
+//           >
+//             Buy now
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default MainProduct;
+
+// import { useEffect, useMemo, useState } from "react";
+// import { useQuery } from "@tanstack/react-query";
+// import { useNavigate } from "react-router-dom";
+// import { fetchMainProduct } from "../../services/fetchMainProduct";
+// import { useCartStore } from "../../store/cartStore";
+// import { Product, CartItemType } from "../../types";
+// import Spinner from "./Spinner";
+// import ErrorMessage from "./ErrorMessage";
+// import QuantityControl from "./QuantityControl";
+// import {
+//   showAddToCartToast,
+//   showMaxStockToast,
+//   showWarningToast,
+// } from "../../helpers/toastHelpers";
+// import { getPriceDetails } from "../../helpers/getPriceDetails";
+// import { useWishlistStore } from "../../store/wishlistStore";
+
+// interface MainProductProps {
+//   onLoad: () => void;
+// }
+
+// function MainProduct({ onLoad }: MainProductProps) {
+//   const navigate = useNavigate();
+//   const cart = useCartStore((state) => state.cart);
+//   const { addToCart, setBuyNowProduct } = useCartStore();
+//   const { addToWishlist } = useWishlistStore();
+//   const [quantity, setQuantity] = useState(1);
+//   const [currentImage, setCurrentImage] = useState<string>("");
+
+//   const {
+//     data: product,
+//     isLoading,
+//     isSuccess,
+//     isError,
+//     error,
+//   } = useQuery<Product>({
+//     queryKey: ["mainProduct"],
+//     queryFn: fetchMainProduct,
+//   });
+
+//   const isFull = cart.some(
+//     (item) => item.id === product?.id && item.quantity + quantity > item.stock,
+//   );
+
+//   const {
+//     hasDiscount = false,
+//     originalPrice = 0,
+//     discountedPrice = 0,
+//     savings = 0,
+//   } = product
+//     ? getPriceDetails(product)
+//     : {
+//         hasDiscount: false,
+//         originalPrice: 0,
+//         discountedPrice: 0,
+//         savings: 0,
+//       };
+
+//   useEffect(() => {
+//     if (product && !currentImage) {
+//       setCurrentImage(product.images?.[0] || product.thumbnail);
+//     }
+//   }, [product, currentImage]);
+
+//   useEffect(() => {
+//     if (isSuccess) {
+//       onLoad();
+//     }
+//   }, [isSuccess, onLoad]);
+
+//   const totalPrice = useMemo(
+//     () => (product?.price || 0) * quantity,
+//     [product, quantity],
+//   );
+
+//   const handleAddToCart = () => {
+//     if (!product) return;
+
+//     const quantityInCart =
+//       useCartStore.getState().cart.find((item) => item.id === product.id)
+//         ?.quantity || 0;
+
+//     if (quantityInCart + quantity <= product.stock) {
+//       const cartItem: CartItemType = {
+//         ...product,
+//         quantity,
+//         image: currentImage || product.thumbnail,
+//         discountedPrice: discountedPrice || originalPrice,
+//       };
+//       const result = addToCart(cartItem);
+//       showAddToCartToast(
+//         result.success,
+//         result.message,
+//         product.title,
+//         currentImage || product.thumbnail,
+//         quantity,
+//       );
+//     } else if (quantityInCart >= product.stock) {
+//       showMaxStockToast(product.title);
+//     } else {
+//       showWarningToast(
+//         `Only ${product.stock - quantityInCart} more items available`,
+//       );
+//     }
+//   };
+
+//   const handleBuyNow = () => {
+//     if (!product) return;
+
+//     const cartItem: CartItemType = {
+//       ...product,
+//       quantity,
+//       image: currentImage || product.thumbnail,
+//       discountedPrice: discountedPrice || originalPrice,
+//     };
+
+//     setBuyNowProduct(cartItem);
+
+//     navigate("/checkout?mode=buy-now");
+//   };
+
+//   const handleAddToWishlist = () => {
+//     if (!product) return;
+//     const wishlistItem: CartItemType = {
+//       ...product,
+//       quantity: 1, // Default quantity for wishlist
+//       image: currentImage || product.thumbnail,
+//       discountedPrice: discountedPrice || originalPrice,
+//     };
+//     addToWishlist(wishlistItem); // Hypothetical action
+
+//     // showAddToCartToast(`${product.title} added to wishlist!`);
+//   };
+
+//   if (isLoading) return <Spinner />;
+
+//   if (!product) {
+//     return <ErrorMessage message="Product not found." />;
+//   }
+
+//   if (product.stock <= 0) {
+//     return <ErrorMessage message="This product is currently out of stock." />;
+//   }
+
+//   if (isError) return <ErrorMessage message={error.message} />;
+
+//   return (
+//     <div className="relative mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
+//       {hasDiscount && (
+//         <span className="absolute right-4 top-8 rounded-full bg-red-500 px-2 py-1 text-base font-medium text-white">
+//           Save ${savings.toFixed(2)}
+//         </span>
+//       )}
+
+//       <div className="relative">
+//         <div className="carousel w-full">
+//           <img
+//             src={currentImage || product?.thumbnail}
+//             alt={product?.title}
+//             className="min-w-44 max-w-44"
+//           />
+//           <div className="thumbnails mt-2 flex justify-center">
+//             {product?.images?.map((image: string) => (
+//               <button
+//                 key={image}
+//                 onClick={() => setCurrentImage(image)}
+//                 className={`rounded-md transition-all duration-200 ${
+//                   currentImage === image
+//                     ? "ring-2 ring-[#009393] ring-offset-2"
+//                     : "hover:opacity-75"
+//                 }`}
+//               >
+//                 <img
+//                   src={image}
+//                   alt={product.title}
+//                   className="mr-2 w-12 cursor-pointer"
+//                 />
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+
+//       <div>
+//         <h3 className="mb-1 text-xl font-medium text-black">
+//           {product?.title}
+//         </h3>
+//         <div className="mb-4 flex gap-2">
+//           {[...Array(5)].map((_, index) => (
+//             <svg
+//               key={index}
+//               className={`h-6 w-6 ${
+//                 index < (product?.rating || 0)
+//                   ? "text-yellow-400"
+//                   : "text-gray-300"
+//               }`}
+//               fill="currentColor"
+//               viewBox="0 0 20 20"
+//             >
+//               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+//             </svg>
+//           ))}
+//           <span className="text-sm font-normal text-[#5C5C5C]">
+//             ({Math.round((product?.rating || 0) * 100)} Reviews)
+//           </span>
+//         </div>
+//         <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
+//           {product?.description}
+//         </p>
+//         <div className="mb-[1.125rem] flex items-center gap-2 text-lg font-medium">
+//           <p className="text-xl">
+//             Price{" "}
+//             {hasDiscount && (
+//               <span className="ml-0.5 font-bold text-[#009393]">
+//                 ${discountedPrice}
+//               </span>
+//             )}
+//           </p>
+
+//           <span
+//             className={`ml-1 text-lg font-normal text-[#5C5C5C] ${hasDiscount && "line-through"}`}
+//           >
+//             ${originalPrice.toFixed(2)}
+//           </span>
+//         </div>
+
+//         <div className="mb-8 flex justify-between">
+//           <QuantityControl
+//             product={{
+//               ...product,
+//               quantity,
+//               image: currentImage,
+//               discountedPrice: discountedPrice || originalPrice,
+//             }}
+//             mode="buy-now"
+//             onUpdateBuyNow={setQuantity}
+//             onRemoveBuyNow={() => setQuantity(1)}
+//           />
+//           <p className="text-base font-bold text-[#5C5C5C]">
+//             {product.stock} <span className="font-medium">items left</span>
+//           </p>
+//         </div>
+
+//         <div className="flex gap-5">
+//           <button
+//             className="rounded-xl border-2 border-[#009393] px-4 py-3"
+//             onClick={handleAddToWishlist}
+//           >
+//             <img src="images/fi-sr-heart.png" alt="Heart Icon" />
+//           </button>
+//           <button
+//             className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${isFull && "cursor-not-allowed opacity-50"}`}
+//             onClick={handleAddToCart}
+//           >
+//             Add to cart
+//           </button>
+//           <button
+//             onClick={handleBuyNow}
+//             className={`w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white`}
+//           >
+//             Buy now
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default MainProduct;
+
+// import { useEffect, useMemo, useState } from "react";
+// import { useQuery } from "@tanstack/react-query";
+// import { useNavigate } from "react-router-dom";
+// import { Eye } from "lucide-react";
+// import { fetchMainProduct } from "../../services/fetchMainProduct";
+// import { useCartStore } from "../../store/cartStore";
+// import { Product, CartItemType } from "../../types";
+// import Spinner from "./Spinner";
+// import ErrorMessage from "./ErrorMessage";
+// import QuantityControl from "./QuantityControl";
+// import {
+//   showAddToCartToast,
+//   showMaxStockToast,
+//   showWarningToast,
+// } from "../../helpers/toastHelpers";
+// import { getPriceDetails } from "../../helpers/getPriceDetails";
+
+// interface MainProductProps {
+//   onLoad: () => void;
+// }
+
+// function MainProduct({ onLoad }: MainProductProps) {
+//   const navigate = useNavigate();
+//   const cart = useCartStore((state) => state.cart);
+//   const { addToCart, setBuyNowProduct } = useCartStore();
+//   const [quantity, setQuantity] = useState(1);
+//   const [currentImage, setCurrentImage] = useState<string>("");
+
+//   const {
+//     data: product,
+//     isLoading,
+//     isSuccess,
+//     isError,
+//     error,
+//   } = useQuery<Product>({
+//     queryKey: ["mainProduct"],
+//     queryFn: fetchMainProduct,
+//   });
+
+//   const isFull = cart.some(
+//     (item) => item.id === product?.id && item.quantity + quantity > item.stock,
+//   );
+
+//   const {
+//     hasDiscount = false,
+//     originalPrice = 0,
+//     discountedPrice = 0,
+//     savings = 0,
+//   } = product
+//     ? getPriceDetails(product)
+//     : {
+//         hasDiscount: false,
+//         originalPrice: 0,
+//         discountedPrice: 0,
+//         savings: 0,
+//       };
+
+//   useEffect(() => {
+//     if (product && !currentImage) {
+//       setCurrentImage(product.images?.[0] || product.thumbnail);
+//     }
+//   }, [product, currentImage]);
+
+//   useEffect(() => {
+//     if (isSuccess) {
+//       onLoad();
+//     }
+//   }, [isSuccess, onLoad]);
+
+//   const totalPrice = useMemo(
+//     () => (product?.price || 0) * quantity,
+//     [product, quantity],
+//   );
+
+//   const handleAddToCart = () => {
+//     if (!product) return;
+
+//     const quantityInCart =
+//       useCartStore.getState().cart.find((item) => item.id === product.id)
+//         ?.quantity || 0;
+
+//     if (quantityInCart + quantity <= product.stock) {
+//       const cartItem: CartItemType = {
+//         ...product,
+//         quantity,
+//         image: currentImage || product.thumbnail,
+//         discountedPrice: discountedPrice || originalPrice,
+//       };
+//       const result = addToCart(cartItem);
+//       showAddToCartToast(
+//         result.success,
+//         result.message,
+//         product.title,
+//         currentImage || product.thumbnail,
+//         quantity,
+//       );
+//     } else if (quantityInCart >= product.stock) {
+//       showMaxStockToast(product.title);
+//     } else {
+//       showWarningToast(
+//         `Only ${product.stock - quantityInCart} more items available`,
+//       );
+//     }
+//   };
+
+//   const handleBuyNow = () => {
+//     if (!product) return;
+
+//     const cartItem: CartItemType = {
+//       ...product,
+//       quantity,
+//       image: currentImage || product.thumbnail,
+//       discountedPrice: discountedPrice || originalPrice,
+//     };
+
+//     // Set buy-now product in cart store
+//     setBuyNowProduct(cartItem);
+
+//     // Navigate with URL parameter
+//     navigate("/checkout?mode=buy-now");
+//   };
+
+//   const handleViewDetails = () => {
+//     if (!product) return;
+//     navigate(`/product/${product.id}`);
+//   };
+//   if (isLoading) return <Spinner />;
+
+//   if (!product) {
+//     return <ErrorMessage message="Product not found." />;
+//   }
+
+//   if (product.stock <= 0) {
+//     return <ErrorMessage message="This product is currently out of stock." />;
+//   }
+
+//   if (isError) return <ErrorMessage message={error.message} />;
+
+//   return (
+//     <div className="relative mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
+//       {hasDiscount && (
+//         <span className="absolute right-4 top-8 rounded-full bg-red-500 px-2 py-1 text-base font-medium text-white">
+//           Save ${savings.toFixed(2)}
+//         </span>
+//       )}
+
+//       <div className="group relative">
+//         <div className="carousel w-full">
+//           <img
+//             src={currentImage || product?.thumbnail}
+//             alt={product?.title}
+//             className="min-w-44 max-w-44"
+//           />
+
+//           {/* View Info Button */}
+//           <button
+//             onClick={() => navigate(`/product/${product.title}-${product.id}`)} // or use slugify + navigateToProduct
+//             title="View product details"
+//             className="absolute right-1 top-1 hidden rounded-full bg-white/90 p-1 text-[#009393] shadow-md transition-all hover:bg-[#009393] hover:text-white group-hover:block"
+//           >
+//             <Eye className="h-5 w-5" />
+//           </button>
+//           <div className="thumbnails mt-2 flex justify-center">
+//             {product?.images?.map((image: string) => (
+//               <button
+//                 key={image}
+//                 onClick={() => setCurrentImage(image)}
+//                 className={`rounded-md transition-all duration-200 ${
+//                   currentImage === image
+//                     ? "ring-2 ring-[#009393] ring-offset-2"
+//                     : "hover:opacity-75"
+//                 }`}
+//               >
+//                 <img
+//                   src={image}
+//                   alt={product.title}
+//                   className="mr-2 w-12 cursor-pointer"
+//                 />
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+
+//       <div>
+//         <h3 className="mb-1 text-xl font-medium text-black">
+//           {product?.title}
+//         </h3>
+
+//         {/* View Details Button - positioned elegantly next to the title */}
+//         <div className="mb-4 flex items-center justify-between">
+//           <div className="flex gap-2">
+//             {[...Array(5)].map((_, index) => (
+//               <svg
+//                 key={index}
+//                 className={`h-6 w-6 ${
+//                   index < (product?.rating || 0)
+//                     ? "text-yellow-400"
+//                     : "text-gray-300"
+//                 }`}
+//                 fill="currentColor"
+//                 viewBox="0 0 20 20"
+//               >
+//                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+//               </svg>
+//             ))}
+//             <span className="text-sm font-normal text-[#5C5C5C]">
+//               ({Math.round((product?.rating || 0) * 100)} Reviews)
+//             </span>
+//           </div>
+
+//           <button
+//             onClick={handleViewDetails}
+//             className="group flex items-center gap-2 rounded-lg border border-[#009393] px-3 py-1.5 text-sm font-medium text-[#009393] transition-all duration-200 hover:bg-[#009393] hover:text-white"
+//             title="View product details"
+//           >
+//             <Eye className="h-4 w-4 transition-transform group-hover:scale-110" />
+//             <span>Details</span>
+//           </button>
+//         </div>
+
+//         <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
+//           {product?.description}
+//         </p>
+//         <div className="mb-[1.125rem] flex items-center gap-2 text-lg font-medium">
+//           <p className="text-xl">
+//             Price{" "}
+//             {hasDiscount && (
+//               <span className="ml-0.5 font-bold text-[#009393]">
+//                 ${discountedPrice}
+//               </span>
+//             )}
+//           </p>
+
+//           <span
+//             className={`ml-1 text-lg font-normal text-[#5C5C5C] ${hasDiscount && "line-through"}`}
+//           >
+//             ${originalPrice.toFixed(2)}
+//           </span>
+//         </div>
+
+//         <div className="mb-8 flex justify-between">
+//           <QuantityControl
+//             product={{
+//               ...product,
+//               quantity,
+//               image: currentImage,
+//               discountedPrice: discountedPrice || originalPrice,
+//             }}
+//             mode="buy-now"
+//             onUpdateBuyNow={setQuantity}
+//             onRemoveBuyNow={() => setQuantity(1)}
+//           />
+//           <p className="text-base font-bold text-[#5C5C5C]">
+//             {product.stock} <span className="font-medium">items left</span>
+//           </p>
+//         </div>
+
+//         {/* <div className="flex gap-5">
+//           <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
+//             <img src="images/fi-sr-heart.png" alt="Heart Icon" />
+//           </button>
+//           <button
+//             className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${isFull && "cursor-not-allowed opacity-50"}`}
+//             onClick={handleAddToCart}
+//           >
+//             Add to cart
+//           </button>
+//           <button
+//             onClick={handleBuyNow}
+//             className={`w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white`}
+//           >
+//             Buy now
+//           </button>
+//         </div> */}
+
+//         <div className="flex gap-4">
+//           {/* Favorite */}
+//           <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
+//             <img src="images/fi-sr-heart.png" alt="Heart Icon" />
+//           </button>
+
+//           {/* Add to cart */}
+//           <button
+//             className={`rounded-lg border-2 border-[#009393] px-4 py-2 font-medium text-[#009393] ${
+//               isFull && "cursor-not-allowed opacity-50"
+//             }`}
+//             // className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${
+//             //   isFull && "cursor-not-allowed opacity-50"
+//             // }`}
+//             onClick={handleAddToCart}
+//           >
+//             Add to cart
+//           </button>
+
+//           {/* View Details */}
+//           {/* <button
+//             onClick={() =>
+//               navigate(`/product/${slugify(product.title)}-${product.id}`)
+//             }
+//             className="w-[8.125rem] rounded-lg border-2 border-gray-300 py-2 font-medium text-gray-700 transition-colors hover:border-[#009393] hover:text-[#009393]"
+//           >
+//             <div className="flex items-center justify-center gap-1">
+//               <Eye className="h-4 w-4" />
+//               View
+//             </div>
+//           </button> */}
+
+//           <button
+//             onClick={handleViewDetails}
+//             className="group flex items-center gap-2 rounded-lg border border-[#009393] px-3 py-1.5 text-sm font-medium text-[#009393] transition-all duration-200 hover:bg-[#009393] hover:text-white"
+//             title="View product details"
+//           >
+//             <Eye className="h-4 w-4 transition-transform group-hover:scale-110" />
+//             <span>Details</span>
+//           </button>
+
+//           {/* Buy now */}
+//           <button
+//             onClick={handleBuyNow}
+//             className="rounded-lg bg-[#009393] px-6 py-2 font-medium text-white"
+//             // className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white"
 //           >
 //             Buy now
 //           </button>
@@ -1261,6 +875,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { Eye, Heart, ShoppingCart } from "lucide-react";
 import { fetchMainProduct } from "../../services/fetchMainProduct";
 import { useCartStore } from "../../store/cartStore";
 import { Product, CartItemType } from "../../types";
@@ -1273,6 +888,8 @@ import {
   showWarningToast,
 } from "../../helpers/toastHelpers";
 import { getPriceDetails } from "../../helpers/getPriceDetails";
+import useNavigateToProduct from "../../hooks/useNavigateToProduct";
+import { renderStars } from "../../helpers/renderStars";
 
 interface MainProductProps {
   onLoad: () => void;
@@ -1281,9 +898,10 @@ interface MainProductProps {
 function MainProduct({ onLoad }: MainProductProps) {
   const navigate = useNavigate();
   const cart = useCartStore((state) => state.cart);
-  const { addToCart } = useCartStore();
+  const { addToCart, setBuyNowProduct } = useCartStore();
   const [quantity, setQuantity] = useState(1);
   const [currentImage, setCurrentImage] = useState<string>("");
+  const navigateToProduct = useNavigateToProduct();
 
   const {
     data: product,
@@ -1294,7 +912,6 @@ function MainProduct({ onLoad }: MainProductProps) {
   } = useQuery<Product>({
     queryKey: ["mainProduct"],
     queryFn: fetchMainProduct,
-    // staleTime: 1000 * 60,
   });
 
   const isFull = cart.some(
@@ -1314,13 +931,6 @@ function MainProduct({ onLoad }: MainProductProps) {
         discountedPrice: 0,
         savings: 0,
       };
-
-  // const {
-  //   hasDiscount = false,
-  //   originalPrice = 0,
-  //   discountedPrice = 0,
-  //   savings = 0,
-  // } = getPriceDetails(product);
 
   useEffect(() => {
     if (product && !currentImage) {
@@ -1379,11 +989,21 @@ function MainProduct({ onLoad }: MainProductProps) {
       image: currentImage || product.thumbnail,
       discountedPrice: discountedPrice || originalPrice,
     };
-    navigate("/checkout", {
-      state: { mode: "buy-now", product: cartItem },
-    });
+
+    // Set buy-now product in cart store
+    setBuyNowProduct(cartItem);
+
+    // Navigate with URL parameter
+    navigate("/checkout?mode=buy-now");
   };
 
+  const handleViewDetails = (product: Product) => {
+    if (!product) return;
+
+    navigateToProduct(product);
+
+    // navigate(`/product/${product.id}`);
+  };
   if (isLoading) return <Spinner />;
 
   if (!product) {
@@ -1396,23 +1016,198 @@ function MainProduct({ onLoad }: MainProductProps) {
 
   if (isError) return <ErrorMessage message={error.message} />;
 
+  // return (
+  //   // <div className="relative mx-auto mb-8 bg-white p-4 xl:mx-0 xl:mt-20 xl:flex xl:w-full xl:max-w-none xl:items-center xl:gap-6 xl:pb-6 xl:pl-7 xl:pr-3 xl:pt-3 2xl:max-w-[45.5rem] 2xl:gap-12">
+  //   <div className="min-w-md relative mx-auto mb-8 mt-20 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3 lg:mx-0 lg:mt-0">
+  //     {hasDiscount && (
+  //       // <div className="absolute right-4 top-8 rounded-full bg-red-500 px-2 py-1 text-base font-medium text-white">
+  //       <div className="absolute right-3 top-3 z-10 animate-pulse rounded-full bg-gradient-to-r from-red-500 to-red-600 px-2 py-1 text-xs font-bold text-white shadow-lg md:text-sm">
+  //         Save ${savings.toFixed(2)}
+  //       </div>
+  //     )}
+
+  //     <div className="relative">
+  //       <div className="carousel w-full">
+  //         <img
+  //           src={currentImage || product?.thumbnail}
+  //           alt={product?.title}
+  //           className="max-w-32 md:min-w-44 md:max-w-44"
+  //         />
+  //         <div className="thumbnails mt-2 flex justify-center">
+  //           {product?.images?.map((image: string) => (
+  //             <button
+  //               key={image}
+  //               onClick={() => setCurrentImage(image)}
+  //               className={`rounded-md transition-all duration-200 ${
+  //                 currentImage === image
+  //                   ? "ring-2 ring-[#009393] ring-offset-2"
+  //                   : "hover:opacity-75"
+  //               }`}
+  //             >
+  //               <img
+  //                 src={image}
+  //                 alt={product.title}
+  //                 className="mr-2 w-12 cursor-pointer"
+  //               />
+  //             </button>
+  //           ))}
+  //         </div>
+  //       </div>
+  //     </div>
+
+  //     <div>
+  //       <h3 className="mb-1 text-xl font-medium text-black">
+  //         {product?.title}
+  //       </h3>
+
+  //       <div className="mb-4 flex items-center gap-3">
+  //         {/* {[...Array(5)].map((_, index) => (
+  //           <svg
+  //             key={index}
+  //             className={`h-6 w-6 ${
+  //               index < Math.floor(product?.rating)
+  //                 ? "fill-current text-yellow-400"
+  //                 : index < product?.rating
+  //                   ? "fill-current text-yellow-400 opacity-50"
+  //                   : "text-gray-300"
+  //               // index < (product?.rating || 0)
+  //               //   ? "text-yellow-400"
+  //               //   : "text-gray-300"
+  //             }`}
+  //             fill="currentColor"
+  //             viewBox="0 0 20 20"
+  //           >
+  //             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+  //           </svg>
+  //         ))} */}
+  //         <div className="flex items-center gap-1">
+  //           {renderStars(product.rating, 5)}
+  //         </div>
+  //         <span className="text-lg font-semibold text-gray-900">
+  //           {product.rating}
+  //         </span>
+
+  //         <span className="text-sm text-gray-500">
+  //           {/* ({Math.round((product?.rating || 0) * 100)} Reviews) */}(
+  //           {product.reviews?.length || 0} reviews)
+  //         </span>
+  //       </div>
+
+  //       <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
+  //         {product?.description}
+  //       </p>
+  //       <div className="mb-[1.125rem] flex items-center gap-2 text-lg font-medium">
+  //         <p className="text-xl">
+  //           Price{" "}
+  //           {hasDiscount && (
+  //             <span className="ml-0.5 font-bold text-[#009393]">
+  //               ${discountedPrice}
+  //             </span>
+  //           )}
+  //         </p>
+
+  //         <span
+  //           className={`ml-1 text-lg font-normal text-[#5C5C5C] ${hasDiscount && "line-through"}`}
+  //         >
+  //           ${originalPrice.toFixed(2)}
+  //         </span>
+  //       </div>
+
+  //       <div className="mb-8 flex justify-between">
+  //         <QuantityControl
+  //           product={{
+  //             ...product,
+  //             quantity,
+  //             image: currentImage,
+  //             discountedPrice: discountedPrice || originalPrice,
+  //           }}
+  //           mode="buy-now"
+  //           onUpdateBuyNow={setQuantity}
+  //           onRemoveBuyNow={() => setQuantity(1)}
+  //         />
+  //         <p className="text-base font-bold text-[#5C5C5C]">
+  //           {product.stock} <span className="font-medium">items left</span>
+  //         </p>
+  //       </div>
+
+  //       {/* <div className="flex gap-5">
+  //         <button
+  //           onClick={() => handleViewDetails(product)}
+  //           className="group flex items-center justify-center rounded-xl border-2 border-[#009393] px-4 py-3 text-[#009393] transition-all duration-200 hover:bg-[#009393] hover:text-white"
+  //           title="View product details"
+  //         >
+  //           <Eye className="h-5 w-5 transition-transform group-hover:scale-110" />
+  //         </button>
+  //         <button
+  //           title="Add product to Wishlist"
+  //           className="rounded-xl border-2 border-[#009393] px-4 py-3"
+  //         >
+  //           <img src="images/fi-sr-heart.png" alt="Heart Icon" />
+  //         </button>
+  //         <button
+  //           className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${isFull && "cursor-not-allowed opacity-50"}`}
+  //           onClick={handleAddToCart}
+  //         >
+  //           Add to cart
+  //         </button>
+  //         <button
+  //           onClick={handleBuyNow}
+  //           className={`w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white`}
+  //         >
+  //           Buy now
+  //         </button>
+  //       </div> */}
+  //       <div className="flex gap-5">
+  //         <button
+  //           onClick={() => handleViewDetails(product)}
+  //           className="group flex items-center justify-center rounded-xl border-2 border-[#009393] px-4 py-3 text-[#009393] transition-all duration-200 hover:bg-[#009393] hover:text-white"
+  //           title="View product details"
+  //         >
+  //           <Eye className="h-6 w-6 transition-transform group-hover:scale-110" />
+  //         </button>
+  //         <button className="group flex items-center justify-center rounded-xl border-2 border-[#009393] px-4 py-3 text-[#009393] transition-all duration-200 hover:bg-[#009393] hover:text-white">
+  //           <Heart className="h-6 w-6 transition-transform group-hover:scale-110 group-hover:fill-current" />
+  //         </button>
+  //         <button
+  //           className={`group/btn flex items-center justify-center gap-2 rounded-lg border-2 border-[#009393] px-4 py-2 font-medium text-[#009393] transition-all duration-200 hover:scale-105 hover:bg-[#009393] ${isFull ? "cursor-not-allowed opacity-50 hover:scale-100 hover:bg-transparent" : "hover:text-white"}`}
+  //           onClick={handleAddToCart}
+  //           aria-label={`Add ${product.title} to cart`}
+  //         >
+  //           <ShoppingCart
+  //             className={`h-4 w-4 transition-transform ${!isFull && "group-hover/btn:scale-110"}`}
+  //           />
+  //           {isFull ? "Out of Stock" : "Add to Cart"}
+  //         </button>
+  //         <button
+  //           className="rounded-lg bg-[#009393] px-7 py-2 font-medium text-white transition-all duration-200 hover:scale-105 hover:bg-[#007a7a] hover:shadow-lg"
+  //           onClick={handleBuyNow}
+  //         >
+  //           Buy now
+  //         </button>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
+
   return (
-    <div className="relative mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
+    <div className="relative mx-6 mb-8 bg-white p-4 sm:mx-8 md:mx-auto md:flex md:w-full md:max-w-[45.5rem] xl:mx-0 xl:items-center xl:gap-6 xl:pb-6 xl:pl-7 xl:pr-3 xl:pt-3 2xl:max-w-[45.5rem]">
+      {/* <div className="min-w-md relative mx-auto mb-8 mt-20 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3 lg:mx-0 lg:mt-0"> */}
       {hasDiscount && (
-        <span className="absolute right-4 top-8 rounded-full bg-red-500 px-2 py-1 text-base font-medium text-white">
+        <div className="absolute right-3 top-3 z-10 animate-pulse rounded-full bg-gradient-to-r from-red-500 to-red-600 px-2 py-1 text-xs font-bold text-white shadow-lg md:text-sm xl:-right-12 xl:-top-3 min-[1370px]:right-3 min-[1370px]:top-3">
           Save ${savings.toFixed(2)}
-        </span>
+        </div>
       )}
 
-      <div className="relative">
-        <div className="carousel w-full">
+      {/* <div className="relative "> */}
+      <div className="relative mb-6 xl:mb-0 xl:flex-shrink-0">
+        <div className="w-full">
           <img
             src={currentImage || product?.thumbnail}
             alt={product?.title}
-            className="min-w-44 max-w-44"
+            className="mx-auto w-full max-w-48 xl:w-32 xl:max-w-32 2xl:w-44 2xl:max-w-44"
           />
-          <div className="thumbnails mt-2 flex justify-center">
-            {product?.images?.map((image: string) => (
+          <div className="mt-2 flex justify-center gap-1.5">
+            {product?.images?.map((image) => (
               <button
                 key={image}
                 onClick={() => setCurrentImage(image)}
@@ -1425,7 +1220,8 @@ function MainProduct({ onLoad }: MainProductProps) {
                 <img
                   src={image}
                   alt={product.title}
-                  className="mr-2 w-12 cursor-pointer"
+                  // className="flex-1"
+                  className="mr-2 h-8 w-8 cursor-pointer xl:h-9 xl:w-9"
                 />
               </button>
             ))}
@@ -1433,35 +1229,29 @@ function MainProduct({ onLoad }: MainProductProps) {
         </div>
       </div>
 
-      <div>
-        <h3 className="mb-1 text-xl font-medium text-black">
+      <div className="min-w-0 flex-1">
+        <h3 className="mb-1 text-lg font-medium text-black xl:text-xl">
           {product?.title}
         </h3>
-        <div className="mb-4 flex gap-2">
-          {[...Array(5)].map((_, index) => (
-            <svg
-              key={index}
-              className={`h-6 w-6 ${
-                index < (product?.rating || 0)
-                  ? "text-yellow-400"
-                  : "text-gray-300"
-              }`}
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              {/* <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 0 00-1.175 0l-2.8 2.0c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> */}
-            </svg>
-          ))}
-          <span className="text-sm font-normal text-[#5C5C5C]">
-            ({Math.round((product?.rating || 0) * 100)} Reviews)
+
+        <div className="mb-4 flex items-center gap-3">
+          <div className="flex items-center gap-1">
+            {renderStars(product.rating, 5)}
+          </div>
+          <span className="text-base font-semibold text-gray-900 xl:text-lg">
+            {product.rating}
+          </span>
+          <span className="text-sm text-gray-500">
+            ({product.reviews?.length || 0} reviews)
           </span>
         </div>
-        <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
+
+        <p className="mb-4 text-sm font-normal text-[#5C5C5C] xl:mb-[1.125rem] xl:text-xs 2xl:mr-3">
           {product?.description}
         </p>
-        <div className="mb-[1.125rem] flex items-center gap-2 text-lg font-medium">
-          <p className="text-xl">
+
+        <div className="mb-4 flex items-center gap-2 text-base font-medium xl:mb-[1.125rem] xl:text-lg">
+          <p className="text-lg xl:text-xl">
             Price{" "}
             {hasDiscount && (
               <span className="ml-0.5 font-bold text-[#009393]">
@@ -1469,15 +1259,15 @@ function MainProduct({ onLoad }: MainProductProps) {
               </span>
             )}
           </p>
-
           <span
-            className={`ml-1 text-lg font-normal text-[#5C5C5C] ${hasDiscount && "line-through"}`}
+            className={`ml-1 text-base font-normal text-[#5C5C5C] xl:text-lg ${hasDiscount && "line-through"}`}
           >
             ${originalPrice.toFixed(2)}
           </span>
         </div>
 
-        <div className="mb-8 flex justify-between">
+        <div className="mb-6 flex flex-row items-center justify-between gap-4 xl:mb-6 xl:gap-3 2xl:mb-8 2xl:gap-4">
+          {/* <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:justify-between xl:mb-6 xl:flex-col xl:gap-3 2xl:mb-8 2xl:flex-row 2xl:gap-4"> */}
           <QuantityControl
             product={{
               ...product,
@@ -1489,38 +1279,45 @@ function MainProduct({ onLoad }: MainProductProps) {
             onUpdateBuyNow={setQuantity}
             onRemoveBuyNow={() => setQuantity(1)}
           />
-          <p className="text-base font-bold text-[#5C5C5C]">
+          <p className="text-sm font-bold text-[#5C5C5C] xl:text-base">
             {product.stock} <span className="font-medium">items left</span>
           </p>
         </div>
 
-        {/* <div className="mb-8 flex justify-between">
-          <QuantityControl
-            product={product && product}
-            mode="buy-now"
-            onUpdateBuyNow={setQuantity}
-            onRemoveBuyNow={() => setQuantity(1)}
-          />
-          <p className="text-base font-bold text-[#5C5C5C]">
-            {product?.stock} <span className="font-medium">items left</span>
-          </p>
-        </div> */}
-        <div className="flex gap-5">
-          <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
-            <img src="images/fi-sr-heart.png" alt="Heart Icon" />
-          </button>
-          <button
-            className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${isFull && "cursor-not-allowed opacity-50"}`}
-            onClick={handleAddToCart}
-          >
-            Add to cart
-          </button>
-          <button
-            onClick={handleBuyNow}
-            className={`w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white`}
-          >
-            Buy now
-          </button>
+        <div className="flex flex-col gap-3 min-[500px]:flex-row sm:flex-row xl:flex-row xl:gap-3 2xl:gap-5">
+          <div className="flex gap-3 xl:gap-2 2xl:gap-3">
+            <button
+              onClick={() => handleViewDetails(product)}
+              className="group flex items-center justify-center rounded-xl border-2 border-[#009393] px-3 py-2 text-[#009393] transition-all duration-200 hover:bg-[#009393] hover:text-white xl:px-2 xl:py-2 2xl:px-4 2xl:py-3"
+              title="View product details"
+            >
+              <Eye className="h-4 w-4 transition-transform group-hover:scale-110 xl:h-5 xl:w-5 2xl:h-6 2xl:w-6" />
+            </button>
+            <button className="group flex items-center justify-center rounded-xl border-2 border-[#009393] px-3 py-2 text-[#009393] transition-all duration-200 hover:bg-[#009393] hover:text-white xl:px-2 xl:py-2 2xl:px-4 2xl:py-3">
+              <Heart className="h-4 w-4 transition-transform group-hover:scale-110 group-hover:fill-current xl:h-5 xl:w-5 2xl:h-6 2xl:w-6" />
+            </button>
+          </div>
+
+          <div className="flex flex-1 gap-3">
+            <button
+              className={`group/btn flex flex-1 items-center justify-center gap-1 rounded-lg border-2 border-[#009393] px-2 py-2 text-sm font-medium text-[#009393] transition-all duration-200 hover:scale-105 hover:bg-[#009393] xl:gap-1 xl:px-2 xl:text-xs 2xl:gap-2 2xl:px-4 2xl:text-sm ${isFull ? "cursor-not-allowed opacity-50 hover:scale-100 hover:bg-transparent" : "hover:text-white"}`}
+              onClick={handleAddToCart}
+              aria-label={`Add ${product.title} to cart`}
+            >
+              <ShoppingCart
+                className={`h-4 w-4 transition-transform ${!isFull && "group-hover/btn:scale-110"}`}
+              />
+              <span className="">
+                {isFull ? "Out of Stock" : "Add to Cart"}
+              </span>
+            </button>
+            <button
+              className="flex-1 rounded-lg bg-[#009393] px-3 py-2 text-sm font-medium text-white transition-all duration-200 hover:scale-105 hover:bg-[#007a7a] hover:shadow-lg xl:px-3 xl:text-xs 2xl:px-7 2xl:text-sm"
+              onClick={handleBuyNow}
+            >
+              Buy now
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1528,575 +1325,3 @@ function MainProduct({ onLoad }: MainProductProps) {
 }
 
 export default MainProduct;
-
-// import { useEffect, useMemo, useReducer } from "react";
-// import { useQuery } from "@tanstack/react-query";
-// import { fetchMainProduct } from "../../services/fetchMainProduct";
-// import Spinner from "./Spinner";
-// import { ProductAction, ProductState } from "../../types";
-// import { useQuantity } from "../../hooks/useQuantity";
-// import ProductQuantity from "./ProductQuantity";
-// import { useCartStore } from "../../store/cartStore";
-// import ErrorMessage from "./ErrorMessage";
-// import { toast } from "react-toastify";
-// import CustomToast from "./CustomToast";
-
-// interface MainProductProps {
-//   onLoad: () => void;
-// }
-
-// const initialState: ProductState = {
-//   quantity: 1,
-//   basePrice: 0,
-//   currentImage: "",
-// };
-
-// const productReducer = (
-//   state: ProductState,
-//   action: ProductAction,
-// ): ProductState => {
-//   switch (action.type) {
-//     case "SET_PRICE":
-//       return { ...state, basePrice: action.payload };
-//     case "SET_IMAGE":
-//       return { ...state, currentImage: action.payload };
-//     case "SET_QUANTITY":
-//       return { ...state, quantity: action.payload };
-//     case "RESET":
-//       return { ...initialState, ...action.payload };
-//     default:
-//       return state;
-//   }
-// };
-
-// function MainProduct({ onLoad }: MainProductProps) {
-//   const [mainProductState, dispatch] = useReducer(productReducer, initialState);
-
-//   const addToCart = useCartStore((state) => state.addToCart);
-//   const cart = useCartStore((state) => state.cart);
-
-//   console.log("cart", cart);
-
-//   const {
-//     data: mainProduct,
-//     isLoading,
-//     isSuccess,
-//     isError,
-//     error,
-//   } = useQuery({
-//     queryKey: ["mainProduct"],
-//     queryFn: fetchMainProduct,
-//     staleTime: 1000 * 1,
-//   });
-
-//   console.log("mainProductState", mainProductState);
-
-//   // Initialize price and image when mainProduct changes
-//   useEffect(() => {
-//     if (!mainProduct) return;
-
-//     if (mainProduct.price && mainProduct.price > 0) {
-//       dispatch({ type: "SET_PRICE", payload: mainProduct.price });
-//     }
-//     if (mainProduct.images?.[0] && !mainProductState.currentImage) {
-//       dispatch({ type: "SET_IMAGE", payload: mainProduct.images[0] });
-//     }
-//   }, [mainProduct, mainProductState.currentImage]);
-
-//   useEffect(() => {
-//     if (isSuccess) {
-//       onLoad();
-//     }
-//   }, [isSuccess, onLoad]);
-
-//   // Memoize total price
-//   const totalPrice = useMemo(
-//     () => mainProductState.basePrice * mainProductState.quantity,
-//     [mainProductState.basePrice, mainProductState.quantity],
-//   );
-
-//   // Use custom quantity hook with callback to update mainProductState
-//   const { quantity, increment, decrement, isMin, isMax } = useQuantity(
-//     mainProductState.quantity,
-//     mainProduct?.stock ?? 0,
-//     (newQuantity) => dispatch({ type: "SET_QUANTITY", payload: newQuantity }),
-//   );
-
-// const isFull = cart.some(
-//   (item) =>
-//     item.id === mainProduct?.id && item.quantity + quantity > item.stock,
-// );
-
-//   const handleAddToCart = () => {
-//     if (!mainProduct) return;
-
-//     const result = addToCart({
-//       ...mainProduct,
-//       image: mainProductState.currentImage,
-//       quantity,
-//     });
-
-//     // Show custom toast with product image
-//     const customToastContent = (
-//       <CustomToast
-//         success={result.success}
-//         message={result.message}
-//         productImage={mainProductState.currentImage || mainProduct.thumbnail}
-//         productTitle={mainProduct.title}
-//         quantity={quantity}
-//       />
-//     );
-
-//     if (result.success) {
-//       toast.success(customToastContent, {
-//         className: "bg-white shadow-lg border border-green-200",
-//       });
-//     } else {
-//       toast.error(customToastContent, {
-//         className: "bg-white shadow-lg border border-red-200",
-//       });
-//     }
-//   };
-
-//   if (mainProduct?.stock <= 0) {
-//     return <ErrorMessage message="This product is currently out of stock." />;
-//   }
-
-//   if (isLoading) return <Spinner />;
-
-//   if (isError) return <ErrorMessage message={error.message} />;
-
-//   return (
-//     <div className="mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
-//       <div className="relative">
-//         <div className="carousel w-full">
-//           <img
-//             src={mainProductState.currentImage || mainProduct?.thumbnail}
-//             alt={mainProduct?.title}
-//             className="min-w-44 max-w-44"
-//           />
-//           <div className="thumbnails mt-2 flex justify-center">
-//             {mainProduct.images?.map((image: string) => (
-//               <button
-//                 key={image}
-//                 onClick={() => dispatch({ type: "SET_IMAGE", payload: image })}
-//                 className={`rounded-md transition-all duration-200 ${
-//                   mainProductState.currentImage === image
-//                     ? "ring-2 ring-[#009393] ring-offset-2"
-//                     : "hover:opacity-75"
-//                 }`}
-//               >
-//                 <img
-//                   src={image}
-//                   alt={mainProduct.title}
-//                   className="mr-2 w-12 cursor-pointer"
-//                 />
-//               </button>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-
-//       <div>
-//         <h3 className="mb-1 text-xl font-medium text-black">
-//           {mainProduct.title}
-//         </h3>
-
-//         <div className="mb-4 flex gap-2">
-//           {[...Array(5)].map((_, index) => (
-//             <svg
-//               key={index}
-//               className={`h-6 w-6 ${
-//                 index < mainProduct.rating ? "text-yellow-400" : "text-gray-300"
-//               }`}
-//               fill="currentColor"
-//               viewBox="0 0 20 20"
-//             >
-// <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-//             </svg>
-//           ))}
-//           <span className="text-sm font-normal text-[#5C5C5C]">
-//             ({Math.round(mainProduct.rating * 100)} Reviews)
-//           </span>
-//         </div>
-
-//         <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
-//           {mainProduct.description}
-//         </p>
-
-//         <p className="mb-[1.125rem] text-lg font-medium text-[#009393]">
-//           Price ${totalPrice.toFixed(2)}
-//         </p>
-
-//         <div className="mb-8 flex justify-between">
-//           <ProductQuantity
-//             quantity={quantity}
-//             increment={increment}
-//             decrement={decrement}
-//             isMin={isMin}
-//             isMax={isMax}
-//           />
-//           <p className="text-base font-bold text-[#5C5C5C]">
-//             {mainProduct.stock} <span className="font-medium">items left</span>
-//           </p>
-//         </div>
-
-//         <div className="flex gap-5">
-//           <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
-//             <img src="images/fi-sr-heart.png" alt="Heart Icon" />
-//           </button>
-//           <button
-//             className={`w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393] ${
-//               isFull ? "cursor-not-allowed opacity-50" : ""
-//             }`}
-//             onClick={handleAddToCart}
-//           >
-//             Add to cart
-//           </button>
-//           <button className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white">
-//             Buy now
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default MainProduct;
-
-{
-  /* <ToastContainer />; */
-}
-// notify();
-// toast.success("Product added to cart");
-// toast(`Cannot add more than ${mainProduct.stock} items`, {
-//   // toast(`Only ${mainProduct.stock} items available`, {
-//   type: "error",
-//   position: "top-center",
-//   autoClose: 3000,
-//   hideProgressBar: false,
-//   closeOnClick: true,
-//   pauseOnHover: true,
-//   draggable: true,
-//   progress: undefined,
-// });
-
-// import { useEffect, useMemo, useReducer, useState } from "react";
-// import { useQuery } from "@tanstack/react-query";
-// import LazyLoad from "react-lazyload";
-// import { fetchMainProduct } from "../../services/fetchMainProduct";
-// import Spinner from "./Spinner";
-
-// // Define product state and actions
-// interface ProductState {
-//   quantity: number;
-//   basePrice: number;
-//   currentImage: string;
-//   maxQuantity: number;
-// }
-
-// type ProductAction =
-//   | { type: "SET_PRICE"; payload: number }
-//   | { type: "SET_IMAGE"; payload: string }
-//   | { type: "SET_QUANTITY"; payload: number }
-//   | { type: "RESET"; payload: Partial<ProductState> };
-
-// const initialState: ProductState = {
-//   quantity: 1,
-//   basePrice: 0,
-//   currentImage: "",
-//   maxQuantity: 0,
-// };
-
-// const productReducer = (
-//   state: ProductState,
-//   action: ProductAction,
-// ): ProductState => {
-//   switch (action.type) {
-//     case "SET_PRICE":
-//       return { ...state, basePrice: action.payload };
-//     case "SET_IMAGE":
-//       return { ...state, currentImage: action.payload };
-//     case "SET_QUANTITY":
-//       return { ...state, quantity: action.payload };
-//     case "RESET":
-//       return { ...initialState, ...action.payload };
-//     default:
-//       return state;
-//   }
-// };
-
-// Custom hook for quantity logic
-// function useQuantity(
-//   initialQuantity: number,
-//   maxQuantity: number,
-//   onQuantityChange?: (newQuantity: number) => void,
-// ) {
-//   const [quantity, setQuantity] = useReducer((prev: number, newQty: number) => {
-//     const clampedQty = Math.max(1, Math.min(newQty, maxQuantity));
-//     onQuantityChange?.(clampedQty);
-//     return clampedQty;
-//   }, initialQuantity);
-
-//   const increment = () => setQuantity(quantity + 1);
-//   const decrement = () => setQuantity(quantity - 1);
-
-//   return {
-//     quantity,
-//     increment,
-//     decrement,
-//     isMin: quantity <= 1,
-//     isMax: quantity >= maxQuantity,
-//   };
-// }
-
-// function MainProduct({ onLoad }: MainProductProps) {
-//   const [state, dispatch] = useReducer(productReducer, initialState);
-//   const [isMainProductLoaded, setIsMainProductLoaded] = useState(false);
-
-//   const {
-//     data: mainProduct,
-//     isLoading,
-//     isError,
-//     isSuccess,
-//   } = useQuery({
-//     queryKey: ["mainProduct"],
-//     queryFn: fetchMainProduct,
-//     // onSuccess: () => {
-//     //   onLoad(); // Signal that main product data is loaded
-//     // },
-//   });
-
-//   useEffect(() => {
-//     if (isSuccess) {
-//       onLoad();
-//     }
-//   }, [isSuccess, onLoad]);
-
-//   // Log mainProduct data to debug price issue
-//   useEffect(() => {
-//     if (mainProduct) {
-//       console.log("mainProduct:", mainProduct);
-//       console.log("Price:", mainProduct.price);
-//     }
-//   }, [mainProduct]);
-
-//   // Initialize price, image, and maxQuantity when mainProduct changes
-//   useEffect(() => {
-//     if (!mainProduct) return;
-
-//     if (mainProduct.price && mainProduct.price > 0) {
-//       dispatch({ type: "SET_PRICE", payload: mainProduct.price });
-//     } else {
-//       console.warn("Invalid price detected:", mainProduct.price);
-//       dispatch({ type: "SET_PRICE", payload: 349.95 }); // Fallback price
-//     }
-//     if (mainProduct.images?.[0] && !state.currentImage) {
-//       dispatch({ type: "SET_IMAGE", payload: mainProduct.images[0] });
-//     }
-//     if (mainProduct.stock >= 0) {
-//       dispatch({ type: "RESET", payload: { maxQuantity: mainProduct.stock } });
-//     }
-//   }, [mainProduct]);
-
-//   // Preload the main image once mainProduct data is available
-//   useEffect(() => {
-//     if (state.currentImage) {
-//       const img = new Image();
-//       img.src = state.currentImage;
-//     }
-//   }, [state.currentImage]);
-
-//   // Memoize total price
-//   const totalPrice = useMemo(
-//     () => state.basePrice * state.quantity,
-//     [state.basePrice, state.quantity],
-//   );
-
-//   // Use custom quantity hook with callback
-//   const { quantity, increment, decrement, isMin, isMax } = useQuantity(
-//     state.quantity,
-//     mainProduct?.stock ?? 0,
-//     (newQuantity) => dispatch({ type: "SET_QUANTITY", payload: newQuantity }),
-//   );
-
-//   if (isLoading) return <Spinner />;
-//   if (isError || !mainProduct || mainProduct.stock <= 0) {
-//     return (
-//       <div className="text-red-500">Error loading product or out of stock</div>
-//     );
-//   }
-
-//   const fallbackImage = "/fallback-image.png";
-//   const placeholderImage = "/low-res-placeholder.png"; // Low-res placeholder for progressive loading
-
-//   return (
-//     <>
-//       {/* Preload critical image in head (optional, if supported by your app) */}
-//       <link
-//         rel="preload"
-//         href={state.currentImage || mainProduct.thumbnail || fallbackImage}
-//         as="image"
-//       />
-
-//       <div className="mb-8 flex max-w-[45.5rem] items-center gap-12 bg-white pb-6 pl-7 pr-3 pt-3">
-//         <div className="relative">
-//           <div className="carousel w-full">
-//             <LazyLoad
-//               height={176}
-//               offset={100}
-//               once
-//               placeholder={
-//                 <img
-//                   src={placeholderImage}
-//                   alt="Loading..."
-//                   className="min-w-44 max-w-44 opacity-50"
-//                   width={176}
-//                   height={176}
-//                 />
-//               }
-//             >
-//               <img
-//                 src={
-//                   state.currentImage || mainProduct.thumbnail || fallbackImage
-//                 }
-//                 alt={mainProduct.title || "Product image"}
-//                 className="min-w-44 max-w-44"
-//                 width={176}
-//                 height={176}
-//               />
-//             </LazyLoad>
-//             <div className="thumbnails mt-2 flex justify-center">
-//               {(mainProduct.images || []).map((image) => (
-//                 <LazyLoad
-//                   key={image}
-//                   height={48}
-//                   offset={100}
-//                   once
-//                   placeholder={<div className="mr-2 h-12 w-12 bg-gray-200" />}
-//                 >
-//                   <button
-//                     onClick={() =>
-//                       dispatch({ type: "SET_IMAGE", payload: image })
-//                     }
-//                     className={`rounded-md transition-all duration-200 ${
-//                       state.currentImage === image
-//                         ? "ring-2 ring-[#009393] ring-offset-2"
-//                         : "hover:opacity-75"
-//                     }`}
-//                   >
-//                     <img
-//                       src={image || fallbackImage}
-//                       alt={mainProduct.title || "Thumbnail"}
-//                       className="mr-2 w-12 cursor-pointer"
-//                       width={48}
-//                       height={48}
-//                     />
-//                   </button>
-//                 </LazyLoad>
-//               ))}
-//             </div>
-//           </div>
-//         </div>
-
-//         <div>
-//           <h3 className="mb-1 text-xl font-medium text-black">
-//             {mainProduct.title}
-//           </h3>
-
-//           <div className="mb-4 flex gap-2">
-//             {[...Array(5)].map((_, index) => (
-//               <svg
-//                 key={index}
-//                 className={`h-6 w-6 ${
-//                   index < Math.floor(mainProduct.rating)
-//                     ? "text-yellow-400"
-//                     : "text-gray-300"
-//                 }`}
-//                 fill="currentColor"
-//                 viewBox="0 0 20 20"
-//               >
-//                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 0 00.951-.69l1.07-3.292z" />
-//               </svg>
-//             ))}
-//             <span className="text-sm font-normal text-[#5C5C5C]">
-//               ({Math.round(mainProduct.rating * 100)} Reviews)
-//             </span>
-//           </div>
-
-//           <p className="mb-[1.125rem] mr-3 text-xs font-normal text-[#5C5C5C]">
-//             {mainProduct.description}
-//           </p>
-
-//           <p className="mb-[1.125rem] text-lg font-medium text-[#009393]">
-//             Price ${totalPrice.toFixed(2)}
-//           </p>
-
-//           <div className="mb-8 flex justify-between">
-//             <ProductQuantity
-//               quantity={quantity}
-//               increment={increment}
-//               decrement={decrement}
-//               isMin={isMin}
-//               isMax={isMax}
-//             />
-//             <p className="text-base font-bold text-[#5C5C5C]">
-//               {mainProduct.stock}{" "}
-//               <span className="font-medium">items left</span>
-//             </p>
-//           </div>
-
-//           <div className="flex gap-5">
-//             <button className="rounded-xl border-2 border-[#009393] px-4 py-3">
-//               <img src="images/fi-sr-heart.png" alt="Heart Icon" />
-//             </button>
-//             <button className="w-[8.125rem] rounded-lg border-2 border-[#009393] py-2 font-medium text-[#009393]">
-//               Add to cart
-//             </button>
-//             <button className="w-[8.125rem] rounded-lg bg-[#009393] py-2 font-medium text-white">
-//               Buy now
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-// interface ProductQuantityProps {
-//   quantity: number;
-//   increment: () => void;
-//   decrement: () => void;
-//   isMin: boolean;
-//   isMax: boolean;
-// }
-
-// function ProductQuantity({
-//   quantity,
-//   increment,
-//   decrement,
-//   isMin,
-//   isMax,
-// }: ProductQuantityProps) {
-//   return (
-//     <div className="mr-6 flex h-8 w-[5.5rem] items-center justify-around rounded-3xl bg-[#F2F2F2] text-base font-normal text-black">
-//       <button
-//         className={`h-6 w-6 rounded-full bg-white ${isMin ? "cursor-not-allowed opacity-50" : ""}`}
-//         onClick={decrement}
-//         disabled={isMin}
-//       >
-//         -
-//       </button>
-//       <span>{quantity}</span>
-//       <button
-//         className={`h-6 w-6 rounded-full bg-white ${isMax ? "cursor-not-allowed opacity-50" : ""}`}
-//         onClick={increment}
-//         disabled={isMax}
-//       >
-//         +
-//       </button>
-//     </div>
-//   );
-// }
-
-// export default MainProduct;

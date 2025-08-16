@@ -163,7 +163,7 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { useSearchStore } from "../../context/useSearchStore";
 import debounce from "lodash.debounce";
-import useSearchParams from "../../hooks/useSearchParams";
+import useSearchParams from "../../hooks/useRouterSearchParams";
 
 const MaxPriceInput = memo(() => {
   // const { minPrice, maxPrice, setMaxPrice } = useSearchStore();

@@ -129,12 +129,15 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../services/productService";
-import { useSearchParams } from "./useSearchParams";
+import { useRouterSearchParams } from "./useRouterSearchParams";
 import { useEffect, useMemo } from "react";
+import { getPriceDetails } from "../helpers/getPriceDetails";
 
 export const useSearchProducts = () => {
-  const { searchQuery, selectedCategory, minPrice, maxPrice } =
-    useSearchParams();
+  const { searchQuery, selectedCategory, minPrice, maxPrice, sort } =
+    useRouterSearchParams();
+
+  // const { discountedPrice } = getPriceDetails();
 
   const {
     data: response = { products: [], total: 0 },
@@ -148,16 +151,95 @@ export const useSearchProducts = () => {
   });
 
   // Filter products based on category and price range
-  const filteredProducts = useMemo(
-    () =>
-      response.products.filter(
-        (product) =>
-          (!selectedCategory || product.category === selectedCategory) &&
-          product.price >= minPrice &&
-          product.price <= maxPrice,
-      ),
-    [response.products, selectedCategory, minPrice, maxPrice],
-  );
+  const filteredProducts = useMemo(() => {
+    return response.products
+      .map((product) => {
+        const { discountedPrice } = getPriceDetails(product);
+        return { ...product, discountedPrice };
+      })
+      .filter((product) => {
+        if (selectedCategory && product.category !== selectedCategory)
+          return false;
+        return (
+          product.discountedPrice >= minPrice &&
+          product.discountedPrice <= maxPrice
+        );
+      })
+      .sort((a, b) => {
+        switch (sort) {
+          case "priceLowToHigh":
+            return a.discountedPrice - b.discountedPrice;
+          case "priceHighToLow":
+            return b.discountedPrice - a.discountedPrice;
+          case "newest":
+            return (
+              new Date(b.meta.createdAt).getTime() -
+              new Date(a.meta.createdAt).getTime()
+            );
+          case "oldest":
+            return (
+              new Date(a.meta.createdAt).getTime() -
+              new Date(b.meta.createdAt).getTime()
+            );
+          default:
+            return 0;
+        }
+      });
+  }, [response.products, selectedCategory, minPrice, maxPrice, sort]);
+
+  // const filteredProducts = useMemo(
+  //   () =>
+  //     response.products
+  //       .filter(
+  //         (product) =>
+  //           (!selectedCategory || product.category === selectedCategory) &&
+  //           product.price >= minPrice &&
+  //           product.price <= maxPrice,
+  //         // product.price >= minPrice &&
+  //         // product.price <= maxPrice,
+  //       )
+  //       .sort((a, b) => {
+  //         switch (sort) {
+  //           case "priceLowToHigh":
+  //             return a.price - b.price;
+  //           case "priceHighToLow":
+  //             return b.price - a.price;
+  //           case "newest":
+  //             return (
+  //               new Date(b.meta.createdAt).getTime() -
+  //               new Date(a.meta.createdAt).getTime()
+  //             );
+  //           case "oldest":
+  //             return (
+  //               new Date(a.meta.createdAt).getTime() -
+  //               new Date(b.meta.createdAt).getTime()
+  //             );
+  //           default:
+  //             return 0;
+  //         }
+  //       }),
+  //   [response.products, selectedCategory, minPrice, maxPrice, sort],
+  // );
+
+  //  .sort((a, b) => {
+  //         switch (sort) {
+  //           case "priceLowToHigh":
+  //             return a.price - b.price;
+  //           case "priceHighToLow":
+  //             return b.price - a.price;
+  //           case "newest":
+  //             return (
+  //               new Date(b.dateCreated).getTime() -
+  //               new Date(a.dateCreated).getTime()
+  //             );
+  //           case "oldest":
+  //             return (
+  //               new Date(a.dateCreated).getTime() -
+  //               new Date(b.dateCreated).getTime()
+  //             );
+  //           default:
+  //             return 0;
+  //         });
 
   console.log("filteredSuggestions reference:", filteredProducts);
 

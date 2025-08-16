@@ -456,35 +456,46 @@
 import { useState, useRef, useMemo, useCallback, useEffect } from "react";
 import { useClickAway } from "react-use";
 import { useSearchProducts } from "../../hooks/useSearchProducts";
-import { useSearchParams } from "../../hooks/useSearchParams";
+import { useRouterSearchParams } from "../../hooks/useRouterSearchParams";
 import debounce from "lodash.debounce";
 import { Product } from "src/types";
 import SearchDropdownSuggest from "./SearchDropdownSuggest";
+import { useProductSearchInput } from "../../hooks/useProductSearchInput";
 
 const SearchBar = () => {
-  console.log("SearchBar rendered");
-  const { searchQuery, setSearchQuery, clearSearchQuery } = useSearchParams();
+  const {
+    inputValue,
+    setInputValue,
+    handleInputChange,
+    handleClearSearch,
+    showDropdown,
+    setShowDropdown,
+    selectedIndex,
+    setSelectedIndex,
+    debouncedSearch,
+    searchQuery,
+    setSearchQuery,
+  } = useProductSearchInput();
+  // const { searchQuery, setSearchQuery, clearSearchQuery } =
+  //   useRouterSearchParams();
 
   const { filteredProducts: filteredSuggestions, isLoading } =
     useSearchProducts();
 
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [inputValue, setInputValue] = useState(searchQuery);
+  // const [showDropdown, setShowDropdown] = useState(false);
+  // const [selectedIndex, setSelectedIndex] = useState(-1);
+  // const [inputValue, setInputValue] = useState(searchQuery);
 
   const dropdownRef = useRef<HTMLUListElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useClickAway(containerRef, () => setShowDropdown(false));
 
   // Debounced search function - only triggers API call after user stops typing
-  const debouncedSearch = useMemo(
-    () =>
-      debounce((query: string) => {
-        setSearchQuery(query);
-      }, 400), // // 400ms delay
-    [setSearchQuery],
-  );
+  // const debouncedSearch = useMemo(
+  //   () =>
+  //     debounce((query: string) => {
+  //       setSearchQuery(query);
+  //     }, 400), // // 400ms delay
+  //   [setSearchQuery],
+  // );
 
   // Auto-scroll to selected item in dropdown
   const scrollToSelectedItem = useCallback(() => {
@@ -506,26 +517,26 @@ const SearchBar = () => {
     scrollToSelectedItem();
   }, [scrollToSelectedItem]);
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const query = e.target.value;
-      setInputValue(query);
-      setSelectedIndex(-1); // Reset selection when typing
+  // const handleInputChange = useCallback(
+  //   (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     const query = e.target.value;
+  //     setInputValue(query);
+  //     setSelectedIndex(-1); // Reset selection when typing
 
-      // Show dropdown immediately for better UX
-      setShowDropdown(query.length > 0);
+  //     // Show dropdown immediately for better UX
+  //     setShowDropdown(query.length > 0);
 
-      // Only trigger search after user stops typing
-      if (query.trim()) {
-        debouncedSearch(query);
-      } else {
-        // Clear search immediately when input is empty
-        debouncedSearch.cancel();
-        clearSearchQuery();
-      }
-    },
-    [debouncedSearch, clearSearchQuery],
-  );
+  //     // Only trigger search after user stops typing
+  //     if (query.trim()) {
+  //       debouncedSearch(query);
+  //     } else {
+  //       // Clear search immediately when input is empty
+  //       debouncedSearch.cancel();
+  //       clearSearchQuery();
+  //     }
+  //   },
+  //   [debouncedSearch, clearSearchQuery],
+  // );
 
   const selectProduct = useCallback(
     (product: Product) => {
@@ -535,16 +546,22 @@ const SearchBar = () => {
       setShowDropdown(false);
       setSelectedIndex(-1);
     },
-    [debouncedSearch, setSearchQuery],
+    [
+      debouncedSearch,
+      setSearchQuery,
+      setInputValue,
+      setSelectedIndex,
+      setShowDropdown,
+    ],
   );
 
-  const handleClearSearch = useCallback(() => {
-    setInputValue("");
-    debouncedSearch.cancel(); // Cancel any pending search
-    clearSearchQuery(); // Only clear the search query, keep filters and stay on page
-    setShowDropdown(false);
-    setSelectedIndex(-1);
-  }, [debouncedSearch, clearSearchQuery]);
+  // const handleClearSearch = useCallback(() => {
+  //   setInputValue("");
+  //   debouncedSearch.cancel(); // Cancel any pending search
+  //   clearSearchQuery(); // Only clear the search query, keep filters and stay on page
+  //   setShowDropdown(false);
+  //   setSelectedIndex(-1);
+  // }, [debouncedSearch, clearSearchQuery]);
 
   // const handleDropdownClick = useCallback(
   const handleDropdownClick = useCallback(
@@ -595,7 +612,7 @@ const SearchBar = () => {
     ) {
       setInputValue("");
     }
-  }, [searchQuery]);
+  }, [searchQuery, setInputValue]);
 
   // Memoize dropdown items to prevent unnecessary re-renders
   // const dropdownItems = useMemo(() => {
@@ -612,7 +629,13 @@ const SearchBar = () => {
   // ]);
 
   return (
-    <div ref={containerRef} className="relative">
+    <div className="relative">
+      {showDropdown && (
+        <div
+          onClick={() => setShowDropdown(false)}
+          className="fixed inset-0 cursor-pointer"
+        />
+      )}
       <form className="relative" onSubmit={(e) => e.preventDefault()}>
         <img
           src="/images/fi-br-search.png"

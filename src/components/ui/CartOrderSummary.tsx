@@ -1,23 +1,27 @@
 import { ShoppingCart } from "lucide-react";
 import { useCartStore } from "../../store/cartStore";
+import { useCartTotalItems } from "../../hooks/useCartTotalItems";
+import { useCartTotalPrice } from "../../hooks/useCartTotalPrice";
+import { useCartTotalSavings } from "../../hooks/useCartTotalSavings";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface CartOrderSummaryProps {
   onHandleBack: () => void;
 }
 function CartOrderSummary({ onHandleBack }: CartOrderSummaryProps) {
   const cart = useCartStore((state) => state.cart);
-  const getCartTotalItems = useCartStore((state) => state.getCartTotalItems);
-  const getCartTotalPrice = useCartStore((state) => state.getCartTotalPrice);
-  const getTotalSavings = useCartStore((state) => state.getTotalSavings);
+  console.log("carrtttt", cart);
+
+  const totalItems = useCartTotalItems();
+  const totalPrice = useCartTotalPrice();
+  const totalSavings = useCartTotalSavings();
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleCheckoutAll = () => {
-    // For simplicity, we'll checkout the first item or create a combined checkout
-    // In a real app, you'd handle multiple items differently
     if (cart.length > 0) {
-      const totalAmount = getCartTotalPrice();
-      console.log("totalAmount", totalAmount, getCartTotalPrice());
       //   const totalItems = getCartTotalItems();
-
       //   onCheckout({
       //     id: 999, // Special ID for cart checkout
       //     title: `Cart Items (${totalItems} items)`,
@@ -26,6 +30,10 @@ function CartOrderSummary({ onHandleBack }: CartOrderSummaryProps) {
       //     quantity: 1,
       //   });
     }
+  };
+
+  const handleCheckout = () => {
+    if (location.pathname !== "/checkout") navigate("/checkout");
   };
 
   return (
@@ -38,9 +46,9 @@ function CartOrderSummary({ onHandleBack }: CartOrderSummaryProps) {
 
         <div className="mb-6 space-y-4">
           <div className="flex justify-between text-gray-600">
-            <span>Items ({getCartTotalItems()})</span>
+            <span>Items ({totalItems})</span>
             <span className="font-bold text-[#009393]">
-              ${getCartTotalPrice().toFixed(2)}
+              ${totalPrice.toFixed(2)}
             </span>
           </div>
           <div className="flex justify-between text-gray-600">
@@ -54,20 +62,17 @@ function CartOrderSummary({ onHandleBack }: CartOrderSummaryProps) {
           <hr className="my-4" />
           <div className="flex justify-between text-xl font-bold text-gray-900">
             <span>You Saved</span>
-            <span className="text-[#009393]">
-              ${getTotalSavings().toFixed(2)}
-            </span>
+            <span className="text-[#009393]">${totalSavings.toFixed(2)}</span>
           </div>
           <div className="mt-0 flex justify-between text-xl font-bold text-gray-900">
             <span>Total</span>
-            <span className="text-[#009393]">
-              ${getCartTotalPrice().toFixed(2)}
-            </span>
+            <span className="text-[#009393]">${totalPrice.toFixed(2)}</span>
           </div>
         </div>
 
         <button
-          onClick={handleCheckoutAll}
+          // onClick={handleCheckoutAll}
+          onClick={handleCheckout}
           className="mb-4 w-full rounded-lg bg-[#009393] px-6 py-4 text-lg font-semibold text-white transition-colors hover:bg-[#007a7a]"
         >
           Proceed to Checkout

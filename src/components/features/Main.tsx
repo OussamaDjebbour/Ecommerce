@@ -167,6 +167,30 @@
 
 // export default Main;
 
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import { Navigation } from "swiper/modules";
+// import { Swiper, SwiperSlide } from "swiper/react";
+
+// // Use this
+// import "swiper/swiper.min.css";
+// import { Navigation } from "swiper/modules";
+// import "swiper/css/navigation"; // Note: path might vary based on version
+
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import { Navigation } from "swiper";
+// import { Navigation } from "swiper/modules";
+// import { Navigation } from "swiper/modules";
+
+// import { Navigation } from "swiper/modules";
+
+// interface MainProps {
+//   isMainProductLoaded: boolean;
+//   onLoad: () => void;
+// }
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
@@ -191,32 +215,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import Spinner from "../ui/Spinner";
 import ErrorMessage from "../ui/ErrorMessage";
-import LoadingSpinner from "../ui/LoadingSpinner";
 import { useOutletContext } from "react-router-dom";
-
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import "swiper/css";
-// import "swiper/css/navigation";
-// import { Navigation } from "swiper/modules";
-// import { Swiper, SwiperSlide } from "swiper/react";
-
-// // Use this
-// import "swiper/swiper.min.css";
-// import { Navigation } from "swiper/modules";
-// import "swiper/css/navigation"; // Note: path might vary based on version
-
-// import "swiper/css";
-// import "swiper/css/navigation";
-// import { Navigation } from "swiper";
-// import { Navigation } from "swiper/modules";
-// import { Navigation } from "swiper/modules";
-
-// import { Navigation } from "swiper/modules";
-
-// interface MainProps {
-//   isMainProductLoaded: boolean;
-//   onLoad: () => void;
-// }
 
 function Main() {
   const { isMainProductLoaded, setIsMainProductLoaded } =
@@ -242,91 +241,13 @@ function Main() {
   }
 
   return (
-    <main className="col-span-1 row-span-1 mb-4">
+    // <main className="col-span-1 row-span-1 mb-4">
+    // <main className="min-w-0 xl:col-span-1 xl:row-span-1">
+    <main className="min-w-0 py-10 pb-4 xl:col-span-1 xl:row-span-1 xl:px-0 xl:py-0">
       <MainProduct onLoad={handleLoad} />
-      {/* Scrollable Product List */}
-      {/* <div className="relative mb-4 flex w-[48.25rem] gap-7 overflow-x-hidden"> */}
-      {/* Swiper Slider */}
-      {/* <Swiper
 
-          modules={[Navigation]}
-
-          slidesPerView={3.5} // Show 3 full products & half of the 4th
-
-          spaceBetween={28} // 28px gap
-
-          navigation={{ nextEl: ".next", prevEl: ".prev" }}
-
-          className="overflow-hidden"
-
-        >
-
-          {data?.map((product: Product, index: number) => (
-
-            <SwiperSlide key={index}>
-
-              <ProductCard
-
-                imgSrc={product.thumbnail}
-
-                title={product.title}
-
-                price={product.price}
-
-                rating={product.rating}
-
-              />
-
-            </SwiperSlide>
-
-          ))}
-
-        </Swiper> */}
-      {/* <Swiper
-        modules={[Navigation]}
-        slidesPerView={"auto"} // Show 3 full slides + 0.5 of the next
-        spaceBetween={28} // Maintain 28px gap between slides
-        navigation={{ nextEl: ".next", prevEl: ".prev" }}
-        pagination={{ clickable: true }}
-        loop={true}
-        autoplay={{ delay: 1000 }}
-        // className="relative mb-4 flex w-[48.25rem] gap-7 overflow-hidden"
-        className="relative mb-4 flex w-[48.25rem] gap-7 overflow-hidden px-4 pb-6 pt-6"
-      >
-        <div className="relative mb-4 flex w-[48.25rem] gap-7 overflow-x-hidden pb-10 pt-6">
-          {data?.map((product: Product, index: number) => (
-            <SwiperSlide
-              key={index}
-              style={{ width: "12rem" }}
-              // className="min-w-48 flex-1 rounded-xl bg-white px-2.5 pb-2.5 pt-2.5 shadow-md"
-
-              className="rounded-xl bg-white p-4 shadow-md"
-            >
-              <ProductCard
-                imgSrc={product.thumbnail}
-                title={product.title}
-                price={product.price}
-                rating={product.rating}
-              />
-            </SwiperSlide>
-          ))}
-
-          <button className="absolute right-0 top-[calc(50%-1rem)] flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-md">
-            <FontAwesomeIcon icon={faChevronRight} />
-          </button>
-
-          <button className="absolute left-0 top-[calc(50%-1rem)] flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-md">
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-        </div>
-      </Swiper> */}
       {isLoading && <Spinner />}
-      {/* {isLoading && <LoadingSpinner />} */}
-      {isError && (
-        // <p className="text-center text-red-500">Error fetching products.</p>
-        <ErrorMessage message={error.message} />
-      )}
-      {/* (isError) && <h1>Something went wrong</h1>; */}
+      {isError && <ErrorMessage message={error.message} />}
       <Swiper
         modules={[Navigation]}
         slidesPerView={"auto"}
@@ -335,7 +256,8 @@ function Main() {
         pagination={{ clickable: true }}
         loop={true}
         autoplay={{ delay: 3000 }}
-        className="relative mb-4 w-[48.25rem]"
+        // className="relative mb-4 w-[48.25rem]"
+        className="relative mb-4 w-auto xl:w-auto xl:max-w-[48.25rem]"
         style={{ padding: "1.5rem 0rem 2.5rem" }}
       >
         {/* Gradient Overlay for Fade Effect */}
@@ -355,7 +277,7 @@ function Main() {
         </button>
 
         {data?.map((product: Product, index: number) => (
-          <SwiperSlide key={index} style={{ width: "12rem" }}>
+          <SwiperSlide key={index} style={{ width: "18rem" }}>
             <ProductCard
               product={product}
               key={product.id}
@@ -369,59 +291,74 @@ function Main() {
           </SwiperSlide>
         ))}
       </Swiper>
-      {/* Render Products */}
-      {/* {data?.map((product: Product, index: number) => (
-        <ProductCard
-          key={index}
-          imgSrc={product.thumbnail}
-          title={product.title}
-          price={product.price}
-          rating={product.rating}
-        />
-      ))} */}
-      {/* </div> */}
-      {/* Explore Categories */}
-      {/* <div className="mb-8 flex items-center gap-6">
-        <h3 className="font-roboto text-2xl font-semibold text-[#016170]">
-          Explore Popular Categories
-        </h3>
-        <button className="flex items-center gap-1 text-sm font-medium text-[#5C5C5C] underline">
-          See all
-          <FontAwesomeIcon icon={faArrowRight} />
-        </button>
-      </div> */}
-      {/* Split Content Cards */}
-      {/* <div className="flex gap-9">
-        <SplitContentCard
-          title="Popular top 10 brands"
-          description="5,400+ Orders & reviews"
-        >
-          <LogoStack
-            images={[
-              { src: "images/sony.png", alt: "Sony" },
-              { src: "images/apple.png", alt: "Apple" },
-              { src: "images/bing.png", alt: "Bing" },
-              { src: "images/lenovo.png", alt: "Lenovo" },
-            ]}
-          />
-        </SplitContentCard>
-        <SplitContentCard
-          title="Newest Sellers"
-          description="4,600+ Orders & reviews"
-        >
-          <LogoStack
-            images={[
-              { src: "images/avatar-1.png", alt: "Avatar1" },
-              { src: "images/avatar-2.png", alt: "Avatar2" },
-              { src: "images/avatar-3.png", alt: "Avatar3" },
-              { src: "images/avatar-4.png", alt: "Avatar4" },
-            ]}
-          />
-        </SplitContentCard>
-      </div> */}
     </main>
   );
 }
+
+// function Main() {
+//   const { isMainProductLoaded, setIsMainProductLoaded } =
+//     useOutletContext<LayoutContextType>();
+
+//   const { data, isLoading, isError, error } = useQuery<Product[]>({
+//     queryKey: ["products"],
+//     queryFn: getHighlyRatedProducts,
+//     enabled: isMainProductLoaded,
+//   });
+
+//   function handleLoad() {
+//     setIsMainProductLoaded(true);
+//   }
+
+//   return (
+//     <main className="mb-4 min-w-0 px-4 py-10 sm:px-6 xl:col-span-1 xl:row-span-1 xl:px-0 xl:py-0">
+//       <MainProduct onLoad={handleLoad} />
+//       {isLoading && <Spinner />}
+//       {isError && <ErrorMessage message={error.message} />}
+//       <Swiper
+//         modules={[Navigation]}
+//         slidesPerView={"auto"}
+//         spaceBetween={16}
+//         navigation={{ nextEl: ".next", prevEl: ".prev" }}
+//         pagination={{ clickable: true }}
+//         loop={true}
+//         autoplay={{ delay: 3000 }}
+//         className="relative mb-4 w-full"
+//         style={{ padding: "1rem 0 2rem" }}
+//       >
+//         <div
+//           className="absolute right-0 z-10 w-16 bg-gradient-to-l from-white to-transparent sm:w-24 lg:w-36"
+//           style={{ height: "calc(100% - 3rem)", top: "1rem" }}
+//         />
+//         <button className="next absolute right-0 top-[calc(50%-1rem)] z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-md">
+//           <FontAwesomeIcon icon={faChevronRight} />
+//         </button>
+//         <button className="prev absolute left-0 top-[calc(50%-1rem)] z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-md">
+//           <FontAwesomeIcon icon={faChevronLeft} />
+//         </button>
+//         {data?.map((product: Product, index: number) => (
+//           <SwiperSlide
+//             key={index}
+//             style={{
+//               width: "16rem",
+//               maxWidth: "calc(100vw - 2rem)", // Prevents overflow on smaller screens
+//             }}
+//           >
+//             <ProductCard
+//               product={product}
+//               key={product.id}
+//               id={product.id}
+//               imgSrc={product.thumbnail}
+//               title={product.title}
+//               price={product.price}
+//               rating={product.rating}
+//               stock={product.stock}
+//             />
+//           </SwiperSlide>
+//         ))}
+//       </Swiper>
+//     </main>
+//   );
+// }
 
 export default Main;
 

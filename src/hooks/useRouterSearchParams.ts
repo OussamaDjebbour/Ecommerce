@@ -673,14 +673,11 @@
 
 // export default useSearchParams;
 
-import {
-  useSearchParams as useRouterSearchParams,
-  useNavigate,
-} from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 
-export const useSearchParams = () => {
-  const [searchParams, setSearchParams] = useRouterSearchParams();
+export const useRouterSearchParams = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   // Get current values from URL
@@ -688,6 +685,7 @@ export const useSearchParams = () => {
   const selectedCategory = searchParams.get("category") || "";
   const minPrice = Number(searchParams.get("minPrice")) || 0;
   const maxPrice = Number(searchParams.get("maxPrice")) || 10000;
+  const sort = searchParams.get("sortby") || "relevance";
   const currentPage = Number(searchParams.get("page")) || 1;
 
   // Helper function to create consistent URL with all search-related params
@@ -698,14 +696,16 @@ export const useSearchParams = () => {
       minPrice?: number;
       maxPrice?: number;
       page?: number;
+      sort?: string;
     }) => {
       const newParams = new URLSearchParams();
 
-      // Always maintain consistent order: q, category, minPrice, maxPrice, page
+      // Always maintain consistent order: q, category, minPrice, maxPrice,sortby, page
       const query = params.query ?? searchQuery;
       const category = params.category ?? selectedCategory;
       const min = params.minPrice ?? minPrice;
       const max = params.maxPrice ?? maxPrice;
+      const sortby = params.sort ?? sort;
       const page = params.page ?? currentPage;
 
       // Only add query if it exists (required for search)
@@ -713,17 +713,20 @@ export const useSearchParams = () => {
         newParams.set("q", query);
       }
 
-      // Always show all filter params when on ProductPage for consistency
       if (category) {
         newParams.set("category", category);
       }
 
-      if (min > 0) {
+      if (min >= 0) {
         newParams.set("minPrice", String(min));
       }
 
-      if (max < 10000) {
+      if (max <= 10000) {
         newParams.set("maxPrice", String(max));
+      }
+
+      if (sortby) {
+        newParams.set("sortby", sortby);
       }
 
       // Always show page parameter when on ProductPage
@@ -731,7 +734,7 @@ export const useSearchParams = () => {
 
       return newParams;
     },
-    [searchQuery, selectedCategory, minPrice, maxPrice, currentPage],
+    [searchQuery, selectedCategory, minPrice, maxPrice, sort, currentPage],
   );
 
   // Update search query - navigate to ProductPage if not already there
@@ -763,7 +766,12 @@ export const useSearchParams = () => {
     });
 
     // If no query and no active filters, go back to home
-    if (!selectedCategory && minPrice === 0 && maxPrice === 10000) {
+    if (
+      !selectedCategory &&
+      sort === "relevance" &&
+      minPrice === 0 &&
+      maxPrice === 10000
+    ) {
       if (window.location.pathname !== "/") navigate("/");
       else return;
     } else {
@@ -776,6 +784,7 @@ export const useSearchParams = () => {
     selectedCategory,
     minPrice,
     maxPrice,
+    sort,
   ]);
 
   // Clear all search and filters - go back to home
@@ -792,6 +801,7 @@ export const useSearchParams = () => {
       category: "",
       minPrice: 0,
       maxPrice: 10000,
+      sort: "relevance",
       page: 1,
     });
 
@@ -808,6 +818,17 @@ export const useSearchParams = () => {
     (category: string) => {
       const newParams = createSearchUrl({
         category,
+        page: 1,
+      });
+      setSearchParams(newParams);
+    },
+    [createSearchUrl, setSearchParams],
+  );
+
+  const setSort = useCallback(
+    (sort: string) => {
+      const newParams = createSearchUrl({
+        sort,
         page: 1,
       });
       setSearchParams(newParams);
@@ -851,6 +872,7 @@ export const useSearchParams = () => {
     selectedCategory,
     minPrice,
     maxPrice,
+    sort,
     currentPage,
 
     // Setters
@@ -858,6 +880,7 @@ export const useSearchParams = () => {
     setSelectedCategory,
     setMinPrice,
     setMaxPrice,
+    setSort,
     setCurrentPage,
     clearSearchQuery,
     clearAll,
@@ -869,4 +892,4 @@ export const useSearchParams = () => {
   };
 };
 
-export default useSearchParams;
+export default useRouterSearchParams;

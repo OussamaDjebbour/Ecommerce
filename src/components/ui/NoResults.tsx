@@ -169,13 +169,14 @@
 // export default NoResults;
 
 import { FC } from "react";
-import { useSearchParams } from "../../hooks/useSearchParams";
+import { useRouterSearchParams } from "../../hooks/useRouterSearchParams";
 
 const NoResults: FC<{ searchQuery: string; selectedCategory?: string }> = ({
   searchQuery,
   selectedCategory,
 }) => {
-  const { clearAll, clearAllFilters, hasActiveFilters } = useSearchParams();
+  const { clearAll, clearAllFilters, hasActiveFilters } =
+    useRouterSearchParams();
 
   return (
     <div

@@ -1,3 +1,8 @@
+export type MenuItemType = {
+  label: string;
+  icon: React.ReactNode;
+};
+
 export type Review = {
   rating: number;
   comment: string;
@@ -18,6 +23,13 @@ export interface Product {
   images: string[];
   thumbnail: string;
   discountPercentage: number;
+  brand: string;
+  meta: {
+    createdAt: string;
+    updatedAt: string;
+    barcode: string;
+    qrCode: string;
+  };
 }
 
 export interface CartItemType extends Product {
@@ -84,7 +96,7 @@ export interface LayoutContextType {
 //   currentImage?: string;
 // }
 
-export interface CheckoutItem {
+interface CheckoutItem {
   id: number;
   title: string;
   price: number;

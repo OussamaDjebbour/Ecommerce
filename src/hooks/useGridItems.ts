@@ -329,8 +329,10 @@ export const useGridItems = (containerRef: React.RefObject<HTMLDivElement>) => {
 
     if (containerWidth === 0) return; // Skip if width is zero
 
-    const itemMinWidth = 192; // 12rem
-    const gap = 16; // 1rem
+    // const itemMinWidth = 192; // 12rem
+    const itemMinWidth = 288; // 12rem
+    // const gap = 16; // 1rem
+    const gap = 24; // 1.5rem
 
     const itemsPerRow = Math.floor(
       (containerWidth + gap) / (itemMinWidth + gap),

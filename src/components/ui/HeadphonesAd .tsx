@@ -11,7 +11,7 @@ const HeadphonesAd = () => {
       // }}
 
       // className="relative mx-auto flex h-60 w-full max-w-md items-center justify-between rounded-lg bg-gradient-to-br from-[#A1D2FF] to-[#00E0C6]/90 p-6 shadow-lg md:max-w-lg"
-      className="relative mb-[4.3125rem] h-56 w-full rounded-2xl bg-gradient-to-br from-[#A1D2FF] to-[#00E0C6]/90 pb-8 pl-5 pt-3 shadow-lg"
+      className="relative mb-[4.3125rem] hidden h-56 w-full rounded-2xl bg-gradient-to-br from-[#A1D2FF] to-[#00E0C6]/90 pb-8 pl-5 pt-3 shadow-lg xl:block"
     >
       {/* <div className="relative mx-auto flex h-60 w-full max-w-md items-center justify-between rounded-lg bg-gradient-to-r from-[#A1D2FF] to-[#00E0C6] p-6 shadow-lg md:max-w-lg"> */}
       {/* <div className="relative mx-auto flex h-60 w-full max-w-md items-center justify-between rounded-lg bg-gradient-to-r from-teal-400 to-blue-500 p-6 shadow-lg md:max-w-lg"> */}

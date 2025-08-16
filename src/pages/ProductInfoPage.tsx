@@ -21,6 +21,9 @@ import LoadingSpinner from "../components/ui/LoadingSpinner";
 import { fetcProductById } from "../services/fetchProductById";
 import { getPriceDetails } from "../helpers/getPriceDetails";
 import { useContinueShopping } from "../hooks/useContinueShopping";
+import { CartItemType } from "../types";
+import QuantityControl from "../components/ui/QuantityControl";
+import { renderStars } from "../helpers/renderStars";
 
 interface Review {
   rating: number;
@@ -88,30 +91,27 @@ interface ActiveTab {
 interface ProductInfoPageProps {
   //   product: DummyJSONProduct | null;
   onBack: () => void;
-  onCheckout: (product: {
-    id: number;
-    title: string;
-    price: number;
-    image: string;
-    quantity: number;
-  }) => void;
-  onGoToCart: () => void;
+  // onCheckout: (product: {
+  //   id: number;
+  //   title: string;
+  //   price: number;
+  //   image: string;
+  //   quantity: number;
+  // }) => void;
+  // onGoToCart: () => void;
 }
 
-const ProductInfoPage: React.FC<ProductInfoPageProps> = ({
-  //   product,
-  onBack,
-  onCheckout,
-  onGoToCart,
-}) => {
+const ProductInfoPage: React.FC<ProductInfoPageProps> = ({ onBack }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<ActiveTab["id"]>("description");
   const [isWishlisted, setIsWishlisted] = useState(false);
 
+  const cart = useCartStore((state) => state.cart);
   const addToCart = useCartStore((state) => state.addToCart);
   //   const cart = useCartStore((state) => state.cart);
   const getTotalItems = useCartStore((state) => state.getCartTotalItems);
+  const setBuyNowProduct = useCartStore((state) => state.setBuyNowProduct);
 
   const { slugId } = useParams();
   const productId = Number(slugId?.split("-").pop());
@@ -135,6 +135,10 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({
   });
 
   console.log("productproductproduct", product);
+
+  const isFull = cart.some(
+    (item) => item.id === product?.id && item.quantity + quantity > item.stock,
+  );
 
   if (isLoading) return <Spinner />;
   //   if (isLoading) return <LoadingSpinner />;
@@ -177,13 +181,15 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({
     }
   };
 
+  const productAddedToCart: CartItemType = {
+    ...product,
+    quantity,
+    image: product.images[selectedImage] || product.thumbnail,
+    discountedPrice: discountedPrice || originalPrice,
+  };
+
   const handleAddToCart = () => {
-    const result = addToCart({
-      ...product,
-      quantity,
-      image: product.images[selectedImage] || product.thumbnail,
-      discountedPrice: discountedPrice,
-    });
+    const result = addToCart(productAddedToCart);
     // const result = addToCart({
     //   id: product.id,
     //   title: product.title,
@@ -204,28 +210,27 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({
   };
 
   const handleBuyNow = () => {
-    onCheckout({
-      id: product.id,
-      title: product.title,
-      price: discountedPrice,
-      image: product.images[selectedImage] || product.thumbnail,
-      quantity,
-    });
-  };
+    if (!product) return;
 
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star
-        key={i}
-        className={`h-4 w-4 ${
-          i < Math.floor(rating)
-            ? "fill-current text-yellow-400"
-            : i < rating
-              ? "fill-current text-yellow-400 opacity-50"
-              : "text-gray-300"
-        }`}
-      />
-    ));
+    const cartItem: CartItemType = productAddedToCart;
+    // const cartItem: CartItemType = {
+    //   ...product,
+    //   quantity,
+    //   image: product.images[selectedImage] || product.thumbnail,
+    //   discountedPrice: discountedPrice || originalPrice,
+    // };
+
+    setBuyNowProduct(cartItem);
+
+    navigate("/checkout?mode=buy-now");
+
+    // onCheckout({
+    //   id: product.id,
+    //   title: product.title,
+    //   price: discountedPrice,
+    //   image: product.images[selectedImage] || product.thumbnail,
+    //   quantity,
+    // });
   };
 
   return (
@@ -297,7 +302,7 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({
             {/* Rating and Reviews */}
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1">
-                {renderStars(product.rating)}
+                {renderStars(product.rating, 6)}
               </div>
               <span className="text-lg font-semibold text-gray-900">
                 {product.rating}
@@ -313,7 +318,7 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({
                 <span className="text-4xl font-bold text-[#009393]">
                   ${discountedPrice.toFixed(2)}
                 </span>
-                {product.discountPercentage > 0 && (
+                {hasDiscount && (
                   <>
                     <span className="text-2xl text-gray-400 line-through">
                       ${product.price.toFixed(2)}
@@ -329,8 +334,18 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({
               </p>
             </div>
 
-            {/* Quantity Selector */}
-            <div className="space-y-3">
+            <div className="flex items-center gap-4">
+              <QuantityControl
+                product={productAddedToCart}
+                // product={product}
+                mode="buy-now"
+                onUpdateBuyNow={setQuantity}
+              />
+              <span className="text-sm text-gray-500">
+                Maximum {product.stock} items
+              </span>
+            </div>
+            {/* <div className="space-y-3">
               <label className="block text-sm font-medium text-gray-700">
                 Quantity
               </label>
@@ -358,20 +373,21 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({
                   Maximum {product.stock} items
                 </span>
               </div>
-            </div>
+            </div> */}
 
             {/* Action Buttons */}
             <div className="space-y-4">
               <div className="flex gap-4">
                 <button
                   onClick={handleBuyNow}
-                  className="flex-1 rounded-xl bg-[#009393] px-6 py-4 text-lg font-semibold text-white transition-colors hover:bg-[#007a7a]"
+                  className="flex-1 rounded-xl bg-[#009393] px-6 py-4 text-lg font-semibold text-white transition-all duration-200 hover:scale-105 hover:bg-[#007a7a]"
                 >
                   Buy Now
                 </button>
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 rounded-xl border-2 border-[#009393] px-6 py-4 text-lg font-semibold text-[#009393] transition-colors hover:bg-[#009393] hover:text-white"
+                  // className={`rounded-lg border-2 border-[#009393] px-5 py-2 font-medium text-[#009393] transition-all duration-200 hover:scale-105 hover:bg-[#009393]`}
+                  className={`flex-1 rounded-xl border-2 border-[#009393] px-6 py-4 text-lg font-semibold text-[#009393] transition-all duration-200 hover:scale-105 hover:bg-[#009393] ${isFull ? "cursor-not-allowed opacity-50 hover:scale-100 hover:bg-transparent" : "hover:text-white"}`}
                 >
                   Add to Cart
                 </button>
@@ -505,7 +521,7 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({
                   </h3>
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1">
-                      {renderStars(product.rating)}
+                      {renderStars(product.rating, 5)}
                     </div>
                     <span className="text-lg font-semibold">
                       {product.rating} out of 5
@@ -527,7 +543,7 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({
                             </h4>
                             <div className="mt-1 flex items-center gap-2">
                               <div className="flex items-center gap-1">
-                                {renderStars(review.rating)}
+                                {renderStars(review.rating, 4)}
                               </div>
                               <span className="text-sm text-gray-500">
                                 {new Date(review.date).toLocaleDateString()}

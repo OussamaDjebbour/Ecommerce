@@ -39,7 +39,9 @@
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    // "noEmit": true,
+    "composite": true,
+    "noEmit": true, // Required if using project references
     "jsx": "react-jsx",
 
     /* Linting */

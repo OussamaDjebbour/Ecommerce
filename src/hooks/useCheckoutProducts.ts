@@ -35,15 +35,37 @@
 //   };
 // };
 
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
+// import { useCartStore } from "../store/cartStore";
+
+// export function useCheckoutProducts() {
+//   const { state } = useLocation();
+//   const { cart } = useCartStore();
+
+//   const mode = state?.mode || "cart";
+//   const items = mode === "buy-now" ? [state.product] : cart;
+
+//   return { items, mode };
+// }
+
 import { useCartStore } from "../store/cartStore";
+import { useSearchParams } from "react-router-dom";
 
 export function useCheckoutProducts() {
-  const { state } = useLocation();
-  const { cart } = useCartStore();
+  const { cart, buyNowProduct } = useCartStore();
+  const [searchParams] = useSearchParams();
 
-  const mode = state?.mode || "cart";
-  const items = mode === "buy-now" ? [state.product] : cart;
+  // Check if this is a buy-now checkout
+  const isBuyNow = searchParams.get("mode") === "buy-now";
 
-  return { items, mode };
+  const mode = (isBuyNow ? "buy-now" : "cart") as "cart" | "buy-now";
+  const items = isBuyNow && buyNowProduct ? [buyNowProduct] : cart;
+
+  console.log("items", items);
+
+  return {
+    items,
+    mode,
+    buyNowQuantities: {}, // Not needed for this simplified approach
+  };
 }
