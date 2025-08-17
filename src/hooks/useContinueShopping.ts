@@ -8,12 +8,11 @@ export function useContinueShopping(
   const navigate = useNavigate();
   const from = location.state?.from;
 
-  console.log("pathpath", path, from);
   const handleContinueShopping = () => {
     if (from && from !== path && from !== path2) {
       navigate(-1);
     } else {
-      navigate("/"); // fallback
+      navigate("/");
     }
   };
 

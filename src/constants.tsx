@@ -10,23 +10,9 @@ export const MAX_PRICE = 10000;
 
 import {
   ShoppingCart,
-  Eye,
-  Heart,
-  Package,
-  TrendingUp,
-  Clock,
-  Star,
-  ArrowRight,
-  Menu,
-  X,
-  Search,
-  Bell,
-  User,
   Home,
-  Grid3X3,
   Settings,
   HelpCircle,
-  Phone,
   Contact,
   HeartIcon,
 } from "lucide-react";
@@ -39,14 +25,11 @@ export const MENU_ITEMS = [
   { icon: <Contact />, label: "Contact us" },
   { icon: <HelpCircle />, label: "Help" },
 ];
-// export const MENU_ITEMS = [
-//   { icon: "🏠", label: "Home", active: true },
-//   { icon: "🔍", label: "Explore" },
-//   { icon: "❤️", label: "Saved" },
-//   { icon: "🛒", label: "Cart" },
-//   { icon: "📊", label: "Selling" },
-//   { icon: "👤", label: "Profile" },
-//   { icon: "⏱️", label: "Purchase History" },
-//   { icon: "💬", label: "Contact us" },
-//   { icon: "⚙️", label: "Settings" },
-// ];
+
+export const SortOptions: { name: string; value: string }[] = [
+  { name: "Most Relevant", value: "relevance" },
+  { name: "Price: Low to High", value: "priceLowToHigh" },
+  { name: "Price: High to Low", value: "priceHighToLow" },
+  { name: "Newest First", value: "newest" },
+  { name: "Oldest First", value: "oldest" },
+];

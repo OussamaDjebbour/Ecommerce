@@ -3,10 +3,9 @@ import {
   useStripe,
   useElements,
   PaymentElement,
-  AddressElement,
 } from "@stripe/react-stripe-js";
 import { ArrowLeft, Lock } from "lucide-react";
-import { CheckoutItem } from "src/types";
+import { CheckoutItem } from "../../types";
 
 interface CheckoutFormProps {
   customerInfo: {
@@ -20,13 +19,7 @@ interface CheckoutFormProps {
     zipCode: string;
     country: string;
   };
-  // product: {
-  //   id: number;
-  //   title: string;
-  //   price: number;
-  //   image: string;
-  //   quantity: number;
-  // };
+
   items: CheckoutItem[];
   totalAmount: number;
   onBack: () => void;
@@ -34,8 +27,6 @@ interface CheckoutFormProps {
 
 const CheckoutForm: React.FC<CheckoutFormProps> = ({
   customerInfo,
-  items,
-  // product,
   totalAmount,
   onBack,
 }) => {

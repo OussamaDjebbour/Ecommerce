@@ -1,161 +1,4 @@
-// import { ProductWithDailyDealProps } from "src/types";
-
-// const ProductWithDailyDeal: FC<ProductWithDailyDealProps> = ({
-//   image,
-//   title,
-//   price,
-//   nbrOfReviews,
-//   nbrOfProductsInStock,
-// }) => {
-//   return (
-//     <div className="mb-7 flex gap-3.5">
-//       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
-//         {/* <img src="images/daily-deal.png" alt="Daily deal" /> */}
-//         <img src={image} alt={title} className="h-full w-full object-cover" />
-//       </div>
-
-//       <div className="flex flex-col justify-between py-2 text-xs font-medium">
-//         <h5 className="text-black">{title}</h5>
-//         <p className="text-[#5C5C5C]">
-//           <span className="font-semibold">{nbrOfReviews}</span> Reviews
-//           <span className="font-semibold"> {nbrOfProductsInStock}</span> pcs in
-//           stock
-//         </p>
-//       </div>
-
-//       <p className="my-auto ml-auto text-xs font-medium text-[#5C5C5C]">
-//         Price ${price}
-//       </p>
-//     </div>
-//   );
-// };
-
-// export default ProductWithDailyDeal;
-
-import { FC } from "react";
-
-// interface ProductWithDailyDealProps {
-//   image: string;
-//   title: string;
-//   price: number;
-//   nbrOfReviews: number;
-//   nbrOfProductsInStock: number;
-// }
-
-// const ProductWithDailyDeal: FC<ProductWithDailyDealProps> = ({
-//   image,
-//   title,
-//   price,
-//   nbrOfReviews,
-//   nbrOfProductsInStock,
-// }) => {
-//   return (
-//     <div className="mb-7 flex gap-3.5">
-//       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
-//         {/* Lazy Loading Image */}
-//         <img
-//           src={image}
-//           alt={title}
-//           className="h-full w-full object-cover"
-//           loading="lazy"
-//         />
-//       </div>
-
-//       <div className="flex flex-col justify-between py-2 text-xs font-medium">
-//         <h5 className="text-black">{title}</h5>
-//         <p className="text-[#5C5C5C]">
-//           <span className="font-semibold">{nbrOfReviews}</span> Reviews ·
-//           <span className="font-semibold"> {nbrOfProductsInStock}</span> pcs in
-//           stock
-//         </p>
-//       </div>
-
-//       <p className="my-auto ml-auto text-xs font-medium text-[#5C5C5C]">
-//         Price ${price}
-//       </p>
-//     </div>
-//   );
-// };
-
-// export default ProductWithDailyDeal;
-
-// import { useState } from "react";
-// import { getPriceDetails } from "../../helpers/getPriceDetails";
-// import { Product } from "../../types";
-
-// interface ProductWithDailyDealProps {
-//   product: Product;
-//   image: string;
-//   title: string;
-//   price: number;
-//   nbrOfReviews: number;
-//   nbrOfProductsInStock: number;
-// }
-
-// const ProductWithDailyDeal: FC<ProductWithDailyDealProps> = ({
-//   product,
-//   image,
-//   title,
-//   price,
-//   nbrOfReviews,
-//   nbrOfProductsInStock,
-// }) => {
-//   const [imageLoaded, setImageLoaded] = useState(false);
-//   const { originalPrice, discountedPrice, hasDiscount } =
-//     getPriceDetails(product);
-
-//   return (
-//     <div className="mb-7 flex gap-3.5">
-//       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
-//         {/* Low-Quality Placeholder */}
-//         {!imageLoaded && (
-//           <div className="h-14 w-14 animate-pulse rounded-full bg-gray-300"></div>
-//         )}
-
-//         {/* High-Quality Image */}
-//         <img
-//           src={image}
-//           alt={title}
-//           className={`h-full w-full object-cover transition-opacity duration-300 ${
-//             imageLoaded ? "opacity-100" : "opacity-0"
-//           }`}
-//           loading="lazy"
-//           onLoad={() => setImageLoaded(true)}
-//         />
-//       </div>
-
-//       <div className="flex flex-col justify-between py-2 text-xs font-medium">
-//         <h5 className="text-black">{title}</h5>
-//         <p className="text-[#5C5C5C]">
-//           <span className="font-semibold">{nbrOfReviews}</span> Reviews ·
-//           <span className="font-semibold"> {nbrOfProductsInStock}</span> pcs in
-//           stock
-//         </p>
-//       </div>
-
-//       {/* <p className="my-auto ml-auto text-xs font-medium text-[#5C5C5C]">
-//         Price ${price}
-//       </p> */}
-//       <div className="my-auto ml-auto flex flex-col items-center text-xs font-medium text-[#5C5C5C]">
-//         <span
-//           className={`font-semibold text-gray-500 ${hasDiscount && "line-through"}`}
-//         >
-//           ${originalPrice.toFixed(2)}
-//         </span>
-//         {hasDiscount && (
-//           <span className="text-sm font-bold text-[#009393]">
-//             ${discountedPrice.toFixed(2)}
-//           </span>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ProductWithDailyDeal;
-
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Star, TrendingUp, Package, ArrowRight } from "lucide-react";
 import { getPriceDetails } from "../../helpers/getPriceDetails";
 import { Product } from "../../types";
@@ -178,7 +21,6 @@ const ProductWithDailyDeal: React.FC<ProductWithDailyDealProps> = ({
   product,
   image,
   title,
-  price,
   nbrOfReviews,
   nbrOfProductsInStock,
 }) => {
@@ -192,7 +34,6 @@ const ProductWithDailyDeal: React.FC<ProductWithDailyDealProps> = ({
   return (
     <div
       onClick={() => navigateToProduct(product)}
-      // md:min-w-[440px] min-[540px]:min-w-[28rem]
       className={`group relative w-full max-w-md cursor-pointer rounded-xl bg-transparent p-4 shadow-gray-200/50 transition-all duration-300 ease-out hover:-translate-y-1 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50`}
     >
       {/* Discount Badge */}
@@ -274,7 +115,6 @@ const ProductWithDailyDeal: React.FC<ProductWithDailyDealProps> = ({
         </div>
 
         {/* Price Section */}
-        {/* ml-8 min-[540px]:ml-0 */}
         <div className="flex flex-col items-end gap-2 min-[540px]:ml-6 xl:ml-0">
           <div className="text-right">
             <div

@@ -1,95 +1,14 @@
 import React from "react";
-
 import { useCartStore } from "../store/cartStore";
-import { showRemovalToast } from "../helpers/toastHelpers";
-import { CartItemType } from "src/types";
+import { useContinueShopping } from "../hooks/useContinueShopping";
 import CartHeader from "./CartHeader";
-import { useLocation, useNavigate } from "react-router-dom";
 import EmptyCart from "./EmptyCart";
 import Cart from "../components/ui/Cart";
-import { useContinueShopping } from "../hooks/useContinueShopping";
 
-interface CartProps {
-  onBack: () => void;
-  onCheckout: (product: {
-    id: number;
-    title: string;
-    price: number;
-    image: string;
-    quantity: number;
-  }) => void;
-}
-
-const CartPage: React.FC<CartProps> = ({ onBack, onCheckout }) => {
-  const {
-    cart,
-    removeFromCart,
-    updateQuantity,
-    getCartTotalItems,
-    getCartTotalPrice,
-  } = useCartStore();
+const CartPage: React.FC = () => {
+  const { cart } = useCartStore();
 
   const handleContinueShopping = useContinueShopping();
-
-  // const location = useLocation();
-  // const navigate = useNavigate();
-  // const from = location.state?.from;
-
-  // const handleContinueShopping = () => {
-  //   if (from && from !== "/checkout") {
-  //     navigate(-1);
-  //   } else {
-  //     navigate("/"); // fallback route
-  //   }
-  // };
-
-  const handleRemoveItem = (item: CartItemType) => {
-    removeFromCart(item.id);
-    showRemovalToast(item.title, item.image);
-  };
-
-  const handleQuantityChange = (
-    id: number,
-    newQuantity: number,
-    maxStock: number,
-  ) => {
-    if (newQuantity <= 0) {
-      const item = cart.find((item) => item.id === id);
-      if (item) {
-        handleRemoveItem(item);
-      }
-    } else {
-      updateQuantity(id, Math.min(newQuantity, maxStock));
-    }
-  };
-
-  const handleCheckoutItem = (item: CartItemType) => {
-    onCheckout({
-      id: item.id,
-      title: item.title,
-      price: item.price,
-      image: item.image,
-      quantity: item.quantity,
-    });
-  };
-
-  const handleCheckoutAll = () => {
-    // For simplicity, we'll checkout the first item or create a combined checkout
-    // In a real app, you'd handle multiple items differently
-    if (cart.length > 0) {
-      const totalAmount = getCartTotalPrice();
-      console.log("totalAmount", totalAmount, getCartTotalPrice());
-      const totalItems = getCartTotalItems();
-
-      onCheckout({
-        id: 999, // Special ID for cart checkout
-        title: `Cart Items (${totalItems} items)`,
-        price: totalAmount,
-        image: cart[0].image, // Use first item's image
-        quantity: 1,
-      });
-    }
-  };
 
   return (
     <div className="col-span-2 min-h-screen">

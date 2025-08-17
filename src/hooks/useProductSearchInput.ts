@@ -1,4 +1,3 @@
-// hooks/useProductSearchInput.ts
 import { useCallback, useMemo, useState } from "react";
 import debounce from "lodash.debounce";
 import { useRouterSearchParams } from "./useRouterSearchParams";

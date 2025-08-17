@@ -23,8 +23,6 @@ function SearchDropdownSuggest({
         index === selectedIndex ? "border-l-2 border-blue-500 bg-blue-50" : ""
       }`}
       onMouseDown={() => handleDropdownClick(product)}
-      // onMouseEnter={() => setSelectedIndex(index)}
-      // onMouseLeave={() => setSelectedIndex(index)}
       role="option"
       aria-selected={index === selectedIndex}
     >
@@ -48,7 +46,6 @@ function SearchDropdownSuggest({
               ${originalPrice}
             </p>
           </div>
-          {/* <p className="text-sm text-blue-600">${product.price}</p> */}
         </div>
       </div>
     </li>

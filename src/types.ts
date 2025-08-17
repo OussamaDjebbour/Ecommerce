@@ -18,7 +18,6 @@ export interface Product {
   category: string;
   rating: number;
   stock: number;
-  // reviews: string[];
   reviews: Review[];
   images: string[];
   thumbnail: string;
@@ -34,31 +33,42 @@ export interface Product {
 
 export interface CartItemType extends Product {
   quantity: number;
-  image: string; // Optional: the image chosen for display (e.g., from images array)
+  image: string;
   discountedPrice: number;
 }
 
 export interface QuantityControlProduct extends Product, CartItemType {}
 
-// export interface CartItemType {
-//   id: number;
-//   // id: string;
-//   title: string;
-//   price: number;
-//   quantity: number;
-//   image: string;
-//   stock: number;
-//   thumbnail?: string;
-//   // thumbnail?: string;
-// }
+export interface ProductInfo extends Product {
+  tags: string[];
 
-// export interface CartItemProduct extends CartItemType {
-//   description: string;
-//   category: string;
-//   rating: number;
-//   reviews: number;
-//   images: string[];
-// }
+  sku: string;
+
+  weight: number;
+
+  dimensions: {
+    width: number;
+
+    height: number;
+
+    depth: number;
+  };
+
+  warrantyInformation: string;
+
+  shippingInformation: string;
+
+  availabilityStatus: string;
+
+  returnPolicy: string;
+
+  minimumOrderQuantity: number;
+}
+
+export interface ActiveTab {
+  id: "description" | "reviews" | "specifications";
+  label: string;
+}
 
 export type AddToCartResult = { success: boolean; message: string };
 
@@ -86,17 +96,7 @@ export interface LayoutContextType {
   setIsMainProductLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-// export interface CheckoutItem {
-//   id: number;
-//   title: string;
-//   price: number;
-//   quantity: number;
-//   image: string;
-//   stock?: number;
-//   currentImage?: string;
-// }
-
-interface CheckoutItem {
+export interface CheckoutItem {
   id: number;
   title: string;
   price: number;

@@ -1,4 +1,3 @@
-// pages/ErrorPage.js
 const ErrorPage = () => {
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-black text-xl text-white">

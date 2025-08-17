@@ -21,7 +21,6 @@ function CartDropdownItem({ product, index, selectedIndex }: CartDropdownItem) {
   const handleRemoveItem = useCallback(
     (productId: number, title: string, image: string) => {
       removeFromCart(productId);
-      // toast.error(`Item removed from cart successfully`);
       showRemovalToast(title, image);
     },
     [removeFromCart],
@@ -33,7 +32,6 @@ function CartDropdownItem({ product, index, selectedIndex }: CartDropdownItem) {
         index === selectedIndex ? "border-teal-200 bg-teal-50" : ""
       }`}
     >
-      {/* Remove button */}
       <button
         onClick={() => {
           handleRemoveItem(product.id, product.title, product.image);
@@ -42,23 +40,9 @@ function CartDropdownItem({ product, index, selectedIndex }: CartDropdownItem) {
         aria-label={`Remove ${product.title} from cart`}
       >
         <X className="h-4 w-4" />
-        {/* <svg
-                          className="h-3 w-3"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg> */}
       </button>
 
       <div className="flex items-start gap-4">
-        {/* Product Image */}
         <div className="flex-shrink-0">
           <img
             src={product.image}
@@ -79,67 +63,9 @@ function CartDropdownItem({ product, index, selectedIndex }: CartDropdownItem) {
           <p className="mb-3 text-sm font-bold text-teal-600">
             {hasDiscount ? `$${discountedPrice}` : `$${originalPrice}`}
           </p>
-          {/* <div className="mb-3 flex items-center gap-2">
-            {hasDiscount && (
-              <span className="text-base font-bold text-[#009393]">
-                ${discountedPrice.toFixed(2)}
-              </span>
-            )}
-
-            <span
-              className={`text-sm text-gray-500 ${hasDiscount && "line-through"}`}
-            >
-              ${originalPrice.toFixed(2)}
-            </span>
-          </div> */}
 
           <div className="flex items-center justify-between">
-            {/* <div className="flex items-center rounded-full border border-gray-200 bg-white">
-                              <button
-                                onClick={() =>
-                                  handleDecrement(
-                                    product.id,
-                                    product.quantity,
-                                    product.title,
-                                    product.image,
-                                  )
-                                }
-                                className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 transition-colors hover:bg-gray-100"
-                                aria-label="Decrease quantity"
-                              >
-                                <Minus className="h-3 w-3" />
-                              </button>
-
-                              <span className="w-8 text-center text-sm font-medium">
-                                {product.quantity}
-                              </span>
-                              <button
-                                onClick={() =>
-                                  handleIncrement(
-                                    product.id,
-                                    product.quantity,
-                                    product.stock,
-                                    product.title,
-                                  )
-                                }
-                                className={`flex h-6 w-6 items-center justify-center rounded-full border transition-colors ${
-                                  product.quantity >= product.stock
-                                    ? "cursor-not-allowed border-gray-200 text-gray-400"
-                                    : "border-gray-300 hover:bg-gray-100"
-                                }`}
-                                aria-label="Increase quantity"
-                              >
-                                <Plus className="h-3 w-3" />
-                              </button>
-                            </div> */}
-
-            <QuantityControl
-              product={product}
-              mode="cart"
-
-              // handleIncrement={handleIncrement}
-              // handleDecrement={handleDecrement}
-            />
+            <QuantityControl product={product} mode="cart" />
 
             {/* Item Total */}
             <div className="text-right">

@@ -5,58 +5,13 @@ import { Product } from "src/types";
 export const getDailyDealsProducts = async () => {
   try {
     const { data } = await axios.get(
-      // `${BASE_URL}/products?limit=6&sortBy=rating&order=desc`,
       `${BASE_URL}/products?limit=100&sortBy=sold&order=desc`,
     );
     return data.products
-      .filter(
-        (product: Product) => product.category !== "beauty",
-        // product.category !== "fragrances" &&
-        // product.category !== "furniture" &&
-        // product.category !== "groceries" &&
-        // product.category !== "home-decoration",
-        // product.category === "mens-watches",
-        // "beauty",
-        // "fragrances",
-        // "furniture",
-        // "groceries",
-        // "home-decoration",
-        // "kitchen-accessories",
-        // "laptops",
-        // "mens-shirts",
-        // "mens-shoes",
-        // "mens-watches",
-        // "mobile-accessories",
-        // "motorcycle",
-        // "skin-care",
-        // "smartphones",
-        // "sports-accessories",
-        // "sunglasses",
-        // "tablets",
-        // "tops",
-        // "vehicle",
-        // "womens-bags",
-        // "womens-dresses",
-        // "womens-jewellery",
-        // "womens-shoes",
-        // "womens-watches",
-      )
+      .filter((product: Product) => product.category !== "beauty")
       .slice(0, 6);
   } catch (error) {
     throw new Error("Failed to load daily deals");
-  }
-};
-
-export const getHighlyRatedProducts = async () => {
-  try {
-    const { data } = await axios.get(
-      `${BASE_URL}/products?sortBy=rating&order=desc`,
-    );
-    return data.products;
-  } catch (error) {
-    // throw new Error(error);
-    // throw new Error("Error fetching products");
-    throw new Error("Failed to fetch products");
   }
 };
 
@@ -88,11 +43,6 @@ export const getCategories = async () => {
   const { data } = await axios.get(`${BASE_URL}/products/categories`);
   return data;
 };
-
-// export const searchProducts = async (query: string) => {
-//   const { data } = await axios.get(`${BASE_URL}/products/search?q=${query}`);
-//   return data.products;
-// };
 
 export const searchProducts = async (searchQuery: string) => {
   if (!searchQuery) return [];

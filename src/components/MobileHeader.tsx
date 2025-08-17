@@ -1,50 +1,10 @@
 import { useState } from "react";
-import {
-  ShoppingCart,
-  Menu,
-  X,
-  Search,
-  Bell,
-  Home,
-  Grid3X3,
-  Settings,
-  HelpCircle,
-  Phone,
-} from "lucide-react";
+import { ShoppingCart, Menu, X, Search, Bell, Phone } from "lucide-react";
 import { MENU_ITEMS } from "../constants";
 import MenuItem from "./ui/MenuItem";
 import MobileSearchInput from "./ui/MobileSearchInput";
 import CartButton from "./ui/CartButton";
 import { useLocation, useNavigate } from "react-router-dom";
-
-// export function MobileHeader() {
-//   return (
-//     <header className="fixed top-0 left-0 right-0 bg-white z-50 px-4 py-3 border-b">
-//       <div className="flex items-center justify-between">
-//         <div className="flex items-center gap-2">
-//           <img src="/images/logo.png" alt="Soundix" className="h-8" />
-//           <h1 className="text-xl font-bold">Soundix.</h1>
-//         </div>
-
-//         <div className="flex items-center gap-4">
-//           <button className="p-2">
-//             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-//             </svg>
-//           </button>
-//           <button className="p-2">
-//             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-//             </svg>
-//           </button>
-//           <button className="w-8 h-8 rounded-full bg-gray-200">
-//             <img src="/avatar.jpg" alt="Profile" className="w-full h-full rounded-full object-cover" />
-//           </button>
-//         </div>
-//       </div>
-//     </header>
-//   );
-// }
 
 function MobileHeader() {
   const location = useLocation();
@@ -52,7 +12,6 @@ function MobileHeader() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const cartItemCount = 8; // Replace with your cart logic
 
   const handleGoToHomePage = () => {
     if (location.pathname !== "/") navigate("/");
@@ -87,16 +46,6 @@ function MobileHeader() {
 
             {/* Cart */}
             <CartButton />
-            {/* <div className="relative">
-              <button className="rounded-lg bg-[#E8FCFF] p-2 text-[#016170] transition-colors hover:bg-[#D1F5F9]">
-                <ShoppingCart className="h-5 w-5" />
-                {cartItemCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                    {cartItemCount}
-                  </span>
-                )}
-              </button>
-            </div> */}
 
             {/* Notifications */}
             <button className="rounded-lg bg-[#E8FCFF] p-2 text-[#016170] transition-colors hover:bg-[#D1F5F9]">
@@ -125,15 +74,6 @@ function MobileHeader() {
               className="fixed inset-0"
             ></div>
             <MobileSearchInput />
-            {/* <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="w-full rounded-lg bg-white py-2.5 pl-10 pr-4 text-sm outline-none ring-2 ring-transparent focus:ring-[#00E0C6]"
-                autoFocus
-              />
-            </div> */}
           </div>
         )}
       </header>
@@ -175,17 +115,6 @@ function MobileHeader() {
                     handleCloseMenu={() => setIsMenuOpen(false)}
                   />
                 ))}
-                {/* {menuItems.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    className="flex items-center gap-4 rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-[#E8FCFF] hover:text-[#016170]"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <span className="text-gray-500">{item.icon}</span>
-                    <span className="font-medium">{item.label}</span>
-                  </a>
-                ))} */}
               </div>
 
               {/* Customer Service Card in Menu */}

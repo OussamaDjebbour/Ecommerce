@@ -29,8 +29,6 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
     containerRef.current?.focus();
   }, []);
 
-  // useClickAway(containerRef, () => onClose());
-
   // Auto-scroll to selected item in Cart Dropdown
   const scrollToSelectedItem = useCallback(() => {
     if (dropdownRef.current && selectedIndex >= 0) {
@@ -76,7 +74,8 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
   };
 
   const handleCheckout = () => {
-    if (location.pathname !== "/checkout") navigate("checkout");
+    if (location.pathname !== "/checkout")
+      navigate("checkout", { state: { from: location.pathname } });
     onClose();
   };
 
@@ -117,19 +116,6 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
             aria-label="Close cart"
           >
             <X className="h-5 w-5" />
-            {/* <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg> */}
           </button>
         </div>
 
@@ -195,7 +181,6 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
                   <span>Total</span>
                   <span className="text-[#009393]">
                     ${totalPrice.toFixed(2)}
-                    {/* ${getCartTotalPrice().toFixed(2)} */}
                   </span>
                 </div>
 

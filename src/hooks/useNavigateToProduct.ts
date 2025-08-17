@@ -8,7 +8,6 @@ function useNavigateToProduct() {
   const queryClient = useQueryClient();
 
   const navigateToProduct = (product: Product) => {
-    console.log("product", product);
     // Prepopulate product in query cache
     queryClient.setQueryData(["product", product.id], product);
 

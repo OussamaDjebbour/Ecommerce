@@ -1,6 +1,5 @@
 import { ShoppingCart } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useCartStore } from "../../store/cartStore";
 import CartDropdown from "./CartDropdown";
 import { useCartTotalItems } from "../../hooks/useCartTotalItems";
 
@@ -24,7 +23,6 @@ function CartButton() {
   }, [isCartOpen]);
   return (
     <div>
-      {/* Cart Icon with Badge */}
       <div className="relative rounded-xl bg-[#E8FCFF] transition-colors hover:bg-[#D1F5F9]">
         <button
           ref={cartButtonRef}
@@ -35,13 +33,6 @@ function CartButton() {
           className="relative cursor-pointer rounded p-2 focus:rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
         >
           <ShoppingCart fill="#016170" className="h-7 w-7" />
-
-          {/* <FontAwesomeIcon
-            // className="rounded-md bg-[#E8FCFF] p-3.5"
-            color="#016170"
-            size="2xl"
-            icon={faCartShopping}
-          /> */}
 
           {totalItems > 0 && (
             <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-teal-500 text-xs text-white">

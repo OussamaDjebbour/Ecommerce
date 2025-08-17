@@ -1,36 +1,19 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
-import { useCartStore } from "../../store/cartStore";
 import { useCartTotalItems } from "../../hooks/useCartTotalItems";
 import { useCartTotalPrice } from "../../hooks/useCartTotalPrice";
 import { useCartTotalSavings } from "../../hooks/useCartTotalSavings";
-import { useLocation, useNavigate } from "react-router-dom";
 
 interface CartOrderSummaryProps {
   onHandleBack: () => void;
 }
 function CartOrderSummary({ onHandleBack }: CartOrderSummaryProps) {
-  const cart = useCartStore((state) => state.cart);
-  console.log("carrtttt", cart);
-
   const totalItems = useCartTotalItems();
   const totalPrice = useCartTotalPrice();
   const totalSavings = useCartTotalSavings();
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  const handleCheckoutAll = () => {
-    if (cart.length > 0) {
-      //   const totalItems = getCartTotalItems();
-      //   onCheckout({
-      //     id: 999, // Special ID for cart checkout
-      //     title: `Cart Items (${totalItems} items)`,
-      //     price: totalAmount,
-      //     image: cart[0].image, // Use first item's image
-      //     quantity: 1,
-      //   });
-    }
-  };
 
   const handleCheckout = () => {
     if (location.pathname !== "/checkout") navigate("/checkout");
@@ -71,7 +54,6 @@ function CartOrderSummary({ onHandleBack }: CartOrderSummaryProps) {
         </div>
 
         <button
-          // onClick={handleCheckoutAll}
           onClick={handleCheckout}
           className="mb-4 w-full rounded-lg bg-[#009393] px-6 py-4 text-lg font-semibold text-white transition-colors hover:bg-[#007a7a]"
         >

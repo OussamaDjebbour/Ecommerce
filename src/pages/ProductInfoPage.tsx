@@ -1,107 +1,26 @@
 import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   Heart,
-  ShoppingCart,
-  Star,
   Shield,
   Truck,
   RotateCcw,
-  Plus,
-  Minus,
   Share2,
   Eye,
 } from "lucide-react";
-import { useCartStore } from "../store/cartStore";
-import { showAddToCartToast } from "../helpers/toastHelpers";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import Spinner from "../components/ui/Spinner";
-import LoadingSpinner from "../components/ui/LoadingSpinner";
-import { fetcProductById } from "../services/fetchProductById";
-import { getPriceDetails } from "../helpers/getPriceDetails";
-import { useContinueShopping } from "../hooks/useContinueShopping";
-import { CartItemType } from "../types";
-import QuantityControl from "../components/ui/QuantityControl";
+import { ActiveTab, CartItemType, ProductInfo, Review } from "../types";
+import { useCartStore } from "../store/cartStore";
 import { renderStars } from "../helpers/renderStars";
+import { getPriceDetails } from "../helpers/getPriceDetails";
+import { showAddToCartToast } from "../helpers/toastHelpers";
+import { fetcProductById } from "../services/fetchProductById";
+import { useContinueShopping } from "../hooks/useContinueShopping";
+import Spinner from "../components/ui/Spinner";
+import QuantityControl from "../components/ui/QuantityControl";
 
-interface Review {
-  rating: number;
-  comment: string;
-  date: string;
-  reviewerName: string;
-  reviewerEmail: string;
-}
-
-interface DummyJSONProduct {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  tags: string[];
-  brand: string;
-  sku: string;
-  weight: number;
-  dimensions: {
-    width: number;
-    height: number;
-    depth: number;
-  };
-  warrantyInformation: string;
-  shippingInformation: string;
-  availabilityStatus: string;
-  reviews: Review[];
-  // reviews: Array<{
-  // rating: number;
-  // comment: string;
-  // date: string;
-  // reviewerName: string;
-  // reviewerEmail: string;
-  // }>;
-  // reviews: {
-  //   rating: number;
-  //   comment: string;
-  //   date: string;
-  //   reviewerName: string;
-  //   reviewerEmail: string;
-  // }[];
-  returnPolicy: string;
-  minimumOrderQuantity: number;
-  meta: {
-    createdAt: string;
-    updatedAt: string;
-    barcode: string;
-    qrCode: string;
-  };
-  images: string[];
-  thumbnail: string;
-}
-
-// type ActiveTab = "description" | "reviews" | "specifications";
-
-interface ActiveTab {
-  id: "description" | "reviews" | "specifications";
-  label: string;
-}
-
-interface ProductInfoPageProps {
-  //   product: DummyJSONProduct | null;
-  onBack: () => void;
-  // onCheckout: (product: {
-  //   id: number;
-  //   title: string;
-  //   price: number;
-  //   image: string;
-  //   quantity: number;
-  // }) => void;
-  // onGoToCart: () => void;
-}
-
-const ProductInfoPage: React.FC<ProductInfoPageProps> = ({ onBack }) => {
+const ProductInfoPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<ActiveTab["id"]>("description");
@@ -109,8 +28,6 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({ onBack }) => {
 
   const cart = useCartStore((state) => state.cart);
   const addToCart = useCartStore((state) => state.addToCart);
-  //   const cart = useCartStore((state) => state.cart);
-  const getTotalItems = useCartStore((state) => state.getCartTotalItems);
   const setBuyNowProduct = useCartStore((state) => state.setBuyNowProduct);
 
   const { slugId } = useParams();
@@ -120,30 +37,22 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({ onBack }) => {
 
   const handleContinueShopping = useContinueShopping("/checkout", "/cart");
 
-  console.log("productIdproductId", productId, slugId);
-
   const {
     data: product,
     isLoading,
     isError,
-  } = useQuery<DummyJSONProduct>({
-    // } = useQuery({
+  } = useQuery<ProductInfo>({
     queryKey: ["product", productId],
     queryFn: () => fetcProductById(Number(productId)),
-    // staleTime: 1000 * 60 * 5, // 5 mins
     enabled: !!productId,
   });
-
-  console.log("productproductproduct", product);
 
   const isFull = cart.some(
     (item) => item.id === product?.id && item.quantity + quantity > item.stock,
   );
 
   if (isLoading) return <Spinner />;
-  //   if (isLoading) return <LoadingSpinner />;
 
-  // if (product) {
   if (isError || !product) {
     return (
       <div className="flex justify-center pt-20">
@@ -163,22 +72,11 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({ onBack }) => {
     );
   }
 
-  // const discountedPrice =
-  //   product.price * (1 - product.discountPercentage / 100);
-
-  const { hasDiscount, originalPrice, discountedPrice, savings } =
+  const { hasDiscount, originalPrice, discountedPrice } =
     getPriceDetails(product);
-
-  const totalCartItems = getTotalItems();
 
   const handleGoBack = () => {
     navigate(-1);
-  };
-
-  const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity >= 1 && newQuantity <= product.stock) {
-      setQuantity(newQuantity);
-    }
   };
 
   const productAddedToCart: CartItemType = {
@@ -190,15 +88,6 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({ onBack }) => {
 
   const handleAddToCart = () => {
     const result = addToCart(productAddedToCart);
-    // const result = addToCart({
-    //   id: product.id,
-    //   title: product.title,
-    //   price: discountedPrice,
-    //   image: product.images[selectedImage] || product.thumbnail,
-    //   thumbnail: product.thumbnail,
-    //   quantity,
-    //   stock: product.stock,
-    // });
 
     showAddToCartToast(
       result.success,
@@ -213,24 +102,8 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({ onBack }) => {
     if (!product) return;
 
     const cartItem: CartItemType = productAddedToCart;
-    // const cartItem: CartItemType = {
-    //   ...product,
-    //   quantity,
-    //   image: product.images[selectedImage] || product.thumbnail,
-    //   discountedPrice: discountedPrice || originalPrice,
-    // };
-
     setBuyNowProduct(cartItem);
-
     navigate("/checkout?mode=buy-now");
-
-    // onCheckout({
-    //   id: product.id,
-    //   title: product.title,
-    //   price: discountedPrice,
-    //   image: product.images[selectedImage] || product.thumbnail,
-    //   quantity,
-    // });
   };
 
   return (
@@ -337,7 +210,6 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({ onBack }) => {
             <div className="flex items-center gap-4">
               <QuantityControl
                 product={productAddedToCart}
-                // product={product}
                 mode="buy-now"
                 onUpdateBuyNow={setQuantity}
               />
@@ -345,35 +217,6 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({ onBack }) => {
                 Maximum {product.stock} items
               </span>
             </div>
-            {/* <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700">
-                Quantity
-              </label>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center rounded-lg border border-gray-300">
-                  <button
-                    onClick={() => handleQuantityChange(quantity - 1)}
-                    disabled={quantity <= 1}
-                    className="p-3 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <Minus className="h-4 w-4" />
-                  </button>
-                  <span className="min-w-[3rem] px-4 py-3 text-center font-medium">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={() => handleQuantityChange(quantity + 1)}
-                    disabled={quantity >= product.stock}
-                    className="p-3 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
-                </div>
-                <span className="text-sm text-gray-500">
-                  Maximum {product.stock} items
-                </span>
-              </div>
-            </div> */}
 
             {/* Action Buttons */}
             <div className="space-y-4">
@@ -386,7 +229,6 @@ const ProductInfoPage: React.FC<ProductInfoPageProps> = ({ onBack }) => {
                 </button>
                 <button
                   onClick={handleAddToCart}
-                  // className={`rounded-lg border-2 border-[#009393] px-5 py-2 font-medium text-[#009393] transition-all duration-200 hover:scale-105 hover:bg-[#009393]`}
                   className={`flex-1 rounded-xl border-2 border-[#009393] px-6 py-4 text-lg font-semibold text-[#009393] transition-all duration-200 hover:scale-105 hover:bg-[#009393] ${isFull ? "cursor-not-allowed opacity-50 hover:scale-100 hover:bg-transparent" : "hover:text-white"}`}
                 >
                   Add to Cart
