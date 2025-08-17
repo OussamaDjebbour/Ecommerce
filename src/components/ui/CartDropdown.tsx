@@ -85,7 +85,6 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
         if (e.target === e.currentTarget) onClose();
       }}
       className="fixed inset-0 z-50 cursor-pointer bg-black bg-opacity-20"
-      aria-hidden="true"
     >
       <div
         ref={containerRef}

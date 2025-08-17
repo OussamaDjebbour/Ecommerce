@@ -233,7 +233,10 @@ function MainProduct({ onLoad }: MainProductProps) {
             >
               <Eye className="h-4 w-4 transition-transform group-hover:scale-110 xl:h-5 xl:w-5 2xl:h-6 2xl:w-6" />
             </button>
-            <button className="group flex items-center justify-center rounded-xl border-2 border-[#009393] px-3 py-2 text-[#009393] transition-all duration-200 hover:bg-[#009393] hover:text-white xl:px-2 xl:py-2 2xl:px-4 2xl:py-3">
+            <button
+              className="group flex items-center justify-center rounded-xl border-2 border-[#009393] px-3 py-2 text-[#009393] transition-all duration-200 hover:bg-[#009393] hover:text-white xl:px-2 xl:py-2 2xl:px-4 2xl:py-3"
+              title="Add the product to wishlist"
+            >
               <Heart className="h-4 w-4 transition-transform group-hover:scale-110 group-hover:fill-current xl:h-5 xl:w-5 2xl:h-6 2xl:w-6" />
             </button>
           </div>

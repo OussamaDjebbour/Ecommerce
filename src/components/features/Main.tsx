@@ -16,7 +16,12 @@ function Main() {
   const { isMainProductLoaded, setIsMainProductLoaded } =
     useOutletContext<LayoutContextType>();
 
-  const { data, isLoading, isError, error } = useQuery<Product[]>({
+  const {
+    data: products,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: getHighlyRatedProducts,
     enabled: isMainProductLoaded, // Only fetch after MainProduct loads
@@ -38,7 +43,7 @@ function Main() {
         spaceBetween={28}
         navigation={{ nextEl: ".next", prevEl: ".prev" }}
         pagination={{ clickable: true }}
-        loop={true}
+        loop={products && products.length > 3}
         autoplay={{ delay: 3000 }}
         className="relative mb-4 w-auto xl:w-auto xl:max-w-[48.25rem]"
         style={{ padding: "1.5rem 0rem 2.5rem" }}
@@ -59,7 +64,7 @@ function Main() {
           <ChevronLeft />
         </button>
 
-        {data?.map((product: Product, index: number) => (
+        {products?.map((product: Product, index: number) => (
           <SwiperSlide key={index} style={{ width: "18rem" }}>
             <ProductCard
               product={product}

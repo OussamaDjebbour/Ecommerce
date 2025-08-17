@@ -1,15 +1,15 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import { Trash2 } from "lucide-react";
+import { CartItemType } from "../../types";
+import { getPriceDetails } from "../../helpers/getPriceDetails";
 import { showRemovalToast } from "../../helpers/toastHelpers";
 import { useCartStore } from "../../store/cartStore";
-import { CartItemType } from "../../types";
-import QuantityControl from "./QuantityControl";
-import { useLocation } from "react-router-dom";
 import useNavigateToProduct from "../../hooks/useNavigateToProduct";
-import { getPriceDetails } from "../../helpers/getPriceDetails";
+import QuantityControl from "./QuantityControl";
 
 interface CartItemProps {
   item: CartItemType;
-  onCheckout?: (item: CartItemType) => void;
+
   className?: string;
   mode?: "cart" | "buy-now";
   onUpdateBuyNow?: (qty: number) => void;
@@ -17,16 +17,18 @@ interface CartItemProps {
 
 function CartItem({
   item,
-  onCheckout,
   className = "",
   mode = "cart",
   onUpdateBuyNow,
 }: CartItemProps) {
+  const navigate = useNavigate();
   const location = useLocation();
+  const navigateToProduct = useNavigateToProduct();
+
   const isOnCheckoutPage = location.pathname.includes("checkout");
 
   const removeFromCart = useCartStore((state) => state.removeFromCart);
-  const navigateToProduct = useNavigateToProduct();
+  const setBuyNowProduct = useCartStore((state) => state.setBuyNowProduct);
 
   const { originalPrice, discountedPrice, hasDiscount } = getPriceDetails(item);
 
@@ -39,6 +41,22 @@ function CartItem({
 
   const handleNavigateToProduct = (item: CartItemType) => {
     if (mode === "cart") navigateToProduct(item);
+  };
+
+  const handleBuyNow = () => {
+    if (!item) return;
+
+    const cartItem: CartItemType = {
+      ...item,
+      quantity: item.quantity,
+      image: item.image || item.thumbnail,
+      discountedPrice: discountedPrice || originalPrice,
+    };
+
+    // Set buy-now product in cart store
+    setBuyNowProduct(cartItem);
+
+    navigate("/checkout?mode=buy-now");
   };
 
   return (
@@ -133,7 +151,7 @@ function CartItem({
               </div>
 
               <button
-                onClick={() => onCheckout && onCheckout(item)}
+                onClick={handleBuyNow}
                 className="rounded-lg bg-[#009393] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#007a7a]"
                 aria-label={`Buy ${item.title || "product"}`}
               >
