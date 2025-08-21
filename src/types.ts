@@ -37,6 +37,8 @@ export interface CartItemType extends Product {
   discountedPrice: number;
 }
 
+export type wishlistItemType = Omit<CartItemType, "quantity">;
+
 export interface QuantityControlProduct extends Product, CartItemType {}
 
 export interface ProductInfo extends Product {
@@ -70,7 +72,7 @@ export interface ActiveTab {
   label: string;
 }
 
-export type AddToCartResult = { success: boolean; message: string };
+export type AddToCartWishlistResult = { success: boolean; message: string };
 
 export interface SearchResponse {
   products: Product[];
@@ -111,3 +113,12 @@ export interface UseCheckoutProductsResult {
 }
 
 export type Mode = "cart" | "buy-now";
+
+export interface ShowToastOptions {
+  type: "success" | "error" | "removal" | "warning" | "alert";
+  message: string;
+  productTitle: string;
+  productImage?: string;
+  quantity?: number;
+  cartOrWishlist?: "Cart" | "Wishlist";
+}

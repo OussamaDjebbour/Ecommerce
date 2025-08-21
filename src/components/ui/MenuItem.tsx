@@ -19,6 +19,12 @@ const MenuItem = ({ item, handleCloseMenu }: MenuItemProps) => {
     if (item.label === "Cart" && !window.location.pathname.includes("cart")) {
       navigate("/cart");
     }
+    if (
+      item.label === "Saved" &&
+      !window.location.pathname.includes("wishlist")
+    ) {
+      navigate("/wishlist");
+    }
     if (handleCloseMenu) handleCloseMenu();
   }
 

@@ -1,26 +1,16 @@
-import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useCartStore } from "../store/cartStore";
 import { showRemovalCartToast } from "../helpers/toastHelpers";
+import { useContinueShopping } from "../hooks/useContinueShopping";
 
 function CartHeader() {
+  const handleContinueShopping = useContinueShopping();
+
   const { cart, clearCart, getCartTotalItems } = useCartStore();
 
   const handleClearCart = () => {
     clearCart();
     showRemovalCartToast();
-  };
-
-  const location = useLocation();
-  const navigate = useNavigate();
-  const from = location.state?.from;
-
-  const handleContinueShopping = () => {
-    if (from && from !== "/checkout") {
-      navigate(-1);
-    } else {
-      navigate("/");
-    }
   };
 
   return (

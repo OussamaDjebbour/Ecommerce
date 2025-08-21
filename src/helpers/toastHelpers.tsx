@@ -1,13 +1,6 @@
 import { toast } from "react-toastify";
 import CustomToast from "../components/ui/CustomToast";
-
-interface ShowToastOptions {
-  type: "success" | "error" | "removal" | "warning" | "alert";
-  message: string;
-  productTitle: string;
-  productImage?: string;
-  quantity?: number;
-}
+import { ShowToastOptions } from "../types";
 
 export const showCustomToast = ({
   type,
@@ -15,6 +8,7 @@ export const showCustomToast = ({
   productTitle,
   productImage,
   quantity,
+  cartOrWishlist,
 }: ShowToastOptions) => {
   const customToastContent = (
     <CustomToast
@@ -23,6 +17,7 @@ export const showCustomToast = ({
       productImage={productImage}
       productTitle={productTitle}
       quantity={quantity}
+      cartOrWishlist={cartOrWishlist}
     />
   );
 
@@ -33,6 +28,7 @@ export const showCustomToast = ({
     autoClose: 3000,
     position: "top-right",
     style: {
+      width: `${type === "removal" && "350px"}`,
       background: "transparent",
       boxShadow: "none",
       padding: 0,
@@ -55,18 +51,21 @@ export const showAddToCartToast = (
     productTitle,
     productImage: success ? productImage : undefined,
     quantity: success ? quantity : undefined,
+    cartOrWishlist: "Cart",
   });
 };
 
 export const showRemovalToast = (
   productTitle: string,
   productImage: string,
+  cartOrWishlist: "Cart" | "Wishlist" = "Cart",
 ) => {
   showCustomToast({
     type: "removal",
-    message: `${productTitle} has been removed from your cart`,
+    message: `${productTitle} has been removed from your ${cartOrWishlist}`,
     productTitle,
     productImage,
+    cartOrWishlist,
   });
 };
 
@@ -99,5 +98,29 @@ export const showAlertToast = (message: string) => {
     type: "alert",
     message,
     productTitle: "",
+  });
+};
+
+export const showAddToWishlistToast = (
+  success: boolean,
+  message: string,
+  productTitle: string,
+  productImage?: string,
+) => {
+  showCustomToast({
+    type: success ? "success" : "error",
+    message,
+    productTitle,
+    productImage: success ? productImage : undefined,
+    cartOrWishlist: "Wishlist",
+  });
+};
+
+export const showRemovalWishlistToast = () => {
+  showCustomToast({
+    type: "removal",
+    message: "All items have been removed from your wishlist",
+    productTitle: "",
+    cartOrWishlist: "Wishlist",
   });
 };

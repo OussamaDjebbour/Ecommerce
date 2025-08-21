@@ -1,11 +1,11 @@
-import { AddToCartResult, CartItemType } from "src/types";
+import { AddToCartWishlistResult, CartItemType } from "src/types";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 interface CartState {
   buyNowProduct: CartItemType | null;
   cart: CartItemType[];
-  addToCart: (item: CartItemType) => AddToCartResult;
+  addToCart: (item: CartItemType) => AddToCartWishlistResult;
   removeFromCart: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
   clearCart: () => void;

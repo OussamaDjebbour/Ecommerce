@@ -8,8 +8,12 @@ export function useContinueShopping(
   const navigate = useNavigate();
   const from = location.state?.from;
 
+  console.log("from", from);
+
   const handleContinueShopping = () => {
-    if (from && from !== path && from !== path2) {
+    console.log("yes", from, from !== "/wishlist");
+    // if (from) {
+    if (from && from !== path && from !== path2 && from !== "/wishlist") {
       navigate(-1);
     } else {
       navigate("/");

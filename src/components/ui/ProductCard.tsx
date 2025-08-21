@@ -10,6 +10,7 @@ import { CartItemType, Product } from "../../types";
 import useNavigateToProduct from "../../hooks/useNavigateToProduct";
 import { getPriceDetails } from "../../helpers/getPriceDetails";
 import { renderStars } from "../../helpers/renderStars";
+import WishlistButton from "./WishlistButton";
 
 interface ProductCardProps {
   product: Product;
@@ -95,6 +96,28 @@ const ProductCard: React.FC<ProductCardProps> = memo(
             Save ${savings.toFixed(2)}
           </div>
         )}
+
+        {/* Wishlist Button */}
+        <div className="absolute left-3 top-3 z-10">
+          <WishlistButton
+            product={{
+              ...product,
+              image: product.thumbnail,
+              discountedPrice: discountedPrice || originalPrice,
+            }}
+            size="sm"
+            variant="icon"
+          />
+
+          {/* <WishlistButton
+            product={{
+              ...product,
+              image: product.thumbnail,
+              discountedPrice: discountedPrice || originalPrice,
+            }}
+            size="sm"
+          /> */}
+        </div>
 
         {/* Product Image */}
         <div className="relative mb-4 overflow-hidden rounded-lg bg-gray-50 p-4">

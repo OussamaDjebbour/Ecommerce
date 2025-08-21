@@ -43,7 +43,7 @@ function Main() {
         spaceBetween={28}
         navigation={{ nextEl: ".next", prevEl: ".prev" }}
         pagination={{ clickable: true }}
-        loop={products && products.length > 3}
+        loop={products && products?.length > 3}
         autoplay={{ delay: 3000 }}
         className="relative mb-4 w-auto xl:w-auto xl:max-w-[48.25rem]"
         style={{ padding: "1.5rem 0rem 2.5rem" }}

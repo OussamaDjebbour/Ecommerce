@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  ArrowLeft,
-  Heart,
-  Shield,
-  Truck,
-  RotateCcw,
-  Share2,
-  Eye,
-} from "lucide-react";
+import { ArrowLeft, Shield, Truck, RotateCcw, Share2, Eye } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { ActiveTab, CartItemType, ProductInfo, Review } from "../types";
 import { useCartStore } from "../store/cartStore";
@@ -19,12 +11,12 @@ import { fetcProductById } from "../services/fetchProductById";
 import { useContinueShopping } from "../hooks/useContinueShopping";
 import Spinner from "../components/ui/Spinner";
 import QuantityControl from "../components/ui/QuantityControl";
+import WishlistButton from "../components/ui/WishlistButton";
 
 const ProductInfoPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<ActiveTab["id"]>("description");
-  const [isWishlisted, setIsWishlisted] = useState(false);
 
   const cart = useCartStore((state) => state.cart);
   const addToCart = useCartStore((state) => state.addToCart);
@@ -236,21 +228,14 @@ const ProductInfoPage: React.FC = () => {
               </div>
 
               <div className="flex gap-3">
-                <button
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                  className={`flex items-center gap-2 rounded-lg border px-4 py-3 transition-colors ${
-                    isWishlisted
-                      ? "border-red-200 bg-red-50 text-red-600"
-                      : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  <Heart
-                    className={`h-5 w-5 ${isWishlisted ? "fill-current" : ""}`}
-                  />
-                  <span className="font-medium">
-                    {isWishlisted ? "Wishlisted" : "Add to Wishlist"}
-                  </span>
-                </button>
+                <WishlistButton
+                  product={{
+                    ...product,
+                    image: product.thumbnail,
+                    discountedPrice: discountedPrice || originalPrice,
+                  }}
+                  variant="text"
+                />
 
                 <button className="flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50">
                   <Share2 className="h-5 w-5" />

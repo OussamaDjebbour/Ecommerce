@@ -8,7 +8,7 @@ const HeadphonesAd = () => {
         <h2 className="mr-6 text-2xl font-semibold text-[#016170]">
           Summer headphones from top brands
         </h2>
-        <button className="flex items-center text-base font-medium text-[#016170] hover:underline">
+        <button className="flex cursor-default items-center text-base font-medium text-[#016170] hover:underline">
           Buy it now
           <span className="ml-2">
             <FontAwesomeIcon icon={faArrowRight} />
