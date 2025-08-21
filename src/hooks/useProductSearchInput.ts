@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import debounce from "lodash.debounce";
-import { useRouterSearchParams } from "./useRouterSearchParams";
+import  useRouterSearchParams from "./useRouterSearchParams";
 
 export const useProductSearchInput = () => {
   const { searchQuery, setSearchQuery, clearSearchQuery } =

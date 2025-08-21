@@ -1,4 +1,4 @@
-import { AddToCartWishlistResult, CartItemType } from "src/types";
+import { AddToCartWishlistResult, CartItemType, Mode } from "../types";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
@@ -12,7 +12,7 @@ interface CartState {
   getCartTotalPrice: () => number;
   getCartTotalItems: () => number;
 
-  getTotalSavings: (mode?: "cart" | "buy-now") => number;
+  getTotalSavings: (mode?: Mode) => number;
 
   // Buy Now actions
   setBuyNowProduct: (product: CartItemType) => void;

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../services/productService";
-import { useRouterSearchParams } from "./useRouterSearchParams";
+import  useRouterSearchParams from "./useRouterSearchParams";
 import { getPriceDetails } from "../helpers/getPriceDetails";
 
 export const useSearchProducts = () => {

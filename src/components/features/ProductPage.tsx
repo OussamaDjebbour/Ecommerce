@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, ArrowRight } from "lucide-react";
 import ProductCard from "../ui/ProductCard";
 import FilterButtons from "../ui/FilterButtons";
-import { useRouterSearchParams } from "../../hooks/useRouterSearchParams";
+import useRouterSearchParams from "../../hooks/useRouterSearchParams";
 import { useSearchProducts } from "../../hooks/useSearchProducts";
 import { useSearchStore } from "../../store/searchStore";
 import Spinner from "../ui/Spinner";
@@ -195,13 +195,7 @@ const ProductPage = memo(() => {
               {paginatedProducts.map((product) => (
                 <MemoizedProductCard
                   key={product.id}
-                  product={product}
-                  id={product.id}
-                  imgSrc={product.thumbnail}
-                  title={product.title}
-                  price={product.price}
-                  rating={product.rating}
-                  stock={product.stock}
+                  product={product}                  
                 />
               ))}
             </div>

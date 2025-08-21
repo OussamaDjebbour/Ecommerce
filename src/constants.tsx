@@ -1,12 +1,12 @@
 export const BASE_URL = "https://dummyjson.com";
 
-export const API_URL = `${BASE_URL}/products`;
+const API_URL = `${BASE_URL}/products`;
 
-export const CATEGORIES_URL = `${BASE_URL}/products/categories`;
+const CATEGORIES_URL = `${BASE_URL}/products/categories`;
 
-export const MIN_PRICE = 0;
+const MIN_PRICE = 0;
 
-export const MAX_PRICE = 10000;
+const MAX_PRICE = 10000;
 
 import {
   ShoppingCart,

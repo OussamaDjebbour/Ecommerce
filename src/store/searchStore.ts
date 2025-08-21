@@ -1,6 +1,5 @@
-import { set } from "react-hook-form";
 import debounce from "lodash.debounce";
-import { Product } from "src/types";
+import { Product } from "../types";
 import { create } from "zustand";
 
 interface SearchState {

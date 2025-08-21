@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { LayoutContextType, Product } from "src/types";
+import { LayoutContextType, Product } from "../../types";
 import { useQuery } from "@tanstack/react-query";
 import { useOutletContext } from "react-router-dom";
 import "swiper/css";
@@ -69,12 +69,12 @@ function Main() {
             <ProductCard
               product={product}
               key={product.id}
-              id={product.id}
-              imgSrc={product.thumbnail}
-              title={product.title}
-              price={product.price}
-              rating={product.rating}
-              stock={product.stock}
+              // id={product.id}
+              // imgSrc={product.thumbnail}
+              // title={product.title}
+              // price={product.price}
+              // rating={product.rating}
+              // stock={product.stock}
             />
           </SwiperSlide>
         ))}

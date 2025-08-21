@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import useSearchParams from "../../hooks/useRouterSearchParams";
+import useRouterSearchParams from "../../hooks/useRouterSearchParams";
 import { MenuItemType } from "../../types";
 
 interface MenuItemProps {
@@ -9,7 +9,7 @@ interface MenuItemProps {
 
 const MenuItem = ({ item, handleCloseMenu }: MenuItemProps) => {
   const navigate = useNavigate();
-  const { setSearchQuery } = useSearchParams();
+  const { setSearchQuery } = useRouterSearchParams();
 
   function handleClick(item: MenuItemType) {
     if (item.label === "Home" && window.location.pathname !== "/") {

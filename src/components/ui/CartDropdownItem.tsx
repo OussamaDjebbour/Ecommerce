@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useCallback } from "react";
-import { CartItemType } from "src/types";
+import { CartItemType } from "../../types";
 import QuantityControl from "./QuantityControl";
 import { useCartStore } from "../../store/cartStore";
 import { showRemovalToast } from "../../helpers/toastHelpers";

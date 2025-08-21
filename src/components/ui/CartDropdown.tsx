@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useCartStore } from "../../store/cartStore";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { X } from "lucide-react";
 import CartDropdownItem from "./CartDropdownItem";
 import { useCartTotalItems } from "../../hooks/useCartTotalItems";
@@ -12,6 +12,9 @@ interface CartDropdownProps {
 }
 
 const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   const cart = useCartStore((state) => state.cart);
@@ -22,8 +25,10 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
   const dropdownRef = useRef<HTMLUListElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const location = useLocation();
-  const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+  const isBuyNow = searchParams.get("mode") === "buy-now";
+
+
 
   useEffect(() => {
     containerRef.current?.focus();
@@ -74,7 +79,7 @@ const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
   };
 
   const handleCheckout = () => {
-    if (location.pathname !== "/checkout")
+    if (location.pathname !== "/checkout" && !isBuyNow)
       navigate("checkout", { state: { from: location.pathname } });
     onClose();
   };

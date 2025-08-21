@@ -88,7 +88,7 @@ interface SearchContextProps {
   totalPages: number;
 }
 
-export const SearchContext = createContext<SearchContextProps | undefined>(
+const SearchContext = createContext<SearchContextProps | undefined>(
   undefined,
 );
 
@@ -124,7 +124,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export const useSearchContext = () => {
+const useSearchContext = () => {
   const context = useContext(SearchContext);
   if (!context) {
     throw new Error("useSearch must be used within a SearchProvider");

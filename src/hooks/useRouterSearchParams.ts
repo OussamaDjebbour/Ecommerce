@@ -1,7 +1,7 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 
-export const useRouterSearchParams = () => {
+ const useRouterSearchParams = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 

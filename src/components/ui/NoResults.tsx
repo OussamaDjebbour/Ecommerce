@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useRouterSearchParams } from "../../hooks/useRouterSearchParams";
+import  useRouterSearchParams  from "../../hooks/useRouterSearchParams";
 
 const NoResults: FC<{ searchQuery: string; selectedCategory?: string }> = ({
   searchQuery,

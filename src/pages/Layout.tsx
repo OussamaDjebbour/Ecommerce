@@ -4,7 +4,7 @@ import Header from "../components/features/Header";
 import Sidebar from "../components/features/Sidebar";
 import HeadphonesAd from "../components/ui/HeadphonesAd ";
 import DailyDeals from "../components/ui/DailyDeals";
-import MobileHeader from "../components/MobileHeader";
+import MobileHeader from "../components/ui/MobileHeader";
 
 export default function Layout() {
   const [isMainProductLoaded, setIsMainProductLoaded] = useState(false);

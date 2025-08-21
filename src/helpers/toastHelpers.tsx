@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import CustomToast from "../components/ui/CustomToast";
 import { ShowToastOptions } from "../types";
 
-export const showCustomToast = ({
+const showCustomToast = ({
   type,
   message,
   productTitle,

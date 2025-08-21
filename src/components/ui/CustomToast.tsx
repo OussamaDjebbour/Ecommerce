@@ -2,7 +2,7 @@ import React from "react";
 import { Check, X, AlertTriangle, Trash2 } from "lucide-react";
 import { ShowToastOptions } from "../../types";
 
-export const CustomToast: React.FC<ShowToastOptions> = ({
+const CustomToast: React.FC<ShowToastOptions> = ({
   type,
   message,
   productImage,

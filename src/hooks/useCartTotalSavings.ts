@@ -1,6 +1,7 @@
+import { Mode } from "../types";
 import { useCartStore } from "../store/cartStore";
 
-export const useCartTotalSavings = (mode: "cart" | "buy-now" = "cart") => {
+export const useCartTotalSavings = (mode: Mode = "cart") => {
   return useCartStore((state) => {
     const product = state.buyNowProduct;
     const cart = state.cart;

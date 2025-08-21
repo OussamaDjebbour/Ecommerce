@@ -79,19 +79,10 @@ export interface SearchResponse {
   total: number;
 }
 
-export interface ProductState {
-  id: number;
-  quantity: number;
-  basePrice: number;
-  currentImage: string;
-}
 
-export type ProductAction =
-  | { type: "SET_ID"; payload: number }
-  | { type: "SET_PRICE"; payload: number }
-  | { type: "SET_IMAGE"; payload: string }
-  | { type: "SET_QUANTITY"; payload: number }
-  | { type: "RESET"; payload: Partial<ProductState> };
+
+
+
 
 export interface LayoutContextType {
   isMainProductLoaded: boolean;
@@ -107,12 +98,13 @@ export interface CheckoutItem {
   stock: number;
 }
 
+
+export type Mode =  "buy-now" | "cart";
+
 export interface UseCheckoutProductsResult {
   items: CheckoutItem[];
-  mode: "buy-now" | "cart";
+  mode: Mode;
 }
-
-export type Mode = "cart" | "buy-now";
 
 export interface ShowToastOptions {
   type: "success" | "error" | "removal" | "warning" | "alert";

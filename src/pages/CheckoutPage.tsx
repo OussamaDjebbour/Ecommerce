@@ -38,8 +38,8 @@ const CheckoutPage = () => {
 
   const { updateBuyNowQuantity } = useCartStore();
 
-  const totalAmount = useCartTotalPrice();
-  const totalSavings = useCartTotalSavings();
+  const totalAmount = useCartTotalPrice(mode);
+  const totalSavings = useCartTotalSavings(mode);
 
   const {
     register,
@@ -55,12 +55,12 @@ const CheckoutPage = () => {
   };
 
   // Handle checkout for a single item
-  const handleCheckoutItem = (item: CartItemType) => {
-    const { setBuyNowProduct } = useCartStore.getState();
-    setBuyNowProduct({ ...item, quantity: item.quantity });
+  // const handleCheckoutItem = (item: CartItemType) => {
+  //   const { setBuyNowProduct } = useCartStore.getState();
+  //   setBuyNowProduct({ ...item, quantity: item.quantity });
 
-    navigate("/checkout?mode=buy-now");
-  };
+  //   navigate("/checkout?mode=buy-now");
+  // };
 
   if (!items.length) {
     return (
@@ -355,7 +355,6 @@ const CheckoutPage = () => {
                   <CartItem
                     key={item.id}
                     item={item}
-                    onCheckout={handleCheckoutItem}
                     className="bg-gray-50"
                     mode={mode}
                     onUpdateBuyNow={
