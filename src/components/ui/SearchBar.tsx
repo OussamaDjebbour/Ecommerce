@@ -1,9 +1,9 @@
 import { useRef, useCallback, useEffect } from "react";
-import { useSearchProducts } from "../../hooks/useSearchProducts";
-import { Product } from "../../types";
-import SearchDropdownSuggest from "./SearchDropdownSuggest";
-import { useProductSearchInput } from "../../hooks/useProductSearchInput";
 import { SearchIcon, X } from "lucide-react";
+import { Product } from "../../types";
+import { useSearchProducts } from "../../hooks/useSearchProducts";
+import { useProductSearchInput } from "../../hooks/useProductSearchInput";
+import SearchDropdownSuggest from "./SearchDropdownSuggest";
 
 const SearchBar = () => {
   const {

@@ -1,8 +1,8 @@
 import React from "react";
 import { useCartStore } from "../store/cartStore";
 import { useContinueShopping } from "../hooks/useContinueShopping";
-import CartHeader from "./CartHeader";
 import EmptyCart from "./EmptyCart";
+import CartHeader from "./CartHeader";
 import Cart from "../components/ui/Cart";
 
 const CartPage: React.FC = () => {

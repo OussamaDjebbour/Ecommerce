@@ -1,3 +1,4 @@
+import { MAX_PRICE, MIN_PRICE } from './../constants';
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 
@@ -8,8 +9,8 @@ import { useCallback } from "react";
   // Get current values from URL
   const searchQuery = searchParams.get("q") || "";
   const selectedCategory = searchParams.get("category") || "";
-  const minPrice = Number(searchParams.get("minPrice")) || 0;
-  const maxPrice = Number(searchParams.get("maxPrice")) || 10000;
+  const minPrice = Number(searchParams.get("minPrice")) || MIN_PRICE;
+  const maxPrice = Number(searchParams.get("maxPrice")) || MAX_PRICE;
   const sort = searchParams.get("sortby") || "relevance";
   const currentPage = Number(searchParams.get("page")) || 1;
 
@@ -20,8 +21,8 @@ import { useCallback } from "react";
       category?: string;
       minPrice?: number;
       maxPrice?: number;
-      page?: number;
       sort?: string;
+      page?: number;
     }) => {
       const newParams = new URLSearchParams();
 
@@ -41,11 +42,11 @@ import { useCallback } from "react";
         newParams.set("category", category);
       }
 
-      if (min >= 0) {
+      if (min >= MIN_PRICE) {
         newParams.set("minPrice", String(min));
       }
 
-      if (max <= 10000) {
+      if (max <= MAX_PRICE) {
         newParams.set("maxPrice", String(max));
       }
 
@@ -93,8 +94,8 @@ import { useCallback } from "react";
     if (
       !selectedCategory &&
       sort === "relevance" &&
-      minPrice === 0 &&
-      maxPrice === 10000
+      minPrice === MIN_PRICE &&
+      maxPrice === MAX_PRICE
     ) {
       if (window.location.pathname !== "/") navigate("/");
       else return;
@@ -123,8 +124,8 @@ import { useCallback } from "react";
   const clearAllFilters = useCallback(() => {
     const newParams = createSearchUrl({
       category: "",
-      minPrice: 0,
-      maxPrice: 10000,
+      minPrice: MIN_PRICE,
+      maxPrice: MAX_PRICE,
       sort: "relevance",
       page: 1,
     });
@@ -212,7 +213,7 @@ import { useCallback } from "react";
 
     // Derived values
     hasActiveSearch: !!searchQuery,
-    hasActiveFilters: !!(selectedCategory || minPrice > 0 || maxPrice < 10000),
+    hasActiveFilters: !!(selectedCategory || minPrice > MIN_PRICE || maxPrice < MAX_PRICE || sort !== "relevance"),
   };
 };
 

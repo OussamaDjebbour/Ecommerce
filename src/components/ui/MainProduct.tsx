@@ -246,15 +246,6 @@ function MainProduct({ onLoad }: MainProductProps) {
               variant="icon"
               responsive
             />
-
-            {/* <WishlistButton
-              product={{
-                ...product,
-                image: currentImage || product.thumbnail,
-                discountedPrice: discountedPrice || originalPrice,
-              }}
-              size="md"
-            /> */}
           </div>
 
           <div className="flex flex-1 gap-3">

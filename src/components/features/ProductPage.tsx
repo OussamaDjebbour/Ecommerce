@@ -1,11 +1,11 @@
 import { useRef, useMemo, memo, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, ArrowRight } from "lucide-react";
-import ProductCard from "../ui/ProductCard";
-import FilterButtons from "../ui/FilterButtons";
+import { useSearchStore } from "../../store/searchStore";
 import useRouterSearchParams from "../../hooks/useRouterSearchParams";
 import { useSearchProducts } from "../../hooks/useSearchProducts";
-import { useSearchStore } from "../../store/searchStore";
+import ProductCard from "../ui/ProductCard";
+import FilterButtons from "../ui/FilterButtons";
 import Spinner from "../ui/Spinner";
 import NoResults from "../ui/NoResults";
 import ErrorMessage from "../ui/ErrorMessage";

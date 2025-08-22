@@ -4,7 +4,6 @@ import { ToastContainer } from "react-toastify";
 import AppRouter from "./router/AppRouter";
 import "./index.css";
 
-// Create a new QueryClient
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

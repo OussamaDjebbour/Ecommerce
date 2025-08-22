@@ -1,6 +1,6 @@
-import HeaderIconsGroup from "../ui/HeaderIconsGroup";
 import HeaderTitle from "../ui/HeaderTitle";
 import SearchBar from "../ui/SearchBar";
+import HeaderIconsGroup from "../ui/HeaderIconsGroup";
 
 function Header() {
   return (

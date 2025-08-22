@@ -1,10 +1,10 @@
 import { X } from "lucide-react";
 import { useCallback } from "react";
 import { CartItemType } from "../../types";
-import QuantityControl from "./QuantityControl";
 import { useCartStore } from "../../store/cartStore";
 import { showRemovalToast } from "../../helpers/toastHelpers";
 import { getPriceDetails } from "../../helpers/getPriceDetails";
+import QuantityControl from "./QuantityControl";
 
 interface CartDropdownItem {
   product: CartItemType;

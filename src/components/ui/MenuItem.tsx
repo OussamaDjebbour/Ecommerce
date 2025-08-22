@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import useRouterSearchParams from "../../hooks/useRouterSearchParams";
 import { MenuItemType } from "../../types";
+import useRouterSearchParams from "../../hooks/useRouterSearchParams";
 
 interface MenuItemProps {
   item: MenuItemType;

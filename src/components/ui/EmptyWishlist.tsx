@@ -1,22 +1,23 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Heart, ShoppingCart, ArrowLeft } from "lucide-react";
 
-interface EmptyWishlistProps {
-  onGoBack: () => void;
-  onStartShopping: () => void;
-}
 
-const EmptyWishlist: React.FC<EmptyWishlistProps> = ({
-  onGoBack,
-  onStartShopping,
-}) => {
+
+const EmptyWishlist: React.FC = () => {
+
+  const navigate = useNavigate();
+
+  const handleGoBack = () => navigate(-1);
+   const handleStartShopping = () => navigate("/");
+
   return (
     <div className="col-span-2 row-span-1 min-h-screen bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 py-8">
         {/* Header */}
         <div className="mb-8">
           <button
-            onClick={onGoBack}
+            onClick={handleGoBack}
             className="group mb-6 flex items-center gap-2 rounded-lg px-3 py-2 text-gray-600 transition-all duration-200 hover:bg-white hover:text-gray-900 hover:shadow-sm"
           >
             <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-1" />
@@ -43,7 +44,7 @@ const EmptyWishlist: React.FC<EmptyWishlistProps> = ({
             you can easily find them later.
           </p>
           <button
-            onClick={onStartShopping}
+            onClick={handleStartShopping }
             className="flex items-center gap-2 rounded-lg bg-[#009393] px-6 py-3 font-medium text-white transition-all duration-200 hover:bg-[#007a7a] hover:shadow-lg"
           >
             <ShoppingCart className="h-5 w-5" />

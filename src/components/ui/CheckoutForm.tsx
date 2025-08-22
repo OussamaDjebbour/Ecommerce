@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import { ArrowLeft, Lock } from "lucide-react";
 import {
   useStripe,
   useElements,
   PaymentElement,
 } from "@stripe/react-stripe-js";
-import { ArrowLeft, Lock } from "lucide-react";
 import { CheckoutItem } from "../../types";
 
 interface CheckoutFormProps {

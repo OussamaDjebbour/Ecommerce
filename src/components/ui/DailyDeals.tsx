@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { TrendingUp, Clock } from "lucide-react";
-import { getDailyDealsProducts } from "../../services/getDailyDealsProducts";
-import ProductWithDailyDeal from "./ProductWithDailyDeal";
 import { Product } from "../../types";
+import { getDailyDealsProducts } from "../../services/getDailyDealsProducts";
 import SkeletonProduct from "../ui/SkeletonProduct";
 import ErrorMessage from "../ui/ErrorMessage";
+import ProductWithDailyDeal from "./ProductWithDailyDeal";
 
 interface DailyDealsProps {
   isMainProductLoaded: boolean;

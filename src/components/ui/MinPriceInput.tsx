@@ -1,5 +1,6 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { DollarSign } from "lucide-react";
+import { MIN_PRICE } from "../../constants";
 import debounce from "lodash.debounce";
 import useRouterSearchParams from "../../hooks/useRouterSearchParams";
 
@@ -30,7 +31,7 @@ const MinPriceInput = memo(() => {
 
       const numValue = Number(value);
 
-      if (numValue < 0) {
+      if (numValue < MIN_PRICE) {
         setError("Price cannot be negative");
         return;
       }

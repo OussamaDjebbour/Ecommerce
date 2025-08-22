@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useCartStore } from "../../store/cartStore";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { X } from "lucide-react";
-import CartDropdownItem from "./CartDropdownItem";
+import { useCartStore } from "../../store/cartStore";
 import { useCartTotalItems } from "../../hooks/useCartTotalItems";
 import { useCartTotalSavings } from "../../hooks/useCartTotalSavings";
 import { useCartTotalPrice } from "../../hooks/useCartTotalPrice";
+import CartDropdownItem from "./CartDropdownItem";
 
 interface CartDropdownProps {
   onClose: () => void;

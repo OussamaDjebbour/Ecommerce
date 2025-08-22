@@ -10,7 +10,6 @@ export default {
         publicSans: ["public-sans", "sans-serif"],
         roboto: ["roboto", "sans-serif"],
         openSans: ["open-sans", "sans-serif"],
-        // poppins: ["poppins", "sans-serif"],
       },
     },
   },

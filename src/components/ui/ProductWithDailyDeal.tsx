@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Star, TrendingUp, Package, ArrowRight } from "lucide-react";
-import { getPriceDetails } from "../../helpers/getPriceDetails";
 import { Product } from "../../types";
-import useNavigateToProduct from "../../hooks/useNavigateToProduct";
+import { getPriceDetails } from "../../helpers/getPriceDetails";
 import {
   getStockColor,
   getStockIcon,
 } from "../../helpers/getStockColorAndIcon";
+import useNavigateToProduct from "../../hooks/useNavigateToProduct";
 
 interface ProductWithDailyDealProps {
   product: Product;

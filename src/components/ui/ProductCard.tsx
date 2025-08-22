@@ -1,12 +1,12 @@
 import React, { memo, useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { ShoppingCart } from "lucide-react";
+import { CartItemType, Product } from "../../types";
 import { useCartStore } from "../../store/cartStore";
 import {
   showAddToCartToast,
   showMaxStockToast,
 } from "../../helpers/toastHelpers";
-import { useQueryClient } from "@tanstack/react-query";
-import { CartItemType, Product } from "../../types";
 import { getPriceDetails } from "../../helpers/getPriceDetails";
 import useNavigateToProduct from "../../hooks/useNavigateToProduct";
 import WishlistButton from "../ui/WishlistButton";

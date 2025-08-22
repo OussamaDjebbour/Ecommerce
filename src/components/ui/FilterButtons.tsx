@@ -7,11 +7,11 @@ import {
   X,
   Filter,
 } from "lucide-react";
-import { useSearchProducts } from "../../hooks/useSearchProducts";
 import { getUniqueCategories } from "../../helpers/getUniqueCategories";
+import { useSearchProducts } from "../../hooks/useSearchProducts";
+import useRouterSearchParams from "../../hooks/useRouterSearchParams";
 import MinPriceInput from "./MinPriceInput";
 import MaxPriceInput from "./MaxPriceInput";
-import useRouterSearchParams from "../../hooks/useRouterSearchParams";
 import { SortOptions } from "../../constants";
 
 const FilterButtons = memo(() => {

@@ -8,7 +8,6 @@ interface WishlistState {
   removeFromWishlist: (itemId: number) => void;
   clearWishlist: () => void;
   isInWishlist: (itemId: number) => boolean;
-  moveToCart: (itemId: number) => void;
 }
 
 export const useWishlistStore = create<WishlistState>()(
@@ -54,17 +53,7 @@ export const useWishlistStore = create<WishlistState>()(
         return state.some((item) => item.id === itemId);
       },
 
-      moveToCart: (itemId) => {
-        const state = get().wishlist;
-        const item = state.find((item) => item.id === itemId);
-        if (item) {
-          // Remove from wishlist
-          set((state) => ({
-            wishlist: state.wishlist.filter((item) => item.id !== itemId),
-          }));
-          // Note: Cart addition would be handled by the component using useCartStore
-        }
-      },
+  
     }),
     {
       name: "wishlist-storage",

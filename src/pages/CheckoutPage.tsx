@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { ArrowLeft, Lock, User, MapPin } from "lucide-react";
-import { CartItemType } from "../types";
 import { useCartStore } from "../store/cartStore";
 import { useCheckoutProducts } from "../hooks/useCheckoutProducts";
 import { useContinueShopping } from "../hooks/useContinueShopping";
@@ -28,7 +26,6 @@ interface CustomerFormData {
 }
 
 const CheckoutPage = () => {
-  const navigate = useNavigate();
   const handleContinueShopping = useContinueShopping("/cart");
 
   const [customerInfo, setCustomerInfo] = useState<CustomerFormData | null>(

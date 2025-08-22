@@ -1,10 +1,10 @@
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ShoppingCart, Menu, X, Search, Bell, Phone } from "lucide-react";
 import { MENU_ITEMS } from "../../constants";
 import MenuItem from "./MenuItem";
 import MobileSearchInput from "./MobileSearchInput";
 import CartButton from "./CartButton";
-import { useLocation, useNavigate } from "react-router-dom";
 
 function MobileHeader() {
   const location = useLocation();

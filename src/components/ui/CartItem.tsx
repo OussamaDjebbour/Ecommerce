@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import { CartItemType } from "../../types";
+import { useCartStore } from "../../store/cartStore";
 import { getPriceDetails } from "../../helpers/getPriceDetails";
 import { showRemovalToast } from "../../helpers/toastHelpers";
-import { useCartStore } from "../../store/cartStore";
 import useNavigateToProduct from "../../hooks/useNavigateToProduct";
 import QuantityControl from "./QuantityControl";
 
