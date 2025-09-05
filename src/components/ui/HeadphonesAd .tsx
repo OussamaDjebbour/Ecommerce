@@ -1,5 +1,5 @@
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ArrowRight } from "lucide-react";
+
 
 const HeadphonesAd = () => {
   return (
@@ -11,7 +11,7 @@ const HeadphonesAd = () => {
         <button className="flex cursor-default items-center text-base font-medium text-[#016170] hover:underline">
           Buy it now
           <span className="ml-2">
-            <FontAwesomeIcon icon={faArrowRight} />
+            <ArrowRight/>
           </span>
         </button>
       </div>
