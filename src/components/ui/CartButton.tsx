@@ -40,8 +40,8 @@ function CartButton() {
             </span>
           )}
         </button>
-        {isCartOpen && <CartDropdown onClose={() => setIsCartOpen(false)} />}
       </div>
+        {isCartOpen && <CartDropdown onClose={() => setIsCartOpen(false)} />}
     </div>
   );
 }
