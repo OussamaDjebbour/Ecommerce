@@ -8,11 +8,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-screenshots
 node_modules
 dist
 dist-ssr
 *.local
+screenshots/
 
 # Editor directories and files
 .vscode/*
