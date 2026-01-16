@@ -5,7 +5,7 @@ A modern, full-featured e-commerce web application built with React and TypeScri
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://ecommerce-shopnest-with-react.netlify.app/)
 [![GitHub](https://img.shields.io/badge/github-repo-blue)](https://github.com/OussamaDjebbour/Ecommerce)
 
-![ShopNest Preview](./preview.png) <!-- Add a screenshot here -->
+![ShopNest Preview](./public/images/preview.png) <!-- Add a screenshot here -->
 
 ## ✨ Features
 
@@ -53,7 +53,6 @@ A modern, full-featured e-commerce web application built with React and TypeScri
 **Form & Validation**
 
 - React Hook Form
-- Zod (schema validation)
 
 **UI & UX**
 
