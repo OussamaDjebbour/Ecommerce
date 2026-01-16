@@ -1,11 +1,12 @@
-# 🛍️ ShopNest - E-Commerce Platform
+# 🛍️ ShopNest — E-Commerce Platform
 
-A modern, full-featured e-commerce web application built with React and TypeScript, featuring advanced product filtering, shopping cart management, and a seamless checkout experience.
+ShopNest is a modern e-commerce web application built with React, TypeScript, Tailwind CSS, and the DummyJson API, covering the complete shopping workflow from product discovery to checkout.  
+The project focuses on clean component architecture, state management, and responsive UI patterns commonly used in production frontend applications.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://ecommerce-shopnest-with-react.netlify.app/)
 [![GitHub](https://img.shields.io/badge/github-repo-blue)](https://github.com/OussamaDjebbour/Ecommerce)
 
-![ShopNest Preview](./public/images/preview.png) <!-- Add a screenshot here -->
+![ShopNest Preview](./screenshots/Homepage.png) <!-- Add a screenshot here -->
 
 ## ✨ Features
 
@@ -26,7 +27,7 @@ A modern, full-featured e-commerce web application built with React and TypeScri
 ### 🎨 User Experience
 
 - **Responsive Design**: Optimized for mobile (320px) to desktop (1920px+)
-- **Loading States**: Skeleton screens for better perceived performance
+- **Loading States**: Lazy/Skeleton loading for better perceived performance
 - **Toast Notifications**: Real-time feedback for user actions (add, update, delete)
 - **Modern UI**: Clean interface with Tailwind CSS
 
@@ -116,15 +117,14 @@ npm run build
 ```
 src/
 ├── components/          # Reusable UI components
-│   ├── ui/             # Base UI components (Button, Input, etc.)
-│   ├── cart/           # Cart-related components
-│   └── products/       # Product components
+│   ├── ui/             # Base and reusable UI components
+│   ├── features/           # Cart-related components
 ├── pages/              # Page components
 ├── hooks/              # Custom React hooks
 ├── store/              # Zustand store configuration
 ├── services/           # API services
 ├── types/              # TypeScript type definitions
-├── utils/              # Utility functions
+├── helpers/              # Utility(Helper) functions
 └── App.tsx             # Root component
 ```
 
@@ -146,7 +146,7 @@ src/
 
 - Lazy loading routes and heavy components
 - Image optimization with lazy loading
-- TanStack Query caching reduces API calls by ~50%
+- TanStack Query minimizes redundant API requests through caching and request deduplication
 - Code splitting for smaller initial bundle
 
 ## 🔮 Future Enhancements
@@ -163,7 +163,7 @@ src/
 
 ### Homepage
 
-![Homepage](./screenshots/homepage.png)
+![Homepage](./screenshots/Homepage.png)
 
 ### Product Filtering
 
@@ -171,7 +171,15 @@ src/
 
 ### Shopping Cart
 
-![Cart](./screenshots/cart.png)
+![Cart](./screenshots/shopping-cart.png)
+
+### product details
+
+![Checkout](./screenshots/details.png)
+
+### wishlist
+
+![wishlist](./screenshots/wishlist.png)
 
 ### Checkout
 
