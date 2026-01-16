@@ -165,6 +165,10 @@ src/
 
 ![Homepage](./screenshots/Homepage.png)
 
+### cart dropdown
+
+![Cart dropdown](./screenshots/cart-dropdown.png)
+
 ### Product Filtering
 
 ![Filtering](./screenshots/filtering.png)
