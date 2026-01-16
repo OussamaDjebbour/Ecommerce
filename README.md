@@ -118,7 +118,7 @@ npm run build
 src/
 ├── components/          # Reusable UI components
 │   ├── ui/             # Base and reusable UI components
-│   ├── features/           # Cart-related components
+│   ├── features/           # Homepage-related components
 ├── pages/              # Page components
 ├── hooks/              # Custom React hooks
 ├── store/              # Zustand store configuration
