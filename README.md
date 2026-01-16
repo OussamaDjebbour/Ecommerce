@@ -1,50 +1,205 @@
-# React + TypeScript + Vite
+# 🛍️ ShopNest - E-Commerce Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, full-featured e-commerce web application built with React and TypeScript, featuring advanced product filtering, shopping cart management, and a seamless checkout experience.
 
-Currently, two official plugins are available:
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://ecommerce-shopnest-with-react.netlify.app/)
+[![GitHub](https://img.shields.io/badge/github-repo-blue)](https://github.com/OussamaDjebbour/Ecommerce)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![ShopNest Preview](./preview.png) <!-- Add a screenshot here -->
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 🛒 Shopping Experience
 
-- Configure the top-level `parserOptions` property like this:
+- **Product Catalog**: Browse 30+ products across 9+ categories
+- **Advanced Filtering**: Filter by category, price range, with 5 sorting options
+- **Smart Pagination**: Efficient loading for large product catalogs
+- **Wishlist**: Save favorite products for later
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 💳 Cart Management
+
+- **Persistent Cart**: Shopping cart synced with localStorage
+- **Real-time Updates**: Instant cart updates with optimistic UI
+- **Stock Alerts**: Notifications when products reach stock limits
+- **Multi-step Checkout**: Smooth checkout flow with form validation
+
+### 🎨 User Experience
+
+- **Responsive Design**: Optimized for mobile (320px) to desktop (1920px+)
+- **Loading States**: Skeleton screens for better perceived performance
+- **Toast Notifications**: Real-time feedback for user actions (add, update, delete)
+- **Modern UI**: Clean interface with Tailwind CSS
+
+### ⚡ Performance
+
+- **Code Splitting**: Lazy loading for optimal bundle size
+- **API Caching**: TanStack Query reduces redundant requests
+- **Optimized Rendering**: Efficient state management with Zustand
+
+## 🛠️ Tech Stack
+
+**Frontend Framework**
+
+- React 18
+- TypeScript
+- Tailwind CSS
+
+**State Management**
+
+- Zustand (global state)
+- TanStack Query (server state)
+- LocalStorage (persistence)
+
+**Form & Validation**
+
+- React Hook Form
+- Zod (schema validation)
+
+**UI & UX**
+
+- React-Toastify (notifications)
+- Lucide-React (icons)
+- Skeleton screens
+
+**API & Data**
+
+- DummyJSON API
+- Axios (HTTP client)
+- RESTful API integration
+
+**Dev Tools**
+
+- Vite (build tool)
+- ESLint + Prettier
+- TypeScript strict mode
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and npm/pnpm/yarn
+
+### Installation
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/OussamaDjebbour/Ecommerce.git
+cd Ecommerce
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Install dependencies
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm install
+# or
+pnpm install
+# or
+yarn install
 ```
+
+3. Start the development server
+
+```bash
+npm run dev
+```
+
+4. Open [http://localhost:5173](http://localhost:5173) in your browser
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/             # Base UI components (Button, Input, etc.)
+│   ├── cart/           # Cart-related components
+│   └── products/       # Product components
+├── pages/              # Page components
+├── hooks/              # Custom React hooks
+├── store/              # Zustand store configuration
+├── services/           # API services
+├── types/              # TypeScript type definitions
+├── utils/              # Utility functions
+└── App.tsx             # Root component
+```
+
+## 🎯 Key Features Explained
+
+### Smart Filtering System
+
+- **Multi-criteria**: Combine categories, price ranges, and sorting
+- **URL State**: Shareable filtered results via URL parameters
+- **Debounced Search**: Optimized search with 300ms debounce
+
+### State Management Strategy
+
+- **Zustand**: Cart and wishlist global state
+- **TanStack Query**: API data fetching and caching
+- **LocalStorage**: Persist cart across sessions
+
+### Performance Optimizations
+
+- Lazy loading routes and heavy components
+- Image optimization with lazy loading
+- TanStack Query caching reduces API calls by ~50%
+- Code splitting for smaller initial bundle
+
+## 🔮 Future Enhancements
+
+- [ ] User authentication
+- [ ] Payment gateway integration (Stripe)
+- [ ] Order history
+- [ ] Product reviews and ratings
+- [ ] Advanced search with autocomplete
+- [ ] Dark mode
+- [ ] Backend API (Node.js + MongoDB)
+
+## 📸 Screenshots
+
+### Homepage
+
+![Homepage](./screenshots/homepage.png)
+
+### Product Filtering
+
+![Filtering](./screenshots/filtering.png)
+
+### Shopping Cart
+
+![Cart](./screenshots/cart.png)
+
+### Checkout
+
+![Checkout](./screenshots/checkout.png)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 👤 Author
+
+**Oussama Djebbour**
+
+- Portfolio: [my-personal-portfolio-ts.netlify.app](https://my-personal-portfolio-ts.netlify.app/)
+- GitHub: [@OussamaDjebbour](https://github.com/OussamaDjebbour)
+- LinkedIn: [Oussama Djebbour](https://www.linkedin.com/in/oussama-djebbour-87251827a/)
+
+## 🙏 Acknowledgments
+
+- [DummyJSON](https://dummyjson.com/) for the product API
+- [Lucide](https://lucide.dev/) for beautiful icons
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+
+---
+
+⭐ If you found this project helpful, please give it a star!
