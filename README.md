@@ -165,6 +165,10 @@ src/
 
 ![Homepage](./screenshots/Homepage.png)
 
+### Homepage (Mobile View)
+
+![Homepage(Mobile)](./screenshots/Homepage-Mobile.png)
+
 ### cart dropdown
 
 ![Cart dropdown](./screenshots/cart-dropdown.png)
