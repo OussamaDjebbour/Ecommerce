@@ -119,6 +119,8 @@ src/
 ├── components/          # Reusable UI components
 │   ├── ui/             # Base and reusable UI components
 │   ├── features/           # Homepage-related components
+├── router/
+    ├── AppRouter.ts    # Responsible for rendering each page
 ├── pages/              # Page components
 ├── hooks/              # Custom React hooks
 ├── store/              # Zustand store configuration
