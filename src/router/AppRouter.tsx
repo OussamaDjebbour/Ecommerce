@@ -7,6 +7,7 @@ import CartPage from "../pages/CartPage";
 import CheckoutPage from "../pages/CheckoutPage";
 import ProductInfoPage from "../pages/ProductInfoPage";
 import WishlistPage from "../pages/WishlistPage";
+import Success from "../pages/SuccessPage";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "checkout",
         element: <CheckoutPage />,
+      },
+      {
+        path: "success",
+        element: <Success />,
       },
       {
         path: "cart",

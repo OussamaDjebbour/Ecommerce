@@ -16,7 +16,7 @@ export default function Layout() {
     <div className="relative max-w-screen-2xl  bg-[#FAFAFA] mx-auto min-h-screen  font-bold">
       {/* Desktop Layout (1280px+) */}
 
-      <div className="hidden flex-col gap-y-6 overflow-hidden px-4 sm:px-6 lg:px-0 xl:grid xl:max-w-screen-2xl xl:grid-cols-[auto_1fr_minmax(auto,23.875rem)] xl:grid-rows-[auto_1fr] xl:gap-8 2xl:gap-12">
+      <div className="hidden flex-col  gap-y-6 overflow-hidden px-4 sm:px-6 lg:px-0 xl:grid xl:max-w-screen-2xl xl:grid-cols-[auto_1fr_minmax(auto,23.875rem)] xl:grid-rows-[auto_1fr] xl:gap-8 2xl:gap-12">
         <Header />
         <Sidebar />
         <Outlet context={{ isMainProductLoaded, setIsMainProductLoaded }} />

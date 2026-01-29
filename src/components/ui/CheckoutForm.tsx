@@ -35,6 +35,10 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  console.log('stripe:', stripe);
+console.log('elements:', elements);
+
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 

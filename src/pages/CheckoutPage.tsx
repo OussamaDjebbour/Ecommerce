@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -31,6 +31,9 @@ const CheckoutPage = () => {
   const [customerInfo, setCustomerInfo] = useState<CustomerFormData | null>(
     null,
   );
+  // const [stripePromise, setStripePromise] = useState<Promise<any> | null>(null);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  
   const { items, mode } = useCheckoutProducts();
 
   const { updateBuyNowQuantity } = useCartStore();
@@ -58,6 +61,32 @@ const CheckoutPage = () => {
 
   //   navigate("/checkout?mode=buy-now");
   // };
+
+  useEffect(() => {
+
+ async function fetchSecretKey() {
+       const res = await fetch("/.netlify/functions/create-payment-intent", {
+  method: "POST",
+});
+
+const { clientSecret } = await res.json();
+
+console.log('clientSecret',clientSecret)
+
+setClientSecret(clientSecret);
+ }  
+
+ fetchSecretKey();
+
+    // const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+    // setStripePromise(stripePromise);
+    // console.log('publish',stripePromise)
+    
+    // fetch('/config').then(async (res) => {
+    //   const { publishableKey } = await res.json();;
+    //   setStripePromise(loadStripe(publishableKey));
+    // })
+  },[])
 
   if (!items.length) {
     return (
@@ -300,27 +329,51 @@ const CheckoutPage = () => {
                 </div>
               </form>
             ) : (
-              <Elements
-                stripe={stripePromise}
-                options={{
-                  mode: "payment",
-                  amount: Math.round(totalAmount * 100),
-                  currency: "usd",
-                  appearance: {
-                    theme: "stripe",
-                    variables: {
-                      colorPrimary: "#009393",
-                      colorBackground: "#ffffff",
-                      colorText: "#1f2937",
-                      colorDanger: "#ef4444",
-                      fontFamily: "system-ui, sans-serif",
-                      spacingUnit: "4px",
-                      borderRadius: "8px",
-                    },
-                  },
-                }}
-              >
-                <div className="rounded-lg bg-white p-6 shadow-sm">
+              // clientSecret && (
+              //   <Elements
+              //   stripe={stripePromise}
+              //   options={{
+              //     clientSecret: clientSecret,
+              //     mode: "payment" ,
+              //     amount: Math.round(totalAmount * 100),
+              //     currency: "usd",
+              //     appearance: {
+              //       theme: "stripe",
+              //       variables: {
+              //         colorPrimary: "#009393",
+              //         colorBackground: "#ffffff",
+              //         colorText: "#1f2937",
+              //         colorDanger: "#ef4444",
+              //         fontFamily: "system-ui, sans-serif",
+              //         spacingUnit: "4px",
+              //         borderRadius: "8px",
+              //       },
+              //     },
+              //   }}
+              // >
+              //   <div className="rounded-lg bg-white p-6 shadow-sm">
+              //     <div className="mb-6 flex items-center gap-3">
+              //       <Lock className="h-5 w-5 text-[#009393]" />
+              //       <h2 className="text-xl font-semibold text-gray-900">
+              //         Payment Information
+              //       </h2>
+              //       <div className="ml-auto flex items-center gap-2 text-sm text-gray-500">
+              //         <Lock className="h-4 w-4" />
+              //         Secured by Stripe
+              //       </div>
+              //     </div>
+              //     <CheckoutForm
+              //       customerInfo={customerInfo}
+              //       items={items}
+              //       totalAmount={totalAmount}
+              //       onBack={() => setCustomerInfo(null)}
+              //     />
+              //   </div>
+              // </Elements>
+              // )
+              clientSecret && (
+  <Elements stripe={stripePromise} options={{ clientSecret }}>
+      <div className="rounded-lg bg-white p-6 shadow-sm">
                   <div className="mb-6 flex items-center gap-3">
                     <Lock className="h-5 w-5 text-[#009393]" />
                     <h2 className="text-xl font-semibold text-gray-900">
@@ -338,7 +391,9 @@ const CheckoutPage = () => {
                     onBack={() => setCustomerInfo(null)}
                   />
                 </div>
-              </Elements>
+  </Elements>
+)
+
             )}
           </div>
 
